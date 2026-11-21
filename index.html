@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon Orsay</title>
+<meta name="theme-color" content="#F2F2F7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mon Orsay">
+<link rel="apple-touch-icon" href="icon-512.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>/* Leaflet 1.9.4 (BSD-2) */ .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; } .leaflet-container { overflow: hidden; } .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-user-drag: none; } .leaflet-tile::selection { background: transparent; } .leaflet-safari .leaflet-tile { image-rendering: -webkit-optimize-contrast; } .leaflet-safari .leaflet-tile-container { width: 1600px; height: 1600px; -webkit-transform-origin: 0 0; } .leaflet-marker-icon, .leaflet-marker-shadow { display: block; } .leaflet-container .leaflet-overlay-pane svg { max-width: none !important; max-height: none !important; } .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width: none !important; max-height: none !important; width: auto; padding: 0; } .leaflet-container img.leaflet-tile { mix-blend-mode: plus-lighter; } .leaflet-container.leaflet-touch-zoom { -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; } .leaflet-container.leaflet-touch-drag { -ms-touch-action: pinch-zoom; touch-action: none; touch-action: pinch-zoom; } .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { -ms-touch-action: none; touch-action: none; } .leaflet-container { -webkit-tap-highlight-color: transparent; } .leaflet-container a { -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4); } .leaflet-tile { filter: inherit; visibility: hidden; } .leaflet-tile-loaded { visibility: inherit; } .leaflet-zoom-box { width: 0; height: 0; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 800; } .leaflet-overlay-pane svg { -moz-user-select: none; } .leaflet-pane { z-index: 400; } .leaflet-tile-pane { z-index: 200; } .leaflet-overlay-pane { z-index: 400; } .leaflet-shadow-pane { z-index: 500; } .leaflet-marker-pane { z-index: 600; } .leaflet-tooltip-pane { z-index: 650; } .leaflet-popup-pane { z-index: 700; } .leaflet-map-pane canvas { z-index: 100; } .leaflet-map-pane svg { z-index: 200; } .leaflet-vml-shape { width: 1px; height: 1px; } .lvml { behavior: url(#default#VML); display: inline-block; position: absolute; } .leaflet-control { position: relative; z-index: 800; pointer-events: visiblePainted; pointer-events: auto; } .leaflet-top, .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; } .leaflet-top { top: 0; } .leaflet-right { right: 0; } .leaflet-bottom { bottom: 0; } .leaflet-left { left: 0; } .leaflet-control { float: left; clear: both; } .leaflet-right .leaflet-control { float: right; } .leaflet-top .leaflet-control { margin-top: 10px; } .leaflet-bottom .leaflet-control { margin-bottom: 10px; } .leaflet-left .leaflet-control { margin-left: 10px; } .leaflet-right .leaflet-control { margin-right: 10px; } .leaflet-fade-anim .leaflet-popup { opacity: 0; -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; transition: opacity 0.2s linear; } .leaflet-fade-anim .leaflet-map-pane .leaflet-popup { opacity: 1; } .leaflet-zoom-animated { -webkit-transform-origin: 0 0; -ms-transform-origin: 0 0; transform-origin: 0 0; } svg.leaflet-zoom-animated { will-change: transform; } .leaflet-zoom-anim .leaflet-zoom-animated { -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1); -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1); transition: transform 0.25s cubic-bezier(0,0,0.25,1); } .leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile { -webkit-transition: none; -moz-transition: none; transition: none; } .leaflet-zoom-anim .leaflet-zoom-hide { visibility: hidden; } .leaflet-interactive { cursor: pointer; } .leaflet-grab { cursor: -webkit-grab; cursor: -moz-grab; cursor: grab; } .leaflet-crosshair, .leaflet-crosshair .leaflet-interactive { cursor: crosshair; } .leaflet-popup-pane, .leaflet-control { cursor: auto; } .leaflet-dragging .leaflet-grab, .leaflet-dragging .leaflet-grab .leaflet-interactive, .leaflet-dragging .leaflet-marker-draggable { cursor: move; cursor: -webkit-grabbing; cursor: -moz-grabbing; cursor: grabbing; } .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-image-layer, .leaflet-pane > svg path, .leaflet-tile-container { pointer-events: none; } .leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path { pointer-events: visiblePainted; pointer-events: auto; } .leaflet-container { background: #ddd; outline-offset: 1px; } .leaflet-container a { color: #0078A8; } .leaflet-zoom-box { border: 2px dotted #38f; background: rgba(255,255,255,0.5); } .leaflet-container { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; font-size: 12px; font-size: 0.75rem; line-height: 1.5; } .leaflet-bar { box-shadow: 0 1px 5px rgba(0,0,0,0.65); border-radius: 4px; } .leaflet-bar a { background-color: #fff; border-bottom: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; display: block; text-align: center; text-decoration: none; color: black; } .leaflet-bar a, .leaflet-control-layers-toggle { background-position: 50% 50%; background-repeat: no-repeat; display: block; } .leaflet-bar a:hover, .leaflet-bar a:focus { background-color: #f4f4f4; } .leaflet-bar a:first-child { border-top-left-radius: 4px; border-top-right-radius: 4px; } .leaflet-bar a:last-child { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-bottom: none; } .leaflet-bar a.leaflet-disabled { cursor: default; background-color: #f4f4f4; color: #bbb; } .leaflet-touch .leaflet-bar a { width: 30px; height: 30px; line-height: 30px; } .leaflet-touch .leaflet-bar a:first-child { border-top-left-radius: 2px; border-top-right-radius: 2px; } .leaflet-touch .leaflet-bar a:last-child { border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } .leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; } .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out { font-size: 22px; } .leaflet-control-layers { box-shadow: 0 1px 5px rgba(0,0,0,0.4); background: #fff; border-radius: 5px; } .leaflet-control-layers-toggle { background-image: url(images/layers.png); width: 36px; height: 36px; } .leaflet-retina .leaflet-control-layers-toggle { background-image: url(images/layers-2x.png); background-size: 26px 26px; } .leaflet-touch .leaflet-control-layers-toggle { width: 44px; height: 44px; } .leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle { display: none; } .leaflet-control-layers-expanded .leaflet-control-layers-list { display: block; position: relative; } .leaflet-control-layers-expanded { padding: 6px 10px 6px 6px; color: #333; background: #fff; } .leaflet-control-layers-scrollbar { overflow-y: scroll; overflow-x: hidden; padding-right: 5px; } .leaflet-control-layers-selector { margin-top: 2px; position: relative; top: 1px; } .leaflet-control-layers label { display: block; font-size: 13px; font-size: 1.08333em; } .leaflet-control-layers-separator { height: 0; border-top: 1px solid #ddd; margin: 5px -10px 5px -6px; } .leaflet-default-icon-path { background-image: url(images/marker-icon.png); } .leaflet-container .leaflet-control-attribution { background: #fff; background: rgba(255, 255, 255, 0.8); margin: 0; } .leaflet-control-attribution, .leaflet-control-scale-line { padding: 0 5px; color: #333; line-height: 1.4; } .leaflet-control-attribution a { text-decoration: none; } .leaflet-control-attribution a:hover, .leaflet-control-attribution a:focus { text-decoration: underline; } .leaflet-attribution-flag { display: inline !important; vertical-align: baseline !important; width: 1em; height: 0.6669em; } .leaflet-left .leaflet-control-scale { margin-left: 5px; } .leaflet-bottom .leaflet-control-scale { margin-bottom: 5px; } .leaflet-control-scale-line { border: 2px solid #777; border-top: none; line-height: 1.1; padding: 2px 5px 1px; white-space: nowrap; -moz-box-sizing: border-box; box-sizing: border-box; background: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px #fff; } .leaflet-control-scale-line:not(:first-child) { border-top: 2px solid #777; border-bottom: none; margin-top: -2px; } .leaflet-control-scale-line:not(:first-child):not(:last-child) { border-bottom: 2px solid #777; } .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { box-shadow: none; } .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { border: 2px solid rgba(0,0,0,0.2); background-clip: padding-box; } .leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; } .leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 12px; } .leaflet-popup-content { margin: 13px 24px 13px 20px; line-height: 1.3; font-size: 13px; font-size: 1.08333em; min-height: 1px; } .leaflet-popup-content p { margin: 17px 0; margin: 1.3em 0; } .leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-top: -1px; margin-left: -20px; overflow: hidden; pointer-events: none; } .leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; pointer-events: auto; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); } .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: white; color: #333; box-shadow: 0 3px 14px rgba(0,0,0,0.4); } .leaflet-container a.leaflet-popup-close-button { position: absolute; top: 0; right: 0; border: none; text-align: center; width: 24px; height: 24px; font: 16px/24px Tahoma, Verdana, sans-serif; color: #757575; text-decoration: none; background: transparent; } .leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus { color: #585858; } .leaflet-popup-scrolled { overflow: auto; } .leaflet-oldie .leaflet-popup-content-wrapper { -ms-zoom: 1; } .leaflet-oldie .leaflet-popup-tip { width: 24px; margin: 0 auto; -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)"; filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); } .leaflet-oldie .leaflet-control-zoom, .leaflet-oldie .leaflet-control-layers, .leaflet-oldie .leaflet-popup-content-wrapper, .leaflet-oldie .leaflet-popup-tip { border: 1px solid #999; } .leaflet-div-icon { background: #fff; border: 1px solid #666; } .leaflet-tooltip { position: absolute; padding: 6px; background-color: #fff; border: 1px solid #fff; border-radius: 3px; color: #222; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.4); } .leaflet-tooltip.leaflet-interactive { cursor: pointer; pointer-events: auto; } .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { position: absolute; pointer-events: none; border: 6px solid transparent; background: transparent; content: ""; } .leaflet-tooltip-bottom { margin-top: 6px; } .leaflet-tooltip-top { margin-top: -6px; } .leaflet-tooltip-bottom:before, .leaflet-tooltip-top:before { left: 50%; margin-left: -6px; } .leaflet-tooltip-top:before { bottom: 0; margin-bottom: -12px; border-top-color: #fff; } .leaflet-tooltip-bottom:before { top: 0; margin-top: -12px; margin-left: -6px; border-bottom-color: #fff; } .leaflet-tooltip-left { margin-left: -6px; } .leaflet-tooltip-right { margin-left: 6px; } .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { top: 50%; margin-top: -6px; } .leaflet-tooltip-left:before { right: 0; margin-right: -12px; border-left-color: #fff; } .leaflet-tooltip-right:before { left: 0; margin-left: -12px; border-right-color: #fff; } @media print { .leaflet-control { -webkit-print-color-adjust: exact; print-color-adjust: exact; } } </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--green:#C8D400;--green-ink:#1C1F00;--pink:#E2186A;--pink-ink:#C4105A;--navy:#004A7C;--bg:#F2F2F7;--card:#fff;--ink:#1C1C1E;--muted:#6E6E73;--line:#E5E5EA;--ok:#2F7A1F;--okbg:#E8F4E0;--radius:22px;--safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+a{color:inherit}
+button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:flex}
+/* Sidebar (ordinateur) */
+.side{display:none}
+.main{flex:1;min-width:0;padding:calc(18px + var(--safe-t)) 18px calc(110px + var(--safe-b));max-width:1180px;margin:0 auto;width:100%}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:space-around;padding:8px 4px calc(10px + var(--safe-b));background:rgba(249,249,251,.86);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line)}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:500;color:#8A8A8E;text-decoration:none;min-width:58px;background:none;border:0;padding:2px}
+.tab.on{color:var(--pink-ink)}
+.tab svg{width:25px;height:25px}
+@media (min-width:900px){
+ .side{display:flex;flex-direction:column;gap:2px;width:250px;flex-shrink:0;position:sticky;top:0;height:100vh;padding:24px 14px;background:#fff;border-right:1px solid var(--line);overflow:auto}
+ .tabbar{display:none}
+ .main{padding:34px 40px 60px}
+ .cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
+ .grid3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ .hide-desk{display:none!important}
+}
+.nav{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;font-size:15px;font-weight:500;color:#3A3A3C;text-decoration:none;border:0;background:none;text-align:left;width:100%}
+.nav svg{width:20px;height:20px;flex-shrink:0}
+.nav.on{background:#FCE3EE;color:var(--pink-ink);font-weight:700}
+.navsec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#8A8A8E;padding:16px 12px 4px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo i{width:15px;height:15px;border-radius:99px;border:3.5px solid var(--pink);display:block}
+h1{font-size:34px;font-weight:800;letter-spacing:-.8px;margin:2px 0 0}
+h2{font-size:22px;font-weight:700;letter-spacing:-.4px;margin:0}
+h3{font-size:17px;font-weight:700;margin:0}
+.lbl{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.stack{display:flex;flex-direction:column;gap:22px}
+.stack-s{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:12px}
+.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.wrap{flex-wrap:wrap}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card.dark{background:#1C1C1E;color:#fff}
+.card.pink{background:var(--pink);color:#fff}
+.card.navy{background:var(--navy);color:#fff}
+.card.lime{background:var(--green);color:var(--green-ink)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:12px}
+@media (min-width:600px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cols{display:flex;flex-direction:column;gap:22px}
+.hscroll{display:flex;gap:12px;overflow-x:auto;margin:0 -18px;padding:2px 18px 6px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+@media (min-width:900px){.hscroll{margin:0;padding:2px 0 6px;flex-wrap:wrap}}
+.chip{border:0;white-space:nowrap;font-size:14px;font-weight:600;padding:8px 14px;border-radius:99px;background:#fff;color:var(--ink)}
+.chip.on{background:var(--pink);color:#fff}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.t-pink{background:#FCE3EE;color:var(--pink-ink)}.t-navy{background:#E1ECF5;color:var(--navy)}.t-lime{background:#F1F5C2;color:#4A4F00}.t-ok{background:var(--okbg);color:var(--ok)}.t-warn{background:#FFE6DA;color:#B0410A}.t-grey{background:#F2F2F7;color:#3A3A3C}
+.btn{border:0;border-radius:14px;padding:13px 18px;font-size:16px;font-weight:700;background:var(--pink);color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn.sec{background:#fff;color:var(--ink);border:1px solid #D1D1D6}
+.btn.dark{background:#1C1C1E}.btn.lime{background:var(--green);color:var(--green-ink)}.btn.white{background:#fff;color:var(--pink-ink)}
+.btn.full{width:100%}.btn.sm{padding:9px 14px;font-size:14px;border-radius:12px}
+.btn:disabled{opacity:.5}
+.iconbtn{width:42px;height:42px;border-radius:99px;border:0;background:#fff;display:inline-flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.dot{position:absolute;top:8px;right:9px;width:10px;height:10px;border-radius:99px;background:var(--pink);border:2px solid #fff}
+.search{display:flex;align-items:center;gap:8px;background:#E3E3E8;border-radius:12px;padding:10px 12px}
+.search input{border:0;background:transparent;outline:none;flex:1;min-width:0}
+.field{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
+.field input,.field select,.field textarea{border:1px solid #E0E0E5;background:#FAFAFC;border-radius:12px;padding:12px;font-size:16px;font-weight:500;color:var(--ink);outline:none;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink);background:#fff}
+.list{background:#fff;border-radius:16px;overflow:hidden}
+.li{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #EDEDF0;min-height:50px;text-decoration:none;color:inherit;background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+.li:last-child{border-bottom:0}
+.ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-weight:800;font-size:13px}
+.av{width:50px;height:50px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+.toggle{width:51px;height:31px;border-radius:99px;border:0;padding:2px;display:flex;flex-shrink:0;background:#E9E9EB;transition:background .2s}
+.toggle span{width:27px;height:27px;border-radius:99px;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s}
+.toggle.on{background:#34C759}.toggle.on span{transform:translateX(20px)}
+.seg{display:flex;gap:3px;background:#E3E3E8;padding:3px;border-radius:11px}
+.seg button{flex:1;border:0;background:transparent;font-size:14px;font-weight:600;padding:8px 6px;border-radius:9px}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:10px 18px calc(24px + var(--safe-b));animation:up .25s cubic-bezier(.2,.8,.2,1)}
+@media (min-width:900px){.sheet-bg{align-items:center}.sheet{border-radius:24px;max-height:86vh}}
+.grab{width:38px;height:5px;border-radius:99px;background:#C7C7CC;margin:0 auto 12px}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.toast{position:fixed;left:50%;top:calc(14px + var(--safe-t));transform:translateX(-50%);z-index:200;background:rgba(30,30,32,.94);color:#fff;border-radius:18px;padding:12px 16px;display:flex;gap:10px;align-items:center;max-width:92vw;width:380px;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:drop .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes drop{from{transform:translate(-50%,-30px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+#map{height:380px;border-radius:22px;overflow:hidden;background:#EAF0E2;z-index:1}
+@media (min-width:900px){#map{height:520px}}
+.pin{width:30px;height:30px;border-radius:99px 99px 99px 3px;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}
+.pin b{transform:rotate(45deg);color:#fff;font-size:11px;font-weight:800}
+.leaflet-popup-content{font-family:inherit;margin:12px 14px}
+.poster{width:84px;height:124px;border-radius:12px;flex-shrink:0;display:flex;align-items:flex-end;padding:8px;font-size:10.5px;font-weight:800;color:#fff;letter-spacing:.3px;position:relative;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.empty{text-align:center;padding:22px 16px;color:var(--muted);font-size:15px}
+.badge-src{font-size:11.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.live{width:7px;height:7px;border-radius:99px;background:#34C759;display:inline-block}
+.snap{width:7px;height:7px;border-radius:99px;background:#FF9500;display:inline-block}
+.onb{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:calc(24px + var(--safe-t)) 18px calc(24px + var(--safe-b))}
+.onb-in{width:100%;max-width:460px}
+.role{display:flex;gap:14px;align-items:center;text-align:left;background:#fff;border:2px solid transparent;border-radius:18px;padding:14px;width:100%}
+.role.on{border-color:var(--pink)}
+.qr{background:#fff;padding:12px;border-radius:14px;display:inline-block}
+.qr img,.qr canvas{display:block}
+.kpi b{font-size:28px;font-weight:800;letter-spacing:-.5px;display:block}
+.clip2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.clip3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ext::after{content:" ↗";font-weight:600}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="layer"></div>
+<script>
+/* =========================================================================
+   Mon Orsay — démo web app (nom provisoire)
+   Données réelles relevées le 21/11/2026 + chargement en direct quand le
+   navigateur y a accès (site de la mairie, API Recherche d'entreprises,
+   Base Adresse Nationale pour la carte).
+   ========================================================================= */
+const APP = 'Mon Orsay';
+const SNAP_DATE = '21 novembre 2026';
+
+/* ---------- Données réelles (instantané) ---------- */
+const MAIRIE = {
+  adresse:'2 place du Général Leclerc, 91400 Orsay', tel:'01 60 92 80 00', mail:'contact@mairie-orsay.fr', site:'https://www.mairie-orsay.fr/',
+  horaires:[['Lundi','8h30–12h30 · 13h30–17h'],['Mardi','8h30–12h30 · 13h30–17h'],['Mercredi','8h30–12h30 · 13h30–17h'],['Jeudi','13h–17h'],['Vendredi','8h30–12h30 · 13h30–17h'],['Samedi','9h–12h'],['Dimanche','Fermé']],
+  ouvert:{1:[[510,750],[810,1020]],2:[[510,750],[810,1020]],3:[[510,750],[810,1020]],4:[[780,1020]],5:[[510,750],[810,1020]],6:[[540,720]]}
+};
+const ACTUS = [
+  {t:'Le retour du RER de Noël',cat:'Fête',d:'2026-11-20',x:'La Ville et la RATP proposent à nouveau aux enfants orcéens un voyage de Noël en train entre Orsay et Saint-Rémy-lès-Chevreuse.',u:'https://www.mairie-orsay.fr/actualites/le-retour-du-rer-de-noel/'},
+  {t:'Travaux de voirie – novembre 2026',cat:'Travaux',d:'2026-11-09',x:'Rue Guy Môquet, mercredi 25 novembre de 9h à 16h : une voie neutralisée pour sécuriser le giratoire.',u:'https://www.mairie-orsay.fr/actualites/travaux-de-voirie-novembre-2026/'},
+  {t:'Des droits à hauteur d’enfant',cat:'Enfance-Éducation',d:'2026-11-09',x:'En novembre, la MJC-CS Jacques Tati et ses partenaires proposent ateliers, fresque et projections autour des droits de l’enfant.',u:'https://www.mairie-orsay.fr/'},
+  {t:'Fermeture du pont de la RD188 pour travaux',cat:'Travaux',d:'2026-10-14',x:'Le Département renforce les dispositifs de retenue du pont, du 12 octobre à mi-décembre.',u:'https://www.mairie-orsay.fr/actualites/fermeture-du-pont-de-la-rd188-pour-travaux/'},
+  {t:'Vos élus à votre rencontre',cat:'Citoyenneté',d:'2026-10-01',x:'Permanences mensuelles : 1er vendredi du mois au marché du Centre, 2e dimanche au marché de Mondétour.',u:'https://www.mairie-orsay.fr/agenda/vos-elus-a-votre-rencontre-4/'}
+];
+const TRAVAUX = [
+  {t:'Rue Guy Môquet · giratoire',q:'Rue Guy Môquet Orsay',when:'Mer. 25 nov · 9h–16h',x:'Une voie de circulation neutralisée.',u:'https://www.mairie-orsay.fr/actualites/travaux-de-voirie-novembre-2026/'},
+  {t:'Pont de la RD188',q:'RD188 Orsay',when:'Jusqu’à mi-décembre',x:'Renforcement des dispositifs de retenue (Département).',u:'https://www.mairie-orsay.fr/actualites/fermeture-du-pont-de-la-rd188-pour-travaux/'},
+  {t:'Sondages réseau de gaz (GRDF)',q:'',when:'Jusqu’au 25 nov · 9h–17h',x:'Sondages préalables à de futurs travaux.',u:'https://www.mairie-orsay.fr/actualites/sondages-techniques-sur-le-reseau-de-gaz/'},
+  {t:'La Bouvêche',q:'Allée de la Bouvêche Orsay',when:'En cours',x:'Rénovation du chauffage.',u:'https://www.mairie-orsay.fr/actualites/la-bouveche-en-travaux/'},
+  {t:'Groupe scolaire de Mondétour',q:'',when:'Depuis avril 2026',x:'Rénovation énergétique.',u:'https://www.mairie-orsay.fr/actualites/renovation-du-groupe-scolaire-de-mondetour/'},
+  {t:'Échangeur de Corbeville',q:'',when:'En cours',x:'Modernisation par l’EPA Paris-Saclay.',u:'https://www.mairie-orsay.fr/actualites/travaux-sur-lechangeur-de-corbeville/'}
+];
+const AGENDA = [
+  {t:'Journée des métiers de l’astronomie et du spatial',c:'Emploi',d:'2026-11-21',h:'9h–17h',l:'2 rue Sophie Germain',u:'https://www.mairie-orsay.fr/agenda/journee-des-metiers-de-lastronomie-et-du-spatial/'},
+  {t:'Cabaret · Les escales du CRD',c:'Spectacle',d:'2026-11-21',h:'20h30–22h',l:'Rue Jean Teillac',u:'https://www.mairie-orsay.fr/agenda/cabaret/'},
+  {t:'Atelier broyage des déchets végétaux',c:'SIOM',d:'2026-11-21',h:'',l:'',u:'https://www.mairie-orsay.fr/agenda/atelier-broyage-des-dechets-vegetaux/'},
+  {t:'Escape game immersif (prévention)',c:'Jeunesse',d:'2026-11-25',h:'18h–19h30',l:'1ter rue André Maginot',u:'https://www.mairie-orsay.fr/agenda/sensibilisation-escape-game-immersif/'},
+  {t:'Réunion publique centre-ville (reportée)',c:'Citoyenneté',d:'2026-11-26',h:'20h',l:'Hôtel de ville',u:'https://www.mairie-orsay.fr/agenda/reunion-publique-centre-ville-reportee/'},
+  {t:'Visite des tout-petits',c:'Culture',d:'2026-11-28',h:'16h30–17h',l:'4 avenue Saint-Laurent',u:'https://www.mairie-orsay.fr/agenda/visite-des-tout-petits/'},
+  {t:'Marché de Noël de la paroisse',c:'Fête',d:'2026-11-28',h:'28–29 nov.',l:'Paroisse d’Orsay',u:'https://www.mairie-orsay.fr/economie/commerce-artisanat/nos-marches/'},
+  {t:'Vos élus à votre rencontre',c:'Citoyenneté',d:'2026-12-04',h:'9h–11h',l:'Marché du Centre',u:'https://www.mairie-orsay.fr/agenda/vos-elus-a-votre-rencontre-6/'},
+  {t:'Visite-atelier en famille à la Crypte',c:'Culture',d:'2026-12-05',h:'14h30–16h30',l:'4 avenue Saint-Laurent',u:'https://www.mairie-orsay.fr/agenda/visite-atelier-famille-a-la-crypte-dorsay/'},
+  {t:'Conseil municipal',c:'Citoyenneté',d:'2026-12-10',h:'20h30',l:'Hôtel de ville',u:'https://www.mairie-orsay.fr/agenda/conseil-municipal/'},
+  {t:'Vos élus à votre rencontre',c:'Citoyenneté',d:'2026-12-13',h:'9h–11h',l:'Marché de Mondétour',u:'https://www.mairie-orsay.fr/agenda/vos-elus-a-votre-rencontre-4/'}
+];
+const EXPOS = [
+  {t:'« Maison à vendre », Rafael Triana',p:'Jusqu’au 31 déc.'},
+  {t:'« Des cabanes dans la tempête »',p:'Jusqu’au 13 déc.'},
+  {t:'« Les droits de l’enfant, un combat majeur » (Amnesty)',p:'Jusqu’au 27 nov.'}
+];
+const MARCHES = [
+  {n:'Marché du Centre',l:'Place du Docteur Ernest Albert',q:'Place du Docteur Ernest Albert Orsay',j:'Deux matinées par semaine, dont le vendredi'},
+  {n:'Marché de Mondétour',l:'Place Pierre Lucas, bd de Mondétour',q:'51 boulevard de Mondétour Orsay',j:'Tous les dimanches matin'}
+];
+const CINEMA = {
+  nom:'Cinéma Jacques Tati', adr:'Allée de la Bouvêche · 3 salles · géré par la MJC', semaine:'du mer. 18 au mar. 24 novembre',
+  site:'https://cinetati.fr/FR/42/les-films-jacques-tati-orsay-orsay.html', pdf:'https://cinetati.fr/FR/programmation-cine?tk_source=site&tk_type=progpdf',
+  films:[
+    {t:'Il faut brûler maman',g:'Comédie',du:'1h22',r:'Albert Dupontel',c:'#E2186A',b:[],s:{sam:['16h45 VO'],dim:['18h45 VO'],lun:['16h10 VOST'],mar:['18h45 VO','21h00 VOST']},p:'https://images.monnaie-services.com/movie_poster/320/FRAVK3D/D2Z39N5C.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MAVK3D/il-faut-bruler-maman.html'},
+    {t:'L’Affaire Marie-Claire',g:'Drame',du:'1h42',r:'L. Escaffre, Y. Muller',c:'#004A7C',b:[],s:{sam:['20h50 VO'],dim:['21h00 VO'],lun:['14h00 VOST'],mar:['14h00 VOST']},p:'https://images.monnaie-services.com/movie_poster/320/FRITYIL/DRLO2W0D.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MITYIL/l-affaire-marie-claire.html'},
+    {t:'Joyeuse Jungle !',g:'Animation',du:'1h10',r:'Edmunds Jansons',c:'#7A8200',b:['Jeune public'],s:{sam:['16h30 VF'],dim:['16h15 VF']},p:'https://images.monnaie-services.com/movie_poster/320/FRFGMJQ/I9CPGHFH.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MFGMJQ/joyeuse-jungle.html'},
+    {t:'Si tu tends l’oreille',g:'Animation',du:'1h50',r:'Yoshifumi Kondo',c:'#5B6B00',b:['Jeune public','Coup de cœur'],s:{dim:['14h30 VF']},p:'https://images.monnaie-services.com/movie_poster/320/FRHF8D6/LNF05AMM.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MHF8D6/si-tu-tends-l-oreille.html'},
+    {t:'Wild Horse Nine',g:'Thriller',du:'1h57',r:'Martin McDonagh',c:'#3A3A3C',b:[],s:{sam:['17h45 VOST'],dim:['17h30 VOST']},p:'https://images.monnaie-services.com/movie_poster/320/FRQ5S88/FWDY5ZH2.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MQ5S88/wild-horse-nine.html'},
+    {t:'Méli-Mélo',g:'Animation',du:'1h42',r:'Leah Nelson',c:'#B0410A',b:['Avant-première'],s:{dim:['18h00 VOST']},p:'https://images.monnaie-services.com/movie_poster/320/FR9N01C/Q5NX18ZP.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/M9N01C/meli-melo.html'},
+    {t:'15/18',g:'Drame',du:'1h44',r:'Cédric Kahn',c:'#6E2A8C',b:['-12 ans'],s:null,w:'14h00 · 16h15 · 18h15 · 18h30 · 20h45 · 21h00 (VO)',p:'https://images.monnaie-services.com/movie_poster/320/FRITK1Q/MXXX8QFH.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MITK1Q/15-18.html'},
+    {t:'Les Braves (Coward)',g:'Drame',du:'2h07',r:'Lukas Dhont',c:'#2F5D50',b:[],s:null,w:'15h00 · 18h30 · 20h15 · 20h30 (VO / VOST)',p:'https://images.monnaie-services.com/movie_poster/320/FRU24LR/FLCKDG6X.jpg',u:'https://cinetati.fr/FR/fiche-film-cinema/MU24LR/les-braves-coward.html'}
+  ]
+};
+/* Commerces : annuaire « Mes commerces » de la Région Île-de-France (relevé du 21/11/2026) */
+const COMMERCES = [
+  ['Au Duc d’Orsay','boulangerie','14 rue Boursier'],['Paris Panem','boulangerie','12 rue Boursier'],['La Gourmandise d’Orsay','boulangerie','55 rue de Paris'],['Boulangerie du Guichet','boulangerie','47 rue Charles de Gaulle'],['Boulangerie Le Guichet','boulangerie','2 bis impasse Verdun'],['La Mie d’Orsay','boulangerie','2 rue du Docteur Ernest Lauriat'],['Boulangerie Marie Blachère','boulangerie','69 rue de Montlhéry'],
+  ['Boucherie de la Poste','alimentation','59 rue de Paris'],['Novoviande Orsay','alimentation','69 rue de Montlhéry'],['Les Trouvailles d’Épicure','alimentation','15 rue de Paris'],['Au Primeur de la Gare','alimentation','43 boulevard Dubreuil'],['Grand Frais Orsay','alimentation','69 rue de Montlhéry'],['La Fourmi Verte','alimentation','2 rue du Docteur Ernest Lauriat'],['Franprix Orsay','alimentation','2 rue du Docteur Ernest Lauriat'],['Franprix','alimentation','20 rue Charles de Gaulle'],['Le Roi Supermarché','alimentation','1 rue de Versailles'],['Bubble Bear','alimentation','35 boulevard Dubreuil'],
+  ['Inter Caves','caviste','3 rue du Docteur Ernest Lauriat'],['Nicolas','caviste','6 rue Boursier'],
+  ['Restaurant Le 63','restaurant','63 rue de Paris'],['Trattoria Belinda','restaurant','46 rue de Paris'],['Bud’s Deli','restaurant','9 rue de Paris'],['Dolce Pizza','restaurant','2 rue de Paris'],['Papaye Verte','restaurant','4 rue Archangé'],['Le Gramophone','restaurant','27 boulevard Dubreuil'],['Regal Food','restaurant','39 boulevard Dubreuil'],['Au Soleil du Maroc','restaurant','1 boulevard de Mondétour'],['Tan An','restaurant','37 rue Charles de Gaulle'],['Istanbul Kebab de la Poste','restaurant','9 rue Boursier'],['Domino’s Pizza','restaurant','24 rue Charles de Gaulle'],
+  ['Le Deck','bar','13 rue Archangé'],['Le Tabac du Centre','bar','10 rue Boursier'],['Hall of Beer','bar','29 rue Charles de Gaulle'],
+  ['Optic 2000','services','27 rue de Paris']
+].map((c,i)=>({id:'c'+i,n:c[0],cat:c[1],a:c[2]+', 91400 Orsay'}));
+const CATS = {boulangerie:{l:'Boulangeries',c:'#C4105A',i:'B'},alimentation:{l:'Alimentation',c:'#7A8200',i:'A'},caviste:{l:'Cavistes',c:'#8E244D',i:'V'},restaurant:{l:'Restos',c:'#004A7C',i:'R'},bar:{l:'Cafés & bars',c:'#B0410A',i:'C'},commerce:{l:'Commerces',c:'#5B2A86',i:'★'},services:{l:'Services',c:'#3A3A3C',i:'S'},atelier:{l:'Ateliers',c:'#2F7A1F',i:'✦'}};
+/* Ateliers & activités : annuaire des associations de la mairie */
+const ATELIERS = [
+  {n:'Rêves en fab',x:'Poterie et céramique'},{n:'Mosaïque arts plastiques',x:'Ateliers d’arts plastiques'},{n:'ELAC – Espace liaison art et culture',x:'Peinture et dessin'},{n:'Ateliers Them’arts',x:'Ateliers artistiques'},{n:'Délices de Do',x:'Ateliers de cuisine vietnamienne'},{n:'FabLab Orsay',x:'Fabrication numérique'},{n:'Club photographique d’Orsay',x:'Photographie'},{n:'Repair Café Orsay',x:'Réparer ensemble ses objets'}
+];
+/* Associations : extrait de l'annuaire de la mairie (16 pages au total) */
+const ASSO_BASE='https://www.mairie-orsay.fr/annuaire-association/';
+/* Associations : annuaire de la mairie (extrait). Coordonnées reprises de l'annuaire quand il les publie. */
+const ASSOS = [
+  ['Avenir cycliste d’Orsay','Sport','Club de cyclisme : route, VTT, piste et cyclo-cross.','avenir-cycliste-dorsay-aco/',{adr:'7 avenue du Maréchal Foch, Orsay',tel:'09 71 59 39 35',web:'http://www.acorsay.com',mail:'acorsay@gmail.com'}],
+  ['Club Athlétique d’Orsay (CAO)','Sport','Club omnisports.','club-athletique-dorsay-cao/'],
+  ['CA Orsay Rugby Club','Sport','Rugby, dès 3 ans.','club-athletique-orsay-rugby-club-caorc/'],
+  ['Football Club Orsay-Bures','Sport','Football.','football-club-orsay-bures-fcob/'],
+  ['École tennis Orsay','Sport','Tennis.','ecole-tennis-orsay-club-ato/'],
+  ['Paris Sud Université Club','Sport','Club omnisports, 20 sections.','paris-sud-universite-club-psuc/'],
+  ['Aquanova Orsay','Sport','Aquagym, aqua fitness, sauna et hammam.','aquanova-orsay/'],
+  ['Shaolin Chuan Club Val d’Yvette','Sport','Arts martiaux et énergétiques chinois.','shaolin-chuan-club-val-dyvette-sccvy/'],
+  ['Shadow boxing club d’Orsay','Sport','Shadow boxing, compétition dès 14 ans.','shadow-boxing-club-dorsay-sbco/'],
+  ['Pétanque club d’Orsay','Sport','Pétanque.','petanque-club-dorsay-pco/'],
+  ['ARPO','Sport','Randonnées et sorties de plein air.','association-de-randonnees-et-de-plein-air-dorsay-arpo/'],
+  ['Retraite sportive (FFRS)','Sport','Sport et théâtre pour les retraités.','federation-francaise-de-la-retraite-sportive-ffrs/'],
+  ['MJC – Centre social Jacques Tati','Culture','Centre social et culturel : cinéma, ateliers, spectacles, jeunesse.','maison-des-jeunes-et-de-la-culture-jacques-tati-mjc-centre-social/'],
+  ['Compagnie Coups de Théâtre','Culture','Théâtre.','compagnie-coups-de-theatre/'],
+  ['Compagnie la Trappe','Culture','Théâtre amateur.','compagnie-la-trappe/'],
+  ['Danses Rock Association','Culture','Cours de danse.','danses-rock-association-dra/'],
+  ['Club photographique d’Orsay','Culture','Photographie.','club-photographique-dorsay-mjc-cpo/'],
+  ['Club vidéo MJC','Culture','Vidéo.','club-video-mjc-dorsay/'],
+  ['CHLOE','Culture','Histoire locale d’Orsay et des environs.','comite-dhistoire-locale-dorsay-et-des-environs-chloe/'],
+  ['Club de généalogie d’Orsay','Culture','Généalogie.','le-club-de-genealogie-dorsay-cgo/'],
+  ['Association astronomique de la vallée','Culture','Astronomie.','association-astronomique-de-la-vallee-aav/'],
+  ['ALCOR','Culture','Astronomie et diffusion scientifique sur le campus.','astronomie-et-lumiere-du-campus-dorsay-alcor/'],
+  ['ALCA','Culture','Cours d’allemand et événements culturels.','les-amis-de-la-langue-et-de-la-culture-allemandes-alca/'],
+  ['Comité de jumelage','Culture','Échanges avec les villes jumelles.','comite-de-jumelage-et-des-relations-internationales-dorsay-cjrio/'],
+  ['Chorales à cœur joie d’Orsay','Musique','Chorales enfants et adultes.','chorales-a-coeur-joie-dorsay-acjo/'],
+  ['Clefs d’Orsay','Musique','Orchestre, du classique au jazz.','clefs-dorsay/'],
+  ['Ensemble vocal Folia','Musique','Chœur.','ensemble-vocal-folia-evf/'],
+  ['Si on chantait','Musique','Chorale de l’ASO.','si-on-chantait-chorale-de-laso/'],
+  ['Amis de l’orgue d’Orsay','Musique','Entretien de l’orgue et concerts.','les-amis-de-lorgue-dorsay-aoo/'],
+  ['Cours de musique (ASO)','Musique','Cours de guitare et de piano.','cours-de-musique-aso/'],
+  ['Club d’Échecs d’Orsay','Loisirs','Échecs.','club-dechecs-dorsay/'],
+  ['Club de Go d’Orsay','Loisirs','Jeu de go.','club-de-go-dorsay/'],
+  ['Bridge Orsay Club','Loisirs','Bridge.','bridge-orsay-club-mjc-boc/'],
+  ['Les scrabbleurs orcéens','Loisirs','Scrabble.','les-scrabbleurs-orceens/'],
+  ['Tatiludik','Loisirs','Jeux de société.','club-tati-ludik/'],
+  ['Ludo Fantasy','Loisirs','Ludothèque.','ludo-fantasy/'],
+  ['Association des retraités d’Orsay','Loisirs','Activités de loisirs et culturelles pour les retraités.','association-des-retraites-dorsay-aro/'],
+  ['AVF Bures–Gif–Orsay','Loisirs','Accueil des nouveaux arrivants, sorties et activités.','accueil-des-villes-francaises-bures-gif-orsay-avf-bgo/'],
+  ['Repair Café Orsay','Environnement','Ateliers de réparation.','repair-cafe-orsay/'],
+  ['Jardins partagés d’Orsay','Environnement','Jardinage partagé.','les-jardins-partages-dorsay/'],
+  ['ASEOR','Environnement','Sauvegarde de l’environnement d’Orsay.','association-pour-la-sauvegarde-de-lenvironnement-dorsay-aseor/'],
+  ['Orsay en transition','Environnement','Alternatives locales et durables.','orsay-en-transition/'],
+  ['Orsay à vélo','Environnement','Promouvoir le vélo au quotidien.','mieux-se-deplacer-a-bicyclette-mdb/',{web:'https://mdb-idf.org/orsay/',mail:'orsay@mdb-idf.org'}],
+  ['Les p’tits kipik','Environnement','Protection des hérissons.','les-ptits-kipik/'],
+  ['Les herbes sauvages','Environnement','Botanique, reconnaître les plantes.','les-herbes-sauvages-lhs/'],
+  ['Croix-Rouge – unité Bièvre-Yvette','Solidarité','Action sociale et secourisme.','croix-rouge-francaise-unite-locale-des-vallees-bievre-yvette-vby/'],
+  ['Secours populaire – Orsay-Saclay','Solidarité','Aide aux personnes en situation de précarité.','secours-populaire-francais-antenne-orsay-saclay/'],
+  ['Petits frères des pauvres','Solidarité','Lutte contre l’isolement des personnes âgées.','petits-freres-des-pauvres-pfp/'],
+  ['Emmaüs Les Ulis','Solidarité','Solidarité contre l’exclusion.','emmaus-les-ulis/'],
+  ['ATD Quart Monde Val d’Yvette','Solidarité','Lutte contre la pauvreté.','atd-quart-monde-groupe-du-val-dyvette/'],
+  ['Écrivains publics administratifs d’Orsay','Solidarité','Aide aux démarches administratives.','association-des-ecrivains-publics-administratifs-dorsay/'],
+  ['Sésame Orsay','Solidarité','Service d’accueil de jour pour personnes en situation de handicap psychique.','sesame-orsay/',{adr:'113 rue Aristide Briand, Orsay',tel:'01 69 30 61 77',web:'http://www.fondation-amisdelatelier.org',mail:'sesame.orsay@amisdelatelier.org'}],
+  ['Amnesty International (groupe 109)','Solidarité','Droits humains.','amnesty-international-vallee-de-chevreuse-groupe-109/'],
+  ['FabLab Orsay','Ateliers','Atelier de fabrication numérique.','6374/'],
+  ['Rêves en fab','Ateliers','Cours de poterie et de céramique.','association-reves-en-fab/'],
+  ['Mosaïque arts plastiques','Ateliers','Cours d’arts plastiques et expositions.','mosaique-arts-plastiques/'],
+  ['ELAC','Ateliers','Atelier de peinture.','espace-liaison-art-et-culture-elac/'],
+  ['Les ateliers Them’arts','Ateliers','Ateliers artistiques.','les-ateliers-themarts/'],
+  ['Délices de Do','Ateliers','Ateliers de cuisine vietnamienne.','delices-de-do/'],
+  ['COPI','Ateliers','Cours d’informatique.','club-orceen-pour-la-promotion-de-linformatique-copi/'],
+  ['EDIFICEM','Enfance','Accompagnement scolaire et orientation des jeunes.','edificem/',{adr:'7 avenue du Maréchal Foch, Orsay',tel:'06 11 72 27 44',web:'https://edificem.org/',mail:'contact@edificem.org'}],
+  ['Scouts et guides de France','Enfance','Scoutisme.','scouts-et-guides-de-france/'],
+  ['FCPE du Centre','Enfance','Parents d’élèves.','federation-des-conseils-de-parents-deleves-du-centre-fcpe/'],
+  ['PEEP Orsay','Enfance','Parents d’élèves.','peep-orsay/'],
+  ['Trot’menu – crèche parentale','Enfance','Crèche parentale, 10 enfants.','les-trotmenu-creche-parentale/'],
+  ['Marion la main tendue','Enfance','Lutte contre le harcèlement.','marion-la-main-tendue/']
+].map((a,i)=>({id:'a'+i,n:a[0],c:a[1],x:a[2],u:ASSO_BASE+a[3],ct:a[4]||null}));
+const ASSO_CATS = ['Toutes','Sport','Culture','Musique','Loisirs','Environnement','Solidarité','Ateliers','Enfance'];
+const ASSO_URL = 'https://www.mairie-orsay.fr/loisirs/associations/annuaire-des-associations/';
+
+/* ---------- Exemples (clairement étiquetés) pour la présentation ---------- */
+const EXEMPLES = [
+  {type:'panier',by:'Exemple · une boulangerie',t:'Panier surprise de fin de journée',x:'Viennoiseries et pains du jour',prix:'4,50 €',val:'13 €',when:'Retrait 18h30–19h',qte:3},
+  {type:'bonplan',by:'Exemple · un caviste',t:'−10 % sur les vins de Loire',x:'Jusqu’à dimanche, sur présentation de la carte',when:'Jusqu’à dimanche'},
+  {type:'cours',by:'Exemple · un atelier',t:'Initiation poterie au tour',x:'2 h, tout le matériel fourni',prix:'45 €',when:'Samedi 14h · 3 places'}
+];
+
+/* ---------- Stockage local (démo) ---------- */
+const KEY='monorsay.v1';
+let DB = load();
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)return s}catch(e){}return {users:[],session:null,posts:[],reports:[],cards:{},geo:{},prefs:{},demo:true,assoNeeds:[],courses:[]}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
+const me = ()=>DB.users.find(u=>u.id===DB.session)||null;
+
+/* ---------- Utilitaires ---------- */
+const esc = s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = s=>document.querySelector(s);
+const uid = ()=>Math.random().toString(36).slice(2,10);
+const JOURS=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+const MOIS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const fmtD = d=>{try{return new Intl.DateTimeFormat('fr-FR',{day:'numeric',month:'short'}).format(new Date(d+'T12:00:00'))}catch(e){return d}};
+const fmtDay = d=>{const x=new Date(d+'T12:00:00');return JOURS[x.getDay()].slice(0,3)+'. '+x.getDate()};
+const todayISO = ()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+async function sha(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return 'x'+s.length+s.split('').reverse().join('')}}
+function withTimeout(p,ms){return Promise.race([p,new Promise((_,r)=>setTimeout(()=>r(new Error('timeout')),ms))])}
+async function getJSON(url,ms=7000){const r=await withTimeout(fetch(url),ms);if(!r.ok)throw new Error(r.status);return r.json()}
+function toast(title,body){const el=document.createElement('div');el.className='toast';el.innerHTML='<div class="logo" style="width:36px;height:36px"><i></i></div><div style="min-width:0"><div style="font-size:14px;font-weight:700">'+esc(APP)+' · '+esc(title)+'</div><div style="font-size:14px;color:#D0D0D4" class="clip2">'+esc(body)+'</div></div>';document.body.appendChild(el);setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400)},3600)}
+function mairieOpen(){const d=new Date(),m=d.getHours()*60+d.getMinutes(),sl=MAIRIE.ouvert[d.getDay()]||[];const cur=sl.find(s=>m>=s[0]&&m<s[1]);if(cur)return {open:true,txt:'Ouverte · ferme à '+Math.floor(cur[1]/60)+'h'+(cur[1]%60?String(cur[1]%60).padStart(2,'0'):'')};const nx=sl.find(s=>m<s[0]);if(nx)return {open:false,txt:'Fermée · ouvre à '+Math.floor(nx[0]/60)+'h'+(nx[0]%60?String(nx[0]%60).padStart(2,'0'):'')};return {open:false,txt:'Fermée pour aujourd’hui'}}
+
+/* ---------- Icônes ---------- */
+const I = {
+ home:'<path d="M3 11 12 4l9 7v9h-6v-6H9v6H3z"/>', map:'<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/>', card:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18"/>', user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+ film:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>', heart:'<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/>', cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ bell:'<path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>', search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>', store:'<path d="M4 10h16l-1-5H5zM5 10v10h14V10M9 20v-5h6v5"/>', scan:'<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M7 12h10"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>', warn:'<path d="M12 3 2 20h20L12 3zM12 10v4M12 17h.01"/>', hall:'<path d="M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5"/>', cross:'<path d="M12 5v14M5 12h14"/>', trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>', basket:'<path d="M5 9h14l-1.5 11h-11zM9 9V7a3 3 0 0 1 6 0v2"/>',
+ out:'<path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/>', check:'<path d="m5 12 5 5 9-10"/>', chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>', chev:'<path d="m9 5 7 7-7 7"/>', x:'<path d="M6 6l12 12M18 6 6 18"/>', tag:'<path d="M20 12 12 20l-8-8V4h8z"/><circle cx="8.5" cy="8.5" r="1.5"/>', phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>', globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>', pin:'<path d="M12 21s7-6.3 7-12a7 7 0 0 0-14 0c0 5.7 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/>'
+};
+const ico=(n,s=22,c='currentColor',w=2)=>'<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+I[n]+'</svg>';
+
+/* ---------- Données en direct ---------- */
+const LIVE = {actus:null, actusState:'snap'};
+async function loadLiveActus(){
+  try{
+    const j=await getJSON('https://www.mairie-orsay.fr/wp-json/wp/v2/posts?per_page=8&_fields=date,link,title,excerpt');
+    if(Array.isArray(j)&&j.length){
+      const strip=h=>{const d=document.createElement('div');d.innerHTML=h;return (d.textContent||'').replace(/\s+/g,' ').trim()};
+      LIVE.actus=j.map(p=>({t:strip(p.title&&p.title.rendered),cat:'Actualité',d:(p.date||'').slice(0,10),x:strip(p.excerpt&&p.excerpt.rendered).slice(0,180),u:p.link}));
+      LIVE.actusState='live'; if(route().name==='accueil') render();
+    }
+  }catch(e){LIVE.actusState='snap'}
+}
+const actus=()=>LIVE.actus||ACTUS;
+
+async function geocode(addr){
+  if(DB.geo[addr]) return DB.geo[addr];
+  try{const j=await getJSON('https://api-adresse.data.gouv.fr/search/?q='+encodeURIComponent(addr)+'&limit=1&citycode=91471',6000);
+    const f=j.features&&j.features[0];if(f){DB.geo[addr]=[f.geometry.coordinates[1],f.geometry.coordinates[0]];save();return DB.geo[addr]}}catch(e){}
+  return null;
+}
+async function verifyId(raw,kind){
+  const s=String(raw||'').replace(/\s/g,'').toUpperCase();
+  if(kind==='asso'&&/^W\d{9}$/.test(s)){
+    try{const j=await getJSON('https://recherche-entreprises.api.gouv.fr/search?q='+s+'&per_page=1');const r=j.results&&j.results[0];
+      if(r) return {ok:true,live:true,name:r.nom_complet,addr:(r.siege&&r.siege.adresse)||'',orsay:/ORSAY/i.test((r.siege&&r.siege.libelle_commune)||'')};
+      return {ok:false,msg:'Ce numéro RNA est introuvable dans les registres publics.'}}catch(e){return {ok:true,live:false,msg:'Format RNA valide · vérification en ligne indisponible ici'}}
+  }
+  if(!/^\d{14}$/.test(s)) return {ok:false,msg:kind==='asso'?'Saisis un numéro RNA (W + 9 chiffres) ou un SIRET (14 chiffres).':'Un SIRET contient 14 chiffres.'};
+  let sum=0;for(let i=0;i<14;i++){let n=+s[13-i];if(i%2){n*=2;if(n>9)n-=9}sum+=n}
+  if(sum%10!==0) return {ok:false,msg:'Ce numéro SIRET n’est pas valide (clé de contrôle).'};
+  try{
+    const j=await getJSON('https://recherche-entreprises.api.gouv.fr/search?q='+s+'&per_page=1');
+    const r=j.results&&j.results[0]; if(!r) return {ok:false,msg:'Aucun établissement trouvé pour ce SIRET.'};
+    const et=(r.matching_etablissements||[]).find(e=>e.siret===s)||r.siege||{};
+    const active=(et.etat_administratif||r.etat_administratif)==='A';
+    const orsay=/ORSAY/i.test(et.libelle_commune||'')||String(et.code_postal||'')==='91400';
+    if(!active) return {ok:false,msg:'Cet établissement est indiqué comme fermé dans le répertoire SIRENE.'};
+    return {ok:true,live:true,orsay,name:(et.liste_enseignes&&et.liste_enseignes[0])||r.nom_complet,addr:et.adresse||''};
+  }catch(e){return {ok:true,live:false,msg:'Numéro valide · vérification SIRENE indisponible ici (fonctionne sur la version en ligne)'}}
+}
+
+/* ---------- Routage ---------- */
+function route(){const h=(location.hash||'').slice(1);return {name:h||'accueil'}}
+function go(n){if(location.hash.slice(1)===n)render();else location.hash=n}
+window.addEventListener('hashchange',()=>{closeSheet();window.scrollTo(0,0);render()});
+
+/* ---------- État d'interface ---------- */
+const UI={form:{},formErr:'',explorerCat:'tout',explorerQ:'',assoCat:'Toutes',assoQ:'',cineDay:null,onbStep:'welcome',onbRole:'habitant',verify:null,agendaTab:'ville',proTab:'caisse',caisse:{step:'idle'},mairieTab:'annonce'};
+
+/* ---------- Rendu principal ---------- */
+function render(){
+  const u=me();
+  const root=$('#root');
+  if(!u){root.innerHTML=renderOnboarding();bindOnb();return}
+  const r=route().name;
+  const isPro=['commercant','atelier','asso'].includes(u.role), isMairie=u.role==='mairie';
+  let page='';
+  switch(r){
+    case 'explorer':page=pExplorer();break;
+    case 'cinema':page=pCinema();break;
+    case 'agenda':page=pAgenda();break;
+    case 'assos':page=pAssos();break;
+    case 'cartes':page=pCartes();break;
+    case 'profil':page=pProfil();break;
+    case 'pro':page=isPro?pPro():pAccueil();break;
+    case 'mairie':page=isMairie?pMairie():pAccueil();break;
+    case 'infos':page=pInfos();break;
+    default:page=pAccueil();
+  }
+  root.innerHTML='<div class="app">'+sidebar(r,u)+'<main class="main">'+page+'</main>'+tabbar(r,u)+'</div>';
+  after(r);
+}
+function navItems(u){
+  const items=[['accueil','home','Aujourd’hui'],['explorer','map','Explorer'],['cartes','card','Mes cartes'],['profil','user','Profil']];
+  if(['commercant','atelier','asso'].includes(u.role)) items.splice(3,0,['pro','store','Mon espace pro']);
+  if(u.role==='mairie') items.splice(3,0,['mairie','hall','Espace mairie']);
+  return items;
+}
+function sidebar(r,u){
+  const sec=[['cinema','film','Cinéma'],['agenda','cal','Agenda'],['assos','heart','Associations'],['infos','hall','Infos pratiques']];
+  return '<aside class="side"><div class="brand" style="padding:0 8px 18px"><div class="logo"><i></i></div><div><div style="font-weight:800;font-size:17px">'+APP+'</div><div class="small muted">La ville dans ta poche</div></div></div>'+
+   navItems(u).map(n=>'<a class="nav'+(r===n[0]?' on':'')+'" href="#'+n[0]+'">'+ico(n[1],20)+n[2]+'</a>').join('')+
+   '<div class="navsec">Découvrir</div>'+sec.map(n=>'<a class="nav'+(r===n[0]?' on':'')+'" href="#'+n[0]+'">'+ico(n[1],20)+n[2]+'</a>').join('')+
+   '<a href="#profil" class="row nav'+(r==='profil'?' on':'')+'" style="margin-top:auto;padding:12px 8px;border-top:1px solid var(--line);border-radius:0 0 12px 12px">'+avatar(u,38,99)+'<div style="min-width:0;flex:1"><div style="font-weight:600;font-size:14px;color:var(--ink)" class="clip2">'+esc(u.nom)+'</div><div class="small muted">'+roleLabel(u.role)+' · Voir le profil</div></div></a></aside>';
+}
+function tabbar(r,u){
+  return '<nav class="tabbar">'+navItems(u).map(n=>'<a class="tab'+(r===n[0]?' on':'')+'" href="#'+n[0]+'">'+ico(n[1],25)+n[2].replace('Mon espace pro','Espace pro').replace('Espace mairie','Mairie')+'</a>').join('')+'</nav>';
+}
+function avatar(u,size,radius,bg,fg){size=size||50;radius=radius||14;const st='width:'+size+'px;height:'+size+'px;border-radius:'+radius+'px;flex-shrink:0';
+  if(u&&u.photo)return '<img src="'+u.photo+'" alt="" style="'+st+';object-fit:cover;display:block">';
+  return '<div class="av" style="'+st+';font-size:'+Math.round(size*0.36)+'px;background:'+(bg||'var(--green)')+';color:'+(fg||'var(--green-ink)')+'">'+esc(initials(u&&u.nom))+'</div>'}
+function pickPhoto(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=()=>{const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();
+    r.onload=()=>{const img=new Image();img.onload=()=>{const S=256,c=document.createElement('canvas');c.width=S;c.height=S;const x=c.getContext('2d');const m=Math.min(img.width,img.height);x.fillStyle='#fff';x.fillRect(0,0,S,S);x.drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S);const u=me();u.photo=c.toDataURL('image/jpeg',0.85);save();render();toast('Photo','Photo mise à jour.')};img.src=r.result};
+    r.readAsDataURL(f)};
+  inp.click();
+}
+const roleLabel=r=>({habitant:'Habitant·e',commercant:'Commerçant·e',atelier:'Atelier / activité',asso:'Association',mairie:'Mairie'}[r]||'');
+const initials=n=>String(n||'?').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
+function srcBadge(state,label){return '<span class="badge-src">'+(state==='live'?'<span class="live"></span>En direct · ':'<span class="snap"></span>Relevé le '+SNAP_DATE+' · ')+esc(label)+'</span>'}
+
+/* ============ ONBOARDING / CONNEXION ============ */
+function renderOnboarding(){
+  const s=UI.onbStep;
+  let inner='';
+  if(s==='welcome'){
+    inner='<div class="stack" style="text-align:center;align-items:center"><div class="logo" style="width:84px;height:84px;border-radius:24px"><i style="width:36px;height:36px;border-width:7px"></i></div><div><h1 style="font-size:38px">'+APP+'</h1><p class="muted" style="font-size:17px;margin:8px 0 0">Commerces, bons plans, cinéma, assos et infos de la ville.<br>Tout Orsay, au même endroit.</p></div>'+
+    '<div class="stack-s" style="width:100%"><button class="btn full" data-a="onb" data-v="role">Créer un compte</button><button class="btn sec full" data-a="onb" data-v="login">J’ai déjà un compte</button></div>'+
+    '<button class="small" style="border:0;background:none;color:var(--muted);text-decoration:underline" data-a="onb" data-v="mairie">Accès réservé à la mairie</button></div>';
+  } else if(s==='role'){
+    const roles=[['habitant','user','Habitant·e','Bons plans, cartes de fidélité, actus et sorties','#E2186A'],['commercant','store','Commerçant·e','Ta fiche, ta carte de fidélité, tes bons plans','#7A8200'],['atelier','cal','Atelier / activité','Tes cours, tes réservations, ton planning','#004A7C'],['asso','heart','Association','Ta fiche, tes événements, tes bénévoles','#B0410A']];
+    inner='<div class="stack"><button class="small" style="border:0;background:none;color:var(--pink-ink);align-self:flex-start;padding:0" data-a="onb" data-v="welcome">‹ Retour</button><div><h1>Tu es…</h1><p class="muted" style="margin:6px 0 0">Tu pourras toujours utiliser l’app comme habitant.</p></div><div class="stack-s">'+
+    roles.map(r=>'<button class="role'+(UI.onbRole===r[0]?' on':'')+'" data-a="pickrole" data-v="'+r[0]+'"><div class="av" style="background:'+r[4]+';color:#fff">'+ico(r[1],24,'#fff')+'</div><div><div style="font-weight:700;font-size:17px">'+r[2]+'</div><div class="small muted">'+r[3]+'</div></div></button>').join('')+
+    '</div><button class="btn full" data-a="onb" data-v="form">Continuer</button></div>';
+  } else if(s==='form'){
+    const r=UI.onbRole, pro=r!=='habitant', F=UI.form;
+    const v=UI.verify;
+    inner='<form class="stack" id="fsignup"><button type="button" class="small" style="border:0;background:none;color:var(--pink-ink);align-self:flex-start;padding:0" data-a="onb" data-v="role">‹ Retour</button><div><div class="lbl">'+roleLabel(r)+'</div><h1>Créer mon compte</h1></div>'+
+    (pro?'<div class="card stack-s"><label class="field">'+(r==='asso'?'Numéro RNA ou SIRET':'Numéro SIRET')+'<input name="sid" value="'+esc(F.sid||'')+'" inputmode="'+(r==='asso'?'text':'numeric')+'" placeholder="'+(r==='asso'?'W913000000':'14 chiffres')+'" autocomplete="off"></label><button type="button" class="btn sec sm" data-a="verify">Vérifier automatiquement</button>'+
+      (v?'<div class="small" style="padding:10px 12px;border-radius:12px;background:'+(v.ok?'var(--okbg)':'#FFE6DA')+';color:'+(v.ok?'var(--ok)':'#B0410A')+';font-weight:600">'+(v.ok?(v.live?'✓ Vérifié dans le répertoire SIRENE'+(v.name?' : '+esc(v.name):'')+(v.orsay===false?' · ⚠️ adresse hors Orsay':''):'✓ '+esc(v.msg)):'✗ '+esc(v.msg))+'</div>':'')+
+      '<div class="small muted">Vérification automatique dans les registres publics de l’État : aucune validation manuelle par la mairie. Ta fiche est publiée tout de suite.</div></div>':'')+
+    '<div class="card stack-s"><label class="field">'+(pro?'Nom de l’'+(r==='asso'?'association':r==='atelier'?'atelier':'établissement'):'Prénom et nom')+'<input name="nom" required value="'+esc(F.nom||(v&&v.ok&&v.name?titleCase(v.name):''))+'"></label>'+
+    (pro?'<label class="field">Adresse à Orsay<input name="adr" value="'+esc(F.adr||(v&&v.addr?v.addr:''))+'" placeholder="ex. 14 rue Boursier"></label>':'<label class="field">Quartier<select name="quartier">'+['Centre','Mondétour','Le Guichet','Plateau / campus','Autre'].map(o=>'<option'+(F.quartier===o?' selected':'')+'>'+o+'</option>').join('')+'</select></label>')+
+    (r==='commercant'?'<label class="field">Activité<select name="cat">'+Object.entries(CATS).filter(e=>e[0]!=='atelier').map(e=>'<option value="'+e[0]+'"'+(F.cat===e[0]?' selected':'')+'>'+e[1].l+'</option>').join('')+'</select></label>':'')+
+    '<label class="field">E-mail<input name="email" type="email" required autocomplete="email" value="'+esc(F.email||'')+'"></label><label class="field">Mot de passe<input name="pw" type="password" required minlength="6" autocomplete="new-password" value="'+esc(F.pw||'')+'"></label></div>'+
+    (UI.formErr?'<div class="small" style="padding:10px 12px;border-radius:12px;background:#FFE6DA;color:#B0410A;font-weight:600">'+esc(UI.formErr)+'</div>':'')+
+    (DB.users.some(x=>F.email&&x.email&&x.email.toLowerCase()===String(F.email).toLowerCase()&&x.role!==r)?'<div class="small muted">Tu as déjà un compte avec cet e-mail : ce nouveau compte y sera rattaché, tu passeras de l’un à l’autre depuis ton profil.</div>':'')+
+    '<button class="btn full" type="submit">Créer mon compte</button><p class="small muted" style="text-align:center;margin:0">Démo : le compte est enregistré sur cet appareil uniquement.</p></form>';
+  } else if(s==='login'||s==='mairie'){
+    inner='<form class="stack" id="flogin"><button type="button" class="small" style="border:0;background:none;color:var(--pink-ink);align-self:flex-start;padding:0" data-a="onb" data-v="welcome">‹ Retour</button><h1>'+(s==='mairie'?'Espace mairie':'Connexion')+'</h1><div class="card stack-s">'+
+    (s==='mairie'?'<label class="field">Code d’accès agent<input name="code" placeholder="Code démo : ORSAY2026" autocomplete="off"></label>':'<label class="field">E-mail<input name="email" type="email" required autocomplete="email"></label><label class="field">Mot de passe<input name="pw" type="password" required autocomplete="current-password"></label>')+
+    '</div><div id="lerr" class="small" style="color:#B0410A;font-weight:600"></div><button class="btn full" type="submit">Se connecter</button>'+(s==='login'?'<button type="button" class="btn sec full" data-a="demo">Essayer sans compte (habitant démo)</button>':'')+'</form>';
+  }
+  return '<div class="onb"><div class="onb-in">'+inner+'</div></div>';
+}
+const titleCase=s=>String(s).toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu,(m,a,b)=>a+b.toUpperCase());
+function bindOnb(){
+  const f=$('#fsignup');
+  if(f){const keep=e=>{if(e.target.name){UI.form[e.target.name]=e.target.value;if(e.target.name==='sid')UI.verify=null}};f.addEventListener('input',keep);f.addEventListener('change',keep)}
+  if(f) f.addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f));Object.assign(UI.form,d);UI.formErr='';const r=UI.onbRole;
+    if(r!=='habitant'){ if(!UI.verify||!UI.verify.ok){UI.verify=await verifyId(d.sid,r==='asso'?'asso':'pro'); if(!UI.verify.ok){render();const n=document.querySelector('[name=sid]');if(n){n.focus();n.scrollIntoView({block:'center'})}return}} }
+    const same=DB.users.find(u=>u.email&&u.email.toLowerCase()===d.email.toLowerCase()&&u.role===r);
+    if(same){UI.formErr='Tu as déjà un compte '+roleLabel(r).toLowerCase()+' avec cet e-mail. Connecte-toi, ou utilise une autre adresse.';render();return}
+    const u={id:uid(),role:r,nom:d.nom,email:d.email,pw:await sha(d.pw),quartier:d.quartier||'',adr:d.adr||'',cat:d.cat||(r==='atelier'?'atelier':''),sid:(d.sid||'').replace(/\s/g,''),verified:UI.verify?UI.verify:null,code:'ORS'+Math.floor(100000+Math.random()*900000),created:Date.now(),notif:{bonplan:true,panier:true,event:true,travaux:true,mairie:false,atelier:false},interests:[],benevole:{on:false,dispo:'2 à 4 h / mois',share:true},points:0,fid:{type:'tampons',seuil:10,reco:'1 produit offert',etudiant:false},booking:'app'};
+    DB.users.push(u);DB.session=u.id;save();UI.verify=null;UI.form={};UI.formErr='';
+    location.hash=r==='habitant'?'accueil':'pro';render();toast('Bienvenue',r==='habitant'?'Ton compte est prêt. Choisis tes notifications dans ton profil.':'Ta fiche est en ligne. Configure ta carte de fidélité dans ton espace pro.');
+  });
+  const l=$('#flogin');
+  if(l) l.addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(l));
+    if(UI.onbStep==='mairie'){ if((d.code||'').trim().toUpperCase()!=='ORSAY2026'){$('#lerr').textContent='Code incorrect.';return}
+      let m=DB.users.find(u=>u.role==='mairie');if(!m){m={id:uid(),role:'mairie',nom:'Service communication',email:'mairie@demo',code:'MAIRIE',notif:{},interests:[],benevole:{},points:0};DB.users.push(m)}DB.session=m.id;save();location.hash='mairie';render();return}
+    const h=await sha(d.pw);const list=DB.users.filter(x=>x.email&&x.email.toLowerCase()===d.email.toLowerCase()&&x.pw===h);
+    if(!list.length){$('#lerr').textContent='E-mail ou mot de passe incorrect.';return}
+    if(list.length===1){loginAs(list[0].id);return}
+    openSheet('<div class="stack"><h2>Avec quel compte ?</h2><div class="list">'+list.map(x=>'<button class="li" data-a="switch" data-v="'+x.id+'"><div class="av" style="width:42px;height:42px;font-size:14px;background:var(--green);color:var(--green-ink)">'+esc(initials(x.nom))+'</div><div style="flex:1"><b>'+esc(x.nom)+'</b><div class="small muted">'+roleLabel(x.role)+'</div></div>'+ico('chev',16,'#C7C7CC',2.4)+'</button>').join('')+'</div></div>')});
+}
+function loginAs(id){const u=DB.users.find(x=>x.id===id);if(!u)return;DB.session=id;save();closeSheet();location.hash=u.role==='habitant'?'accueil':u.role==='mairie'?'mairie':'pro';render()}
+function demoUser(){let u=DB.users.find(x=>x.email==='demo@orsay');if(!u){u={id:uid(),role:'habitant',nom:'Habitant démo',email:'demo@orsay',pw:'',quartier:'Centre',code:'ORS482177',notif:{bonplan:true,panier:true,event:true,travaux:true,mairie:false,atelier:false},interests:['Cinéma','Marchés'],benevole:{on:false,dispo:'2 à 4 h / mois',share:true},points:0};DB.users.push(u)}DB.session=u.id;save();location.hash='accueil';render()}
+function alertBox(msg){openSheet('<div class="stack-s" style="text-align:center;padding:10px 0"><h3>'+esc(msg)+'</h3><button class="btn full" data-a="close">OK</button></div>')}
+
+/* ============ ACCUEIL ============ */
+function feedPosts(){
+  const own=DB.posts.filter(p=>!p.expired).slice().reverse();
+  const ex=DB.demo?EXEMPLES.map((e,i)=>({...e,id:'ex'+i,exemple:true})):[];
+  return own.concat(ex);
+}
+function postCard(p){
+  const kind={panier:['Anti-gaspi','#1C1C1E','#fff'],bonplan:['Bon plan','#fff','var(--ink)'],cours:['Atelier','#fff','var(--ink)'],annonce:['Mairie','#fff','var(--ink)'],travaux:['Travaux','#fff','var(--ink)'],event:['Événement','#fff','var(--ink)'],benevolat:['Bénévolat','#fff','var(--ink)']}[p.type]||['Info','#fff','var(--ink)'];
+  const dark=p.type==='panier';
+  return '<div class="card'+(dark?' dark':'')+'" style="min-width:270px;max-width:340px;flex:1;display:flex;flex-direction:column;gap:8px">'+
+   '<div class="row" style="gap:8px"><span class="tag" style="background:'+(dark?'var(--green)':'#FCE3EE')+';color:'+(dark?'var(--green-ink)':'var(--pink-ink)')+'">'+kind[0]+'</span>'+(p.exemple?'<span class="tag t-grey">Exemple</span>':'')+'</div>'+
+   '<div style="font-size:18px;font-weight:700;letter-spacing:-.2px">'+esc(p.t)+'</div><div class="small" style="color:'+(dark?'#C7C7CC':'var(--muted)')+'">'+esc(p.by)+(p.when?' · '+esc(p.when):'')+'</div>'+(p.x?'<div class="small clip2" style="color:'+(dark?'#E5E5EA':'#3A3A3C')+'">'+esc(p.x)+'</div>':'')+
+   (p.prix?'<div class="between" style="margin-top:auto"><div><span style="font-size:24px;font-weight:800">'+esc(p.prix)+'</span>'+(p.val?' <span class="small" style="text-decoration:line-through;color:#9A9AA0">'+esc(p.val)+'</span>':'')+'</div><button class="btn sm'+(p.reserved?' lime':'')+'" data-a="reserve" data-v="'+p.id+'">'+(p.reserved?'Réservé ✓':(p.type==='cours'?'Réserver':'Réserver'))+'</button></div>':'')+'</div>';
+}
+function pAccueil(){
+  const u=me(),d=new Date(),mo=mairieOpen();
+  const greet=(d.getHours()<18?'Bonjour':'Bonsoir')+(u.role==='habitant'&&u.nom&&u.nom!=='Habitant démo'?' '+esc(u.nom.split(' ')[0]):'');
+  const ag=AGENDA.filter(a=>a.d>=todayISO()).slice(0,4);
+  const ckey=cineKey(new Date());
+  const cineToday=CINEMA.films.filter(f=>f.s&&f.s[ckey]);
+  const posts=feedPosts();
+  return '<div class="stack">'+
+  '<div class="between"><div class="brand hide-desk"><div class="logo"><i></i></div><span style="font-weight:800;font-size:17px">'+APP+'</span></div><span></span><div class="row" style="gap:8px"><button class="iconbtn" aria-label="Notifications" data-a="notifs">'+ico('bell',20)+(DB.posts.length?'<span class="dot"></span>':'')+'</button></div></div>'+
+  '<div><div class="lbl">'+JOURS[d.getDay()]+' '+d.getDate()+' '+MOIS[d.getMonth()]+'</div><h1>'+greet+'</h1></div>'+
+  '<label class="search">'+ico('search',17,'#6E6E73',2.2)+'<input placeholder="Commerces, assos, films…" data-a="globalsearch" aria-label="Rechercher"></label>'+
+  '<div class="grid2" style="grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">'+
+    [['cinema','film','Cinéma','#004A7C','#fff'],['assos','heart','Assos','#E2186A','#fff'],['agenda','cal','Agenda','#C8D400','#1C1F00'],['infos','hall','Pratique','#fff','#1C1C1E']].map(t=>'<a href="#'+t[0]+'" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600;text-decoration:none"><span style="width:58px;height:58px;border-radius:18px;background:'+t[3]+';display:flex;align-items:center;justify-content:center">'+ico(t[1],25,t[4])+'</span>'+t[2]+'</a>').join('')+
+  '</div>'+
+  '<div class="cols"><div class="stack">'+
+   '<div class="stack-s"><div class="between"><h2>Bons plans &amp; paniers</h2><span class="small muted">'+(DB.posts.filter(p=>['panier','bonplan','cours'].includes(p.type)).length?'':'')+'</span></div>'+
+   (posts.length?'<div class="hscroll">'+posts.filter(p=>['panier','bonplan','cours','benevolat'].includes(p.type)).map(postCard).join('')+'</div>':'<div class="card empty">Pas encore de bon plan. Les commerçants publient depuis leur espace pro.</div>')+'</div>'+
+   (DB.posts.filter(p=>['annonce','travaux','event'].includes(p.type)).length?'<div class="stack-s"><h2>Publié par la mairie</h2>'+DB.posts.filter(p=>['annonce','travaux','event'].includes(p.type)).slice().reverse().map(p=>'<div class="card stack-s"><div class="row" style="gap:8px"><span class="tag t-navy">'+({annonce:'Annonce',travaux:'Travaux',event:'Événement'}[p.type])+'</span><span class="small muted">À l’instant</span></div><h3>'+esc(p.t)+'</h3><div class="small muted">'+esc(p.x||'')+(p.when?' · '+esc(p.when):'')+'</div></div>').join('')+'</div>':'')+
+   '<div class="stack-s"><div class="between"><h2>Actus de la ville</h2><a class="small ext" style="color:var(--pink-ink);text-decoration:none;font-weight:600" href="'+MAIRIE.site+'" target="_blank" rel="noopener">Site</a></div>'+srcBadge(LIVE.actusState,'mairie-orsay.fr')+
+   actus().slice(0,4).map(a=>'<a class="card stack-s" style="text-decoration:none" href="'+esc(a.u)+'" target="_blank" rel="noopener"><div class="between"><span class="tag '+(a.cat==='Travaux'?'t-warn':'t-navy')+'">'+esc(a.cat)+'</span><span class="small muted">'+(a.d?fmtD(a.d):'')+'</span></div><h3>'+esc(a.t)+'</h3><div class="small muted clip2">'+esc(a.x)+'</div></a>').join('')+'</div>'+
+  '</div><div class="stack">'+
+   '<div class="card stack-s"><div class="between"><h3>Au cinéma aujourd’hui</h3><a href="#cinema" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Programme</a></div>'+
+    (cineToday.length?cineToday.slice(0,4).map(f=>'<div class="row" style="padding:6px 0"><div style="width:34px;height:48px;border-radius:7px;background:'+f.c+';position:relative;overflow:hidden;flex-shrink:0">'+(f.p?'<img src="'+f.p+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">':'')+'</div><div style="flex:1;min-width:0"><div style="font-weight:600">'+esc(f.t)+'</div><div class="small muted">'+f.s[ckey].join(' · ')+'</div></div></div>').join(''):'<div class="small muted">Pas de séance relevée aujourd’hui. Voir le programme de la semaine.</div>')+'</div>'+
+   '<div class="grid2">'+
+    infoTile('hall','#E1ECF5','#004A7C','Mairie',mo.txt,'infos')+
+    infoTile('cross','#E8F4E0','#2F7A1F','Pharmacie de garde','Voir la pharmacie ouverte','pharma')+
+    infoTile('trash','#FFF6D6','#8A6A00','Collecte',collecteTxt(u),'collecte')+
+    infoTile('warn','#FFE6DA','#B0410A','Travaux',TRAVAUX.length+' chantiers suivis','travaux')+
+   '</div>'+
+   '<div class="stack-s"><div class="between"><h2>À venir</h2><a href="#agenda" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Agenda</a></div><div class="list">'+
+    ag.map(a=>'<a class="li" href="'+esc(a.u)+'" target="_blank" rel="noopener"><div style="width:46px;text-align:center;flex-shrink:0"><div style="font-size:11px;font-weight:700;color:var(--pink-ink);text-transform:uppercase">'+fmtDay(a.d).split(' ')[0]+'</div><div style="font-size:21px;font-weight:800">'+new Date(a.d+'T12:00').getDate()+'</div></div><div style="min-width:0;flex:1"><div style="font-weight:600" class="clip2">'+esc(a.t)+'</div><div class="small muted">'+esc([a.h,a.l].filter(Boolean).join(' · '))+'</div></div></a>').join('')+'</div></div>'+
+   '<div class="card stack-s"><h3>Les marchés</h3>'+MARCHES.map(m=>'<div><div style="font-weight:600">'+m.n+'</div><div class="small muted">'+m.l+' · '+m.j+'</div></div>').join('')+'</div>'+
+  '</div></div></div>';
+}
+function infoTile(icn,bg,fg,lab,val,link){
+  const ext=link.startsWith('http');
+  return '<'+(ext?'a href="'+link+'" target="_blank" rel="noopener"':'button data-a="'+(link==='travaux'?'travaux':link==='pharma'?'pharma':link==='collecte'?'collecte':'goto')+'" data-v="'+link+'"')+' class="card" style="display:flex;flex-direction:column;gap:6px;text-align:left;border:0;text-decoration:none;color:inherit"><div style="width:34px;height:34px;border-radius:10px;background:'+bg+';display:flex;align-items:center;justify-content:center">'+ico(icn,18,fg,2.3)+'</div><div class="lbl">'+lab+'</div><div style="font-size:15px;font-weight:600"'+(ext?' class="ext"':'')+'>'+esc(val)+'</div></'+(ext?'a':'button')+'>';
+}
+function collecteBlock(u){const c=collecte(u),n=nextCollect(u);
+  const filled=c.om.length||c.emb.length;
+  return (u.adresse?'<div class="small muted">'+ico('pin',14,'#6E6E73')+' '+esc(u.adresse)+'</div>':'')+
+  (filled&&n?'<div style="background:'+(n.k<=1?'#FFF6D6':'#F2F2F7')+';border-radius:14px;padding:12px"><div class="lbl">Prochaine collecte</div><div style="font-size:18px;font-weight:700">'+(n.k===0?'Aujourd’hui':n.k===1?'Demain':JOURS[n.d.getDay()])+'</div><div class="row wrap" style="gap:6px;margin-top:6px">'+n.types.map(t=>'<span class="tag" style="background:'+t[2]+';color:#fff">'+t[1]+'</span>').join('')+'</div>'+(n.k===1?'<div class="small" style="margin-top:6px;font-weight:600">Sors ton bac ce soir.</div>':'')+'</div>':'')+
+  '<div class="list" style="background:#F9F9FB">'+WASTE.map(w=>'<div class="li" style="padding:9px 12px"><span style="width:12px;height:12px;border-radius:4px;background:'+w[2]+'"></span><span style="flex:1;font-size:15px">'+w[1]+'</span><span class="small muted">'+((c[w[0]]||[]).length?(c[w[0]]).map(d=>DJ[d]).join(', '):'—')+'</span></div>').join('')+'</div>'+
+  '<button class="btn sec sm" data-a="collecte">'+(u.adresse?'Changer d’adresse':'Ajouter mon adresse')+'</button>'}
+function zoneCard(addr,u){const z=zoneFor(addr);if(!z)return '';const Z=ZONES[z];
+  if(!Z.c)return '<div class="card stack-s"><div class="lbl">Ta zone</div><b>'+Z.l+'</b><div class="small muted">Collecte spécifique au campus : consulte siom.fr.</div></div>';
+  const c=(u.collecteManual&&u.collecte)||Z.c;
+  return '<div class="card stack-s"><div class="between"><div><div class="lbl">Ta zone de collecte</div><b style="font-size:17px">'+Z.l+'</b></div><span class="tag t-ok">Automatique</span></div>'+
+  WASTE.map(w=>'<div class="between" style="padding:6px 0;border-top:1px solid #EDEDF0"><span class="row" style="gap:8px"><span style="width:12px;height:12px;border-radius:4px;background:'+w[2]+'"></span>'+w[1]+'</span><span class="small" style="font-weight:600">'+((c[w[0]]||[]).length?(c[w[0]]).map(d=>DJ[d]).join(', '):'—')+(w[0]==='veg'&&(c.veg||[]).length?' <span class="muted" style="font-weight:400">(15 mars–15 nov.)</span>':'')+(w[0]==='bio'?' <span class="muted" style="font-weight:400">(si inscrit)</span>':'')+'</span></div>').join('')+
+  (Z.warn?'<div class="small" style="color:#B0410A">Centre-ville : passages fréquents, jours à confirmer sur siom.fr.</div>':'')+
+  '<div class="small muted">D’après le calendrier de collecte du SIOM pour Orsay. <a class="ext" style="color:var(--pink-ink)" target="_blank" rel="noopener" href="https://www.siom.fr/infos-pratiques/jours-et-points-de-collecte/">Vérifier sur siom.fr</a></div></div>'}
+function collecteSheet(){const u=me();
+  openSheet('<div class="stack"><div class="between"><h2>Ma collecte</h2><button class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div>'+
+  '<div class="card stack-s"><label class="field">Mon adresse à Orsay<input id="cadr" value="'+esc(u.adresse||'')+'" placeholder="Numéro et rue, ex. 12 rue de Paris" autocomplete="off"></label><div id="cadrsug" class="stack-s"></div></div>'+
+  '<div id="czone">'+zoneCard(u.adresse,u)+'</div>'+
+  '<div class="list"><div class="li"><span style="flex:1">Me rappeler la veille à 19h</span><button class="toggle'+(u.notif&&u.notif.collecte?' on':'')+'" data-a="notif" data-v="collecte" aria-label="Rappel collecte"><span></span></button></div></div>'+
+  '<button class="btn full" data-a="csave">Enregistrer</button></div>');
+  const inp=$('#cadr');if(!inp)return;
+  const upd=debounce(async()=>{const q=inp.value.trim(),box=$('#cadrsug');$('#czone').innerHTML=zoneCard(q,{collecteManual:false});if(!box)return;
+    if(q.length<3){box.innerHTML='';return}
+    const num=(q.match(/^\s*(\d+\s*(bis|ter)?)\s+/i)||[])[1]||'';const rest=norm(q.replace(/^\s*\d+\s*(bis|ter)?\s+/i,''));
+    let sug=STREETS.filter(st=>norm(st).includes(rest)).slice(0,5).map(st=>(num?num+' ':'')+st);
+    const exact=sug.some(x=>norm(x)===norm(q));
+    const draw=list=>{box.innerHTML=exact?'':list.map(l=>'<button class="li" style="background:#F2F2F7;border-radius:12px;border:0" data-a="cadrpick" data-v="'+esc(l)+'">'+ico('pin',16,'#C4105A')+'<span>'+esc(l)+'<span class="muted">, 91400 Orsay</span></span></button>').join('')};
+    draw(sug);
+    try{const j=await getJSON('https://api-adresse.data.gouv.fr/search/?q='+encodeURIComponent(q)+'&citycode=91471&limit=5',4000);const live=(j.features||[]).map(f=>f.properties.name);if(live.length&&inp.value.trim()===q)draw(live)}catch(e){}
+  },200);
+  inp.addEventListener('input',upd);
+}
+function pharmaWidget(){return '<div style="display:flex;justify-content:center;background:#F2F2F7;border-radius:16px;padding:10px"><iframe src="https://monpharmacien-idf.fr/widget/250" title="Pharmacie de garde" width="250" height="500" style="border:0;border-radius:12px;background:#fff;max-width:100%" scrolling="no" loading="lazy"></iframe></div><div class="small muted">Données : pharmaciens d’Île-de-France. Si rien ne s’affiche, <a class="ext" style="color:var(--pink-ink);font-weight:600" href="https://monpharmacien-idf.fr/" target="_blank" rel="noopener">monpharmacien-idf.fr</a> ou le <b>3237</b>.</div>'}
+const STREETS='Rue Alain Fournier|Rue Alexander Fleming|Rue Alexandre Dumas|Rue Alfred de Musset|Rue Alfred Kastler|Rue André de Chénier|Rue André Maginot|Rue Archangé|Rue Aristide Briand|Rue Bellevue|Rue Bossuet|Rue Boursier|Rue Buffon|Rue Charles de Gaulle|Rue Charles Gounod|Rue Christine|Rue Circulaire|Rue Corneille|Rue d\'Orgeval|Rue de Chartres|Rue de Châteaufort|Rue de Chevreuse|Rue de Corbeville|Rue de Courtaboeuf|Rue de l\'Abreuvoir|Rue de l\'Avenir|Rue de l\'Yvette|Rue de la Colline|Rue de la Corniche|Rue de la Dimancherie|Rue de la Ferme|Rue de la Galotterie|Rue de la Martinière|Rue de la Pacaterie|Rue de la Prairie des Îles|Rue de la Troche|Rue de la Truie qui File|Rue de Launay|Rue de Lozère|Rue de Montlhéry|Rue de Paris|Rue de Verdun|Rue de Versailles|Rue des 3 Fermes|Rue des Fraisiers|Rue des Gâtines|Rue des Hucheries|Rue des Îlots des Cours|Rue des Mésanges|Rue des Oiseaux|Rue des Pâquerettes|Rue des Pommiers|Rue des Roitelets|Rue des Sources|Rue des Villas Naude|Rue du Beau Site|Rue du Bocage|Rue du Bois des Rames|Rue du Bois du Roi|Rue du Docteur Ernest Lauriat|Rue du Fond du Chemin|Rue du Fond du Guichet|Rue du Général Duchesne|Rue du Guichet|Rue du Libernon|Rue du Lycée|Rue du Mail|Rue du Merisier Noir|Rue du Parc|Rue du Pont de Pierre|Rue du Rond Point|Rue du Ruisseau|Rue du Val d\'Orsay|Rue du Verger|Rue Élisa Desjobert|Rue Étienne Bauer|Rue Fénelon|Rue Florian|Rue Francis Perrin|Rue François Leroux|Rue Georges Clemenceau|Rue Guy Môquet|Rue Jacques Monod|Rue Jean Rostand|Rue Jean Teillac|Rue Lamartine|Rue Léon Croc|Rue Lorris Junec|Rue Louis Scocard|Rue Mademoiselle|Rue Maillecourt|Rue Marc Godard|Rue Montaigne|Rue Nicolas Appert|Rue Nicolas Copernic|Rue Pascal|Rue Pierre et Marie Curie|Rue Rabelais|Rue Racine|Rue Serpente|Rue Vaubien|Rue Vaubien Prolongée|Rue Verrier|Rue Villa de la Boissière|Rue Villebois Mareuil|Avenue d\'Orsay|Avenue de Bures|Avenue de l\'Épargne|Avenue de l\'Épi d\'Or|Avenue de l\'Espérance|Avenue de l\'Estérel|Avenue de la Colline|Avenue de la Concorde|Avenue de la Cure d\'Air|Avenue de la Dimancherie|Avenue de Lattre de Tassigny|Avenue de Montjay|Avenue de Villeziers|Avenue des Bleuets|Avenue des Bois|Avenue des Chênes|Avenue des Coquelicots|Avenue des Cottages|Avenue des Fauvettes|Avenue des Hirondelles|Avenue des Lacs|Avenue des Pierrots|Avenue des Pinsons|Avenue des Platanes|Avenue des Sablons|Avenue des Tropiques|Avenue du Bois Persan|Avenue du Cèdre|Avenue du Grand Mesnil|Avenue du Maréchal Foch|Avenue du Maréchal Joffre|Avenue du Panorama|Avenue Jean Jaurès|Avenue Marie-Thérèse|Avenue Parrat|Avenue Saint-Jean de Beauregard|Avenue Saint-Laurent|Allée Archimède|Allée Boileau|Allée Clément Marot|Allée d\'Hamadan|Allée d\'Ispahan|Allée de Chiraz|Allée de l\'Aubrac|Allée de l\'Orée du Bois|Allée de la Bouvêche|Allée de la Guilloterie|Allée de Pasargades|Allée de Persépolis|Allée de Tisfoune|Allée des Planches|Allée des Tennis|Allée Descartes|Allée du Bellay|Allée du Bois Charron|Allée du Bois de la Cyprenne|Allée du Coteau|Allée François Villon|Allée Françoise Dolto|Allée Galilée|Allée Jean-Claude Arnoux|Allée Jean Froissart|Allée Kanumera|Allée Lavoisier|Allée Louis-Clément Faller|Allée Montaigne|Allée Pierre Delarue Nouvellière|Allée Pythagore|Allée Rabelais|Allée Saint-Laurent|Résidence Bellevue|Résidence Chevreuse|Résidence d\'Orsay|Résidence d\'Orsay Université 2|Résidence d\'Orsay Village|Résidence de Corbeville|Résidence de l\'Yvette|Résidence de la Colline|Résidence de la Ferme|Résidence de la Pacaterie|Résidence de la Source|Résidence des Bouleaux|Résidence des Cottages|Résidence des Essarts|Résidence des Mésanges|Résidence des Peupliers|Résidence des Planches|Résidence du Chevalier d\'Orsay|Résidence du Coteau|Résidence du Lac de Lozère|Résidence François Leroux|Résidence Racine|Résidence Séquoia|Chemin de Châteaufort|Chemin de Corbeville|Chemin de Fretay|Chemin de la Cyprenne|Chemin de la Gouttière|Chemin des Cordes|Chemin des Vignes|Chemin du Bois des Rames|Chemin du Bois du Roi|Chemin du Buisson|Chemin du Guichet|Chemin du Merisier Noir|Chemin du Petit Saclay|Chemin du Pont des Sapins|Chemin du Rocher|Chemin du Rocher de la Vauve|Place de la République|Place de Suse|Place des Écoles|Place des Planches|Place du Champ de Cordes|Place du Docteur Ernest Albert|Place du Général Leclerc|Place Joseph Guaydier|Place Kempen|Place Nicolas Tarkhoff|Impasse Alfred Pohu|Impasse Aristide Briand|Impasse de Verdun|Impasse des Gâtines|Impasse des Hirondelles|Impasse des Mûriers|Impasse René Paillole|Passage de Bures|Passage de Corbeville|Passage du Buisson|Passage du Chemin de Fer|Passage du Rocher|Passage Léon Croc|Sente de la Voie Verte|Sente de Madagascar|Boulevard de la Terrasse|Boulevard de Mondétour|Boulevard Dubreuil|Boulevard Dubreuil Prolongé|Ruelle des Cordiers|Ruelle des Portiques|Ruelle des Saules|Villa des Ulis|Villa Montmartre|Square Charles Péguy|Domaine de Corbeville|Plateau du Moulon'.split('|');
+const norm=x=>String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’'-]/g,' ').replace(/\s+/g,' ').trim();
+/* Zones de collecte SIOM à Orsay — d'après le calendrier publié par le SIOM (nouvelles tournées depuis avril 2022) */
+const ZONE_CENTRE=['rue boursier','docteur ernest lauriat','docteur lauriat','rue verrier','rue de paris'];
+const ZONE_COLLECTIF=['rue archange','marechal foch','rue charles de gaulle','boulevard dubreuil','charles peguy','residence'];
+const ZONE_IUT=['plateau du moulon','faculte','universite','domaine de corbeville','rue jean teillac','nicolas appert'];
+const ZONES={
+ individuel:{l:'Habitat individuel & petit collectif',c:{om:[2],emb:[4],bio:[4],veg:[2]}},
+ collectif:{l:'Habitat collectif',c:{om:[4],emb:[2],bio:[4],veg:[]}},
+ centre:{l:'Centre-ville',c:{om:[1,2,3,4,5,6],emb:[2,4],bio:[4],veg:[]},warn:true},
+ iut:{l:'Zone campus / IUT',c:null}
+};
+function zoneFor(addr){const a=norm(addr);if(!a)return null;if(ZONE_IUT.some(k=>a.includes(k)))return 'iut';if(ZONE_CENTRE.some(k=>a.includes(k)))return 'centre';if(ZONE_COLLECTIF.some(k=>a.includes(k)))return 'collectif';return 'individuel'}
+function vegSeason(d){const m=d.getMonth()+1,day=d.getDate();return (m>3&&m<11)||(m===3&&day>=15)||(m===11&&day<=15)}
+const WASTE=[['om','Ordures ménagères','#8E8E93'],['emb','Emballages & papiers','#E0B000'],['bio','Biodéchets','#8B5A2B'],['veg','Déchets végétaux','#2F7A1F']];
+const DJ=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+function collecte(u){if(!u.collecteManual){const z=zoneFor(u.adresse);if(z&&ZONES[z].c){u.collecte=JSON.parse(JSON.stringify(ZONES[z].c));return u.collecte}}u.collecte=u.collecte||{om:[],emb:[],bio:[4],veg:[]};return u.collecte}
+function nextCollect(u){const c=collecte(u),now=new Date();for(let k=0;k<8;k++){const d=new Date(now);d.setDate(now.getDate()+k);const types=WASTE.filter(w=>(c[w[0]]||[]).includes(d.getDay())&&(w[0]!=='veg'||vegSeason(d)));if(types.length&&!(k===0&&now.getHours()>=13))return {k,d,types}}return null}
+function collecteTxt(u){if(!u.adresse)return 'Ajoute ton adresse';const c=collecte(u);if(!c.om.length&&!c.emb.length)return 'Voir siom.fr';const n=nextCollect(u);if(!n)return '—';const names=n.types.map(t=>t[1].split(' ')[0]).join(' + ');return (n.k===0?'Aujourd’hui':n.k===1?'Demain':DJ[n.d.getDay()])+' : '+names}
+function cineKey(d){return ['dim','lun','mar','mer','jeu','ven','sam'][d.getDay()]}
+
+/* ============ EXPLORER ============ */
+function explorerItems(){
+  const q=UI.explorerQ.trim().toLowerCase(), c=UI.explorerCat;
+  let items=COMMERCES.slice();
+  DB.users.filter(u=>['commercant','atelier'].includes(u.role)).forEach(u=>items.unshift({id:'u'+u.id,n:u.nom,cat:u.cat||'atelier',a:u.adr?(/orsay/i.test(u.adr)?u.adr:u.adr+', 91400 Orsay'):'Orsay',mine:true,verified:u.verified&&u.verified.ok,photo:u.photo,x:u.desc||''}));
+  if(c==='atelier') items=items.filter(i=>i.cat==='atelier').concat(ATELIERS.map((a,i)=>({id:'at'+i,n:a.n,cat:'atelier',a:'',x:a.x})));
+  else if(c!=='tout') items=items.filter(i=>i.cat===c);
+  if(q) items=items.filter(i=>(i.n+' '+(CATS[i.cat]||{}).l+' '+i.a+' '+(i.x||'')).toLowerCase().includes(q));
+  return items;
+}
+function pExplorer(){
+  const items=explorerItems();
+  const chips=[['tout','Tout']].concat(Object.entries(CATS).map(e=>[e[0],e[1].l]));
+  return '<div class="stack"><h1>Explorer</h1>'+
+  '<label class="search">'+ico('search',17,'#6E6E73',2.2)+'<input id="xq" value="'+esc(UI.explorerQ)+'" placeholder="Boulangerie, poterie, rue de Paris…" aria-label="Rechercher"></label>'+
+  '<div class="hscroll">'+chips.map(c=>'<button class="chip'+(UI.explorerCat===c[0]?' on':'')+'" data-a="xcat" data-v="'+c[0]+'">'+c[1]+'</button>').join('')+'</div>'+
+  '<div class="cols"><div class="stack-s"><div id="map"></div><div id="mapnote" class="small muted"></div></div>'+
+  '<div class="stack-s"><div class="between"><span class="lbl">'+items.length+' résultat'+(items.length>1?'s':'')+'</span><span class="badge-src"><span class="snap"></span>Annuaire Région IDF</span></div><div class="list" id="xlist">'+
+  (items.length?items.map(i=>{const c=CATS[i.cat]||CATS.services;return '<button class="li" data-a="commerce" data-v="'+i.id+'">'+(i.photo?'<img src="'+i.photo+'" alt="" style="width:46px;height:46px;border-radius:14px;object-fit:cover;flex-shrink:0">':'<div class="av" style="background:'+c.c+';color:#fff;width:46px;height:46px">'+c.i+'</div>')+'<div style="flex:1;min-width:0"><div style="font-weight:700">'+esc(i.n)+(i.verified?' <span class="tag t-ok">SIRET ✓</span>':'')+'</div><div class="small muted clip2">'+esc(i.x||c.l)+(i.a?' · '+esc(i.a.replace(', 91400 Orsay','')):'')+'</div></div>'+ico('chev',16,'#C7C7CC',2.4)+'</button>'}).join(''):'<div class="empty">Aucun résultat.</div>')+
+  '</div>'+(UI.explorerCat==='atelier'?'<a class="small ext" href="'+ASSO_URL+'" target="_blank" rel="noopener" style="color:var(--pink-ink);font-weight:600">Coordonnées dans l’annuaire de la mairie</a>':'')+'</div></div></div>';
+}
+let MAP=null;
+async function initMap(){
+  const el=$('#map'); if(!el) return;
+  const note=$('#mapnote');
+  if(typeof L==='undefined'){el.innerHTML='<div class="empty" style="padding-top:150px">Carte indisponible ici.</div>';return}
+  try{
+    const map=L.map(el,{zoomControl:true,attributionControl:true}).setView([48.6985,2.1875],14);MAP=map;
+    let tileErr=0;
+    const tl=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap · © CARTO'}).addTo(map);
+    tl.on('tileerror',()=>{tileErr++;if(tileErr===4&&note)note.innerHTML='Le fond de carte ne se charge pas dans cet aperçu : il s’affiche sur la version en ligne de l’app.'});
+    const items=explorerItems().filter(i=>i.a);
+    let placed=0;
+    for(const i of items){
+      const ll=await geocode(i.a); if(!el.isConnected) return; if(!ll) continue;
+      const c=CATS[i.cat]||CATS.services;
+      const m=L.marker(ll,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:'+c.c+'"><b>'+c.i+'</b></div>',iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-28]})}).addTo(map);
+      m.bindPopup('<b>'+esc(i.n)+'</b><br><span style="color:#6E6E73">'+esc(i.a)+'</span><br><a href="#" data-a="commerce" data-v="'+i.id+'" style="color:#C4105A;font-weight:700">Voir la fiche</a>');
+      placed++;
+    }
+    if(!placed&&note) note.innerHTML='Les adresses n’ont pas pu être placées ici (accès réseau bloqué dans l’aperçu). Sur la version en ligne, chaque commerce est placé automatiquement via la Base Adresse Nationale.';
+  }catch(e){el.innerHTML='<div class="empty" style="padding-top:150px">Carte indisponible ici.</div>'}
+}
+function commerceSheet(id){
+  let i=COMMERCES.find(x=>x.id===id);
+  if(!i&&id.startsWith('u')){const u=DB.users.find(x=>'u'+x.id===id);if(u)i={id,n:u.nom,cat:u.cat||'atelier',a:u.adr||'Orsay',owner:u}}
+  if(!i&&id.startsWith('at')){const a=ATELIERS[+id.slice(2)];i={id,n:a.n,cat:'atelier',a:'',x:a.x}}
+  if(!i) return;
+  const c=CATS[i.cat]||CATS.services, owner=i.owner;
+  const has=!!(DB.cards[me().id]||{})[id];
+  const fid=owner&&owner.fid;
+  openSheet('<div class="stack"><div class="row">'+(owner&&owner.photo?'<img src="'+owner.photo+'" alt="" style="width:60px;height:60px;border-radius:16px;object-fit:cover">':'<div class="av" style="background:'+c.c+';color:#fff;width:60px;height:60px;font-size:22px">'+c.i+'</div>')+'<div style="flex:1;min-width:0"><div class="lbl">'+c.l+'</div><h2>'+esc(i.n)+'</h2></div><button class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div>'+
+   (i.a?'<div class="card row">'+ico('pin',20,'#C4105A')+'<div style="flex:1">'+esc(i.a)+'</div></div>':'')+(i.x?'<div class="card">'+esc(i.x)+'</div>':'')+
+   (owner?'<div class="card stack-s"><span class="tag t-ok" style="align-self:flex-start">Fiche gérée par le commerçant · SIRET vérifié</span><div class="small muted">Carte de fidélité : '+(fid?esc(fid.type==='tampons'?fid.seuil+' achats = '+fid.reco:fid.type==='points'?'1 € = 1 point · '+fid.seuil+' pts = '+fid.reco:'Cagnotte : '+fid.reco):'')+'</div></div>':
+     '<div class="card stack-s"><div style="font-weight:700">C’est votre commerce ?</div><div class="small muted">Réclamez cette fiche en 1 minute avec votre SIRET pour publier vos bons plans et proposer une carte de fidélité.</div></div>')+
+   '<div class="grid2">'+(i.a?'<a class="btn sec" target="_blank" rel="noopener" href="https://www.openstreetmap.org/search?query='+encodeURIComponent(i.n+' '+i.a)+'">Itinéraire</a>':'<a class="btn sec ext" target="_blank" rel="noopener" href="'+ASSO_URL+'">Annuaire</a>')+'<button class="btn'+(has?' lime':'')+'" data-a="addcard" data-v="'+id+'">'+(has?'Carte ajoutée ✓':'Ajouter sa carte')+'</button></div>'+
+   '<div class="small muted">Source : '+(owner?'fiche créée dans l’app':i.cat==='atelier'?'annuaire des associations de la mairie':'annuaire « Mes commerces » de la Région Île-de-France')+'.</div></div>');
+}
+
+/* ============ CINÉMA ============ */
+function pCinema(){
+  const days=[['sam','Sam','21'],['dim','Dim','22'],['lun','Lun','23'],['mar','Mar','24']];
+  const tk=cineKey(new Date());
+  if(!UI.cineDay) UI.cineDay=days.some(d=>d[0]===tk)?tk:'sam';
+  const films=CINEMA.films.filter(f=>f.s&&f.s[UI.cineDay]);
+  const week=CINEMA.films.filter(f=>!f.s);
+  const film=(f,times)=>'<div class="card row" style="align-items:flex-start;gap:14px"><div class="poster" style="background:'+f.c+'">'+esc(f.g.toUpperCase())+(f.p?'<img src="'+f.p+'" alt="Affiche : '+esc(f.t)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</div><div style="flex:1;min-width:0" class="stack-s"><div><div style="font-size:17px;font-weight:700;line-height:1.25">'+esc(f.t)+'</div><div class="small muted">'+esc(f.g+' · '+f.du+' · '+f.r)+'</div></div>'+(f.b.length?'<div class="row wrap" style="gap:5px">'+f.b.map(b=>'<span class="tag t-lime">'+esc(b)+'</span>').join('')+'</div>':'')+'<div class="row wrap" style="gap:6px">'+times+'</div><a class="small ext" style="color:var(--pink-ink);font-weight:700;text-decoration:none" href="'+f.u+'" target="_blank" rel="noopener">Réserver</a></div></div>';
+  return '<div class="stack"><a href="#accueil" class="small hide-desk" style="color:var(--pink-ink);text-decoration:none">‹ Aujourd’hui</a><div><div class="lbl">Cinéma de la ville</div><h1>'+CINEMA.nom+'</h1><div class="small muted" style="margin-top:4px">'+CINEMA.adr+'</div></div>'+
+  '<div class="between wrap">'+srcBadge('snap','cinetati.fr · semaine '+CINEMA.semaine)+'<a class="small ext" style="color:var(--pink-ink);font-weight:600;text-decoration:none" href="'+CINEMA.pdf+'" target="_blank" rel="noopener">Programme PDF</a></div>'+
+  '<div class="hscroll">'+days.map(d=>'<button class="chip'+(UI.cineDay===d[0]?' on':'')+'" style="display:flex;flex-direction:column;align-items:center;min-width:58px;padding:8px 0" data-a="cineday" data-v="'+d[0]+'"><span style="font-size:12px">'+d[1]+'</span><span style="font-size:19px;font-weight:800">'+d[2]+'</span></button>').join('')+'</div>'+
+  '<div class="grid3">'+(films.length?films.map(f=>film(f,f.s[UI.cineDay].map(t=>'<span class="tag t-grey" style="font-size:14px;padding:6px 10px;border-radius:10px">'+esc(t)+'</span>').join(''))).join(''):'<div class="card empty">Pas de séance relevée ce jour-là.</div>')+'</div>'+
+  '<h2>Aussi cette semaine</h2><div class="small muted" style="margin-top:-12px">Horaires de la semaine : jour à confirmer sur la billetterie.</div><div class="grid3">'+week.map(f=>film(f,'<span class="small muted">'+esc(f.w)+'</span>')).join('')+'</div>'+
+  '<div class="card stack-s"><h3>Comment ce programme arrive ici</h3><div class="small muted">Dans l’app finale, une synchronisation lit chaque mercredi matin le site du cinéma (films, horaires, VO/VF, lien de réservation). L’équipe du cinéma n’a rien à saisir.</div></div></div>';
+}
+
+/* ============ AGENDA ============ */
+function pAgenda(){
+  const t=UI.agendaTab, today=todayISO();
+  const local=DB.posts.filter(p=>p.type==='event'||p.type==='cours').slice().reverse();
+  const courses=DB.courses.slice();
+  return '<div class="stack"><a href="#accueil" class="small hide-desk" style="color:var(--pink-ink);text-decoration:none">‹ Aujourd’hui</a><h1>Agenda</h1>'+
+  '<div class="seg"><button class="'+(t==='ville'?'on':'')+'" data-a="agtab" data-v="ville">Ville</button><button class="'+(t==='ateliers'?'on':'')+'" data-a="agtab" data-v="ateliers">Ateliers</button><button class="'+(t==='expos'?'on':'')+'" data-a="agtab" data-v="expos">Expositions</button></div>'+
+  (t==='ville'?srcBadge('snap','agenda de mairie-orsay.fr')+'<div class="list">'+local.filter(p=>p.type==='event').map(p=>'<div class="li"><span class="tag t-pink">Nouveau</span><div style="flex:1"><div style="font-weight:600">'+esc(p.t)+'</div><div class="small muted">'+esc(p.when||'')+'</div></div></div>').join('')+AGENDA.filter(a=>a.d>=today).map(a=>'<a class="li" href="'+esc(a.u)+'" target="_blank" rel="noopener"><div style="width:50px;text-align:center;flex-shrink:0"><div style="font-size:11px;font-weight:700;color:var(--pink-ink);text-transform:uppercase">'+fmtDay(a.d).split(' ')[0]+'</div><div style="font-size:22px;font-weight:800">'+new Date(a.d+'T12:00').getDate()+'</div><div style="font-size:11px" class="muted">'+MOIS[new Date(a.d+'T12:00').getMonth()].slice(0,4)+'.</div></div><div style="flex:1;min-width:0"><span class="tag t-navy">'+esc(a.c)+'</span><div style="font-weight:600;margin-top:4px">'+esc(a.t)+'</div><div class="small muted">'+esc([a.h,a.l].filter(Boolean).join(' · '))+'</div></div></a>').join('')+'</div>':'')+
+  (t==='ateliers'?'<div class="stack-s">'+(courses.length?courses.map(c=>'<div class="card between"><div><div style="font-weight:700">'+esc(c.t)+'</div><div class="small muted">'+esc(c.by+' · '+c.when+' · '+c.prix)+'</div><div class="small muted">'+(c.places-c.inscrits)+' place(s) restante(s)</div></div><button class="btn sm'+(c.me?' lime':'')+'" data-a="bookcourse" data-v="'+c.id+'">'+(c.me?'Inscrit ✓':'Réserver')+'</button></div>').join(''):'<div class="card empty">Aucun cours publié pour l’instant. Les ateliers créent leurs cours depuis leur espace (tout se gère dans l’app : réservation, liste d’attente, rappel).</div>')+
+    '<h3 style="margin-top:6px">Ateliers et activités à Orsay</h3><div class="list">'+ATELIERS.map(a=>'<div class="li"><div class="ic" style="background:#2F7A1F">✦</div><div><div style="font-weight:600">'+esc(a.n)+'</div><div class="small muted">'+esc(a.x)+'</div></div></div>').join('')+'</div></div>':'')+
+  (t==='expos'?'<div class="list">'+EXPOS.map(e=>'<div class="li"><div class="ic" style="background:var(--navy)">'+ico('hall',16,'#fff')+'</div><div><div style="font-weight:600">'+esc(e.t)+'</div><div class="small muted">'+esc(e.p)+'</div></div></div>').join('')+'</div>':'')+
+  '</div>';
+}
+
+/* ============ ASSOS ============ */
+function pAssos(){
+  const q=UI.assoQ.toLowerCase();
+  const own=DB.users.filter(u=>u.role==='asso').map(u=>({id:'u'+u.id,n:u.nom,c:'Nouvelle',x:u.desc||'Fiche créée dans l’app',mine:true,owner:u}));
+  let list=own.concat(ASSOS); if(UI.assoCat!=='Toutes') list=list.filter(a=>a.c===UI.assoCat); if(q) list=list.filter(a=>(a.n+' '+a.x+' '+a.c).toLowerCase().includes(q));
+  const needs=DB.assoNeeds.slice().reverse(); const u=me();
+  return '<div class="stack"><a href="#accueil" class="small hide-desk" style="color:var(--pink-ink);text-decoration:none">‹ Aujourd’hui</a><div><h1>Les assos d’Orsay</h1><div class="muted" style="margin-top:4px">Sport, culture, solidarité : trouve la tienne.</div></div>'+
+  '<label class="search">'+ico('search',17,'#6E6E73',2.2)+'<input id="aq" value="'+esc(UI.assoQ)+'" placeholder="Judo, chorale, jardin partagé…" aria-label="Rechercher une association"></label>'+
+  '<div class="hscroll">'+ASSO_CATS.map(c=>'<button class="chip'+(UI.assoCat===c?' on':'')+'" data-a="acat" data-v="'+c+'">'+c+'</button>').join('')+'</div>'+
+  '<div class="cols"><div class="stack-s"><div class="between"><span class="lbl">'+list.length+' associations</span>'+srcBadge('snap','annuaire de la mairie (extrait)')+'</div><div class="list">'+
+   list.map(a=>'<button class="li" data-a="asso" data-v="'+a.id+'">'+(a.owner&&a.owner.photo?'<img src="'+a.owner.photo+'" alt="" style="width:44px;height:44px;border-radius:14px;object-fit:cover;flex-shrink:0">':'<div class="av" style="width:44px;height:44px;font-size:15px;background:'+assoColor(a.c)[0]+';color:'+assoColor(a.c)[1]+'">'+esc(initials(a.n.replace(/[()’'–-]/g,' ')))+'</div>')+'<div style="flex:1;min-width:0"><div style="font-weight:700">'+esc(a.n)+'</div><div class="small muted clip2">'+esc(a.c+' · '+a.x)+'</div></div>'+ico('chev',16,'#C7C7CC',2.4)+'</button>').join('')+
+  '</div><a class="small ext" href="'+ASSO_URL+'" target="_blank" rel="noopener" style="color:var(--pink-ink);font-weight:600">Annuaire complet sur le site de la mairie</a></div>'+
+  '<div class="stack-s"><div class="card pink stack-s"><div class="lbl" style="color:#FFE0EC">Bénévolat</div><h3 style="font-size:19px">'+(needs.length?needs.length+' mission(s) ouverte(s)':'Donne un peu de ton temps')+'</h3>'+
+   (needs.length?needs.map(n=>'<div style="background:rgba(255,255,255,.16);border-radius:14px;padding:10px 12px" class="between"><div><div style="font-weight:600">'+esc(n.t)+'</div><div class="small" style="color:#FFE0EC">'+esc(n.by+' · '+n.when)+'</div></div><button class="btn white sm" data-a="volunteer" data-v="'+n.id+'">'+(n.volunteers&&n.volunteers.includes(u.id)?'Inscrit ✓':'J’aide')+'</button></div>').join(''):'<div class="small" style="color:#FFE0EC">Active le bénévolat dans ton profil : les assos qui cherchent de l’aide te trouveront.</div>')+
+   '<a href="#profil" class="btn white sm">Mon profil bénévole</a></div></div></div></div>';
+}
+function assoSheet(id){
+  let a=ASSOS.find(x=>x.id===id);
+  if(!a&&id.startsWith('u')){const o=DB.users.find(x=>'u'+x.id===id);if(o)a={id,n:o.nom,c:'Association',x:o.desc||'',ct:{adr:o.adr,mail:o.email},owner:o}}
+  if(!a)return;
+  const ct=a.ct||{}, col=assoColor(a.c);
+  const needs=DB.assoNeeds.filter(n=>a.owner&&n.owner===a.owner.id);
+  const row=(icn,lab,val,href)=>val?'<'+(href?'a href="'+href+'" target="_blank" rel="noopener"':'div')+' class="li" style="text-decoration:none">'+ico(icn,18,'#C4105A')+'<div style="flex:1;min-width:0"><div class="small muted">'+lab+'</div><div style="font-weight:600;word-break:break-word">'+esc(val)+'</div></div></'+(href?'a':'div')+'>':'';
+  const hasCt=ct.adr||ct.tel||ct.web||ct.mail;
+  openSheet('<div class="stack"><div class="row">'+(a.owner&&a.owner.photo?'<img src="'+a.owner.photo+'" alt="" style="width:60px;height:60px;border-radius:16px;object-fit:cover">':'<div class="av" style="width:60px;height:60px;font-size:20px;background:'+col[0]+';color:'+col[1]+'">'+esc(initials(a.n.replace(/[()’'–-]/g,' ')))+'</div>')+'<div style="flex:1;min-width:0"><span class="tag" style="background:'+col[0]+';color:'+col[1]+'">'+esc(a.c)+'</span><h2 style="margin-top:4px">'+esc(a.n)+'</h2></div><button class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div>'+
+   (a.x?'<div class="card stack-s"><div class="lbl">Ce qu’ils proposent</div><div>'+esc(a.x)+'</div></div>':'')+
+   (needs.length?'<div class="card pink stack-s"><div class="lbl" style="color:#FFE0EC">Cherche des bénévoles</div>'+needs.map(n=>'<div class="between"><span>'+esc(n.t+' · '+n.when)+'</span><button class="btn white sm" data-a="volunteer" data-v="'+n.id+'">J’aide</button></div>').join('')+'</div>':'')+
+   (hasCt?'<div class="stack-s"><div class="lbl" style="margin-left:6px">Contact</div><div class="list">'+
+     row('pin','Adresse',ct.adr,ct.adr?'https://www.openstreetmap.org/search?query='+encodeURIComponent(ct.adr):'')+
+     row('phone','Téléphone',ct.tel,ct.tel?'tel:'+ct.tel.replace(/\s/g,''):'')+
+     row('globe','Site internet',ct.web?ct.web.replace(/^https?:\/\//,'').replace(/\/$/,''):'',ct.web)+
+     row('mail','E-mail',ct.mail,ct.mail?'mailto:'+ct.mail:'')+'</div></div>'
+    :'<div class="card small muted">Téléphone, e-mail et site : sur la fiche de l’annuaire de la mairie. Dans l’app finale, chaque association complète sa fiche elle-même.</div>')+
+   (a.u?'<a class="btn sec full ext" href="'+a.u+'" target="_blank" rel="noopener">Fiche de l’annuaire</a>':'')+
+   '<div class="small muted" style="text-align:center">Source : '+(a.owner?'fiche créée dans l’app':'annuaire des associations de la mairie d’Orsay')+'</div></div>');
+}
+const assoColor=c=>({Sport:['#F1F5C2','#4A4F00'],Culture:['#E1ECF5','#004A7C'],Musique:['#FCE3EE','#C4105A'],Loisirs:['#FFF6D6','#8A6A00'],Environnement:['#E8F4E0','#2F7A1F'],Solidarité:['#FFE6DA','#B0410A'],Ateliers:['#EDE4F5','#5B2A86'],Enfance:['#E3F3F7','#0B6577'],Nouvelle:['#1C1C1E','#fff']}[c]||['#F2F2F7','#3A3A3C']);
+
+/* ============ CARTES FIDÉLITÉ ============ */
+function pCartes(){
+  const u=me(), mine=DB.cards[u.id]||{};
+  const ids=Object.keys(mine);
+  return '<div class="stack"><div class="between"><h1>Mes cartes</h1><a class="iconbtn" href="#explorer" aria-label="Ajouter une carte">'+ico('plus',20,'#C4105A',2.4)+'</a></div>'+
+  '<div class="cols"><div class="card stack-s" style="align-items:center;text-align:center"><div class="small muted" style="font-weight:600">À présenter en caisse</div><div class="qr" id="qr"></div><div style="letter-spacing:2px;font-weight:600">'+esc(u.code||'')+'</div><button class="btn dark sm" data-a="wallet">'+ico('card',18,'#fff')+'Ajouter à Apple Wallet</button><div class="small muted">Un seul QR code pour toutes tes cartes : le commerçant voit directement ses points et récompenses.</div></div>'+
+  '<div class="stack-s"><div class="card pink stack-s"><div class="between"><span class="lbl" style="color:#FFE0EC">Carte '+APP+' · tous commerces</span></div><div><span style="font-size:42px;font-weight:800;letter-spacing:-1px">'+(u.points||0)+'</span> <span style="font-weight:600">points</span></div><div style="height:8px;border-radius:99px;background:rgba(255,255,255,.3);overflow:hidden"><div style="width:'+Math.min(100,(u.points||0)/10)+'%;height:100%;background:var(--green)"></div></div><div class="small" style="color:#FFE0EC">1 000 points = chèque de 10 € à dépenser chez les commerçants participants</div></div>'+
+  (ids.length?ids.map(id=>{const c=mine[id];return '<div class="card lime stack-s"><div class="between"><span class="lbl" style="color:#3D4200">'+esc(c.n)+'</span><span class="small" style="font-weight:600">'+esc(c.type==='tampons'?(c.count||0)+'/'+c.seuil:(c.count||0)+' pts')+'</span></div>'+(c.type==='tampons'?'<div class="row wrap" style="gap:6px">'+Array.from({length:c.seuil},(_,k)=>'<span style="width:22px;height:22px;border-radius:99px;'+(k<(c.count||0)?'background:#1C1F00':'border:2px dashed #1C1F00')+'"></span>').join('')+'</div>':'')+'<div class="small">'+esc(c.reco)+'</div></div>'}).join(''):'<div class="card empty">Ajoute la carte d’un commerce depuis sa fiche dans Explorer.</div>')+
+  '</div></div>'+
+  '<div class="card stack-s"><h3>Historique</h3>'+((u.history||[]).length?(u.history||[]).slice().reverse().slice(0,8).map(h=>'<div class="between" style="padding:8px 0;border-bottom:1px solid #EDEDF0"><span>'+esc(h.t)+'</span><b style="color:'+(h.v<0?'var(--pink-ink)':'var(--ok)')+'">'+(h.v>0?'+':'')+h.v+'</b></div>').join(''):'<div class="small muted">Aucune opération pour l’instant.</div>')+'</div></div>';
+}
+
+/* ============ PROFIL ============ */
+function pProfil(){
+  const u=me(), n=u.notif||{};
+  const notifs=[['bonplan','Bons plans','%','#E2186A'],['panier','Paniers anti-gaspi','€','#7A8200'],['event','Événements','★','#AF52DE'],['travaux','Travaux près de chez moi','!','#FF9500'],['mairie','Projets de la mairie','M','#004A7C'],['atelier','Nouveaux ateliers','✦','#34C759']];
+  const ints=['Cinéma','Marchés','Fromages','Boulangeries','Poterie','Concerts','Sport','Enfants','Brocantes','Théâtre'];
+  const b=u.benevole||{};
+  return '<div class="stack"><h1>Profil</h1><div class="cols"><div class="stack">'+
+  '<div class="card row"><button data-a="photo" aria-label="Changer la photo" style="border:0;background:none;padding:0;position:relative">'+avatar(u,64,99)+'<span style="position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:99px;background:var(--pink);border:2px solid #fff;display:flex;align-items:center;justify-content:center">'+ico('plus',13,'#fff',3)+'</span></button><div style="flex:1"><div style="font-size:19px;font-weight:700">'+esc(u.nom)+'</div><div class="small muted">'+roleLabel(u.role)+(u.quartier?' · '+esc(u.quartier):'')+'</div><button data-a="photo" style="border:0;background:none;padding:4px 0 0;color:var(--pink-ink);font-weight:600;font-size:14px">'+(u.photo?'Changer la photo':'Ajouter une photo')+(['commercant','atelier','asso'].includes(u.role)?' / logo':'')+'</button></div></div>'+
+  '<div class="stack-s"><div class="lbl" style="margin-left:6px">Notifications</div><div class="list">'+notifs.map(x=>'<div class="li"><div class="ic" style="background:'+x[3]+'">'+x[2]+'</div><span style="flex:1">'+x[1]+'</span><button class="toggle'+(n[x[0]]?' on':'')+'" data-a="notif" data-v="'+x[0]+'" aria-label="'+x[1]+'"><span></span></button></div>').join('')+'</div><div class="small muted" style="margin-left:6px">Tu choisis ce que tu reçois. Rien d’autre.</div></div>'+
+  '<div class="stack-s"><div class="lbl" style="margin-left:6px">Centres d’intérêt</div><div class="card row wrap" style="gap:8px">'+ints.map(i=>'<button class="chip'+((u.interests||[]).includes(i)?' on':'')+'" style="background:'+((u.interests||[]).includes(i)?'':'#F2F2F7')+'" data-a="interest" data-v="'+i+'">'+i+'</button>').join('')+'</div></div>'+
+  '</div><div class="stack">'+
+  '<div class="stack-s"><div class="lbl" style="margin-left:6px">Bénévolat</div><div class="list"><div class="li"><div class="ic" style="background:#E2186A">'+ico('heart',16,'#fff',2.4)+'</div><span style="flex:1">Je veux être bénévole</span><button class="toggle'+(b.on?' on':'')+'" data-a="benevole" aria-label="Je veux être bénévole"><span></span></button></div>'+
+   (b.on?'<div class="li"><span style="flex:1">Disponibilité</span><select data-a="dispo" style="border:0;background:none;color:var(--muted);text-align:right">'+['1 à 2 h / mois','2 à 4 h / mois','1 demi-journée / mois','Ponctuellement'].map(o=>'<option'+(b.dispo===o?' selected':'')+'>'+o+'</option>').join('')+'</select></div><div class="li"><span style="flex:1">Partager mon contact avec les assos</span><button class="toggle'+(b.share?' on':'')+'" data-a="share" aria-label="Partager mon contact"><span></span></button></div>':'')+'</div></div>'+
+  '<div class="stack-s"><div class="lbl" style="margin-left:6px">Ma ville</div><div class="list"><button class="li" data-a="collecte"><div class="ic" style="background:#8A6A00">'+ico('trash',16,'#fff',2.4)+'</div><span style="flex:1">Mon adresse &amp; ma collecte</span><span class="small muted">'+esc(collecteTxt(u))+'</span></button><button class="li" data-a="report"><div class="ic" style="background:#FF9500">'+ico('warn',16,'#fff',2.4)+'</div><span style="flex:1">Signaler un problème</span><span class="small muted">photo + lieu</span></button><a class="li" href="#infos"><div class="ic" style="background:#004A7C">'+ico('hall',16,'#fff',2.4)+'</div><span style="flex:1">Infos pratiques</span></a><button class="li" data-a="demotoggle"><div class="ic" style="background:#8E8E93">ex</div><span style="flex:1">Afficher les exemples de présentation</span><span class="toggle'+(DB.demo?' on':'')+'"><span></span></span></button></div></div>'+
+  (DB.reports.some(r=>r.by===u.id)?'<div class="card stack-s"><h3>Mes signalements</h3>'+DB.reports.filter(r=>r.by===u.id).map(r=>'<div class="between"><span>'+esc(r.t)+'</span><span class="tag '+(r.status==='Réparé'?'t-ok':r.status==='Transmis'?'t-navy':'t-warn')+'">'+esc(r.status)+'</span></div>').join('')+'</div>':'')+
+  (u.role!=='mairie'?'<div class="stack-s"><div class="lbl" style="margin-left:6px">Mes comptes</div><div class="list">'+DB.users.filter(x=>x.email&&u.email&&x.email.toLowerCase()===u.email.toLowerCase()).map(x=>'<button class="li" '+(x.id===u.id?'':'data-a="switch" data-v="'+x.id+'"')+'>'+avatar(x,38,99,x.id===u.id?'var(--pink)':'#F2F2F7',x.id===u.id?'#fff':'#3A3A3C')+'<div style="flex:1"><b>'+esc(x.nom)+'</b><div class="small muted">'+roleLabel(x.role)+'</div></div>'+(x.id===u.id?'<span class="tag t-pink">Actif</span>':'<span class="small" style="color:var(--pink-ink);font-weight:600">Basculer</span>')+'</button>').join('')+'<button class="li" data-a="addaccount"><div class="ic" style="background:#1C1C1E">'+ico('plus',16,'#fff',2.4)+'</div><span style="flex:1">Ajouter un compte pro / atelier / asso</span></button></div></div>':'')+
+  '<button class="btn sec full" data-a="logout">'+ico('out',18)+'Se déconnecter</button><button class="btn full" style="background:none;color:#D70015;border:0;font-weight:600" data-a="delask">Supprimer mon compte</button></div></div></div>';
+}
+
+/* ============ INFOS PRATIQUES ============ */
+function pInfos(){
+  const mo=mairieOpen(), d=new Date().getDay();
+  return '<div class="stack"><a href="#accueil" class="small hide-desk" style="color:var(--pink-ink);text-decoration:none">‹ Aujourd’hui</a><h1>Infos pratiques</h1>'+srcBadge('snap','mairie-orsay.fr')+
+  '<div class="cols"><div class="stack-s"><div class="card stack-s"><div class="between"><h3>Hôtel de ville</h3><span class="tag '+(mo.open?'t-ok':'t-grey')+'">'+esc(mo.txt)+'</span></div><div class="small muted">'+MAIRIE.adresse+'<br>'+MAIRIE.tel+' · '+MAIRIE.mail+'</div>'+
+   MAIRIE.horaires.map((h,i)=>'<div class="between" style="padding:6px 0;border-top:1px solid #EDEDF0;'+((i+1)%7===d?'font-weight:700':'')+'"><span>'+h[0]+'</span><span class="'+((i+1)%7===d?'':'muted')+'">'+h[1]+'</span></div>').join('')+'</div>'+
+   '<div class="card stack-s" id="travaux"><h3>Travaux suivis</h3>'+TRAVAUX.map(t=>'<a href="'+t.u+'" target="_blank" rel="noopener" style="text-decoration:none;padding:8px 0;border-top:1px solid #EDEDF0;display:block"><div class="between"><b>'+esc(t.t)+'</b><span class="tag t-warn">'+esc(t.when)+'</span></div><div class="small muted">'+esc(t.x)+'</div></a>').join('')+'</div></div>'+
+  '<div class="stack-s"><div class="card stack-s"><h3>Pharmacie de garde</h3>'+pharmaWidget()+'</div>'+
+   '<div class="card stack-s"><h3>Déchets</h3>'+collecteBlock(me())+'<div class="small muted">Collecte assurée par le SIOM.</div><a class="small ext" style="color:var(--pink-ink);font-weight:600" href="https://www.siom.fr/infos-pratiques/jours-et-points-de-collecte/" target="_blank" rel="noopener">Jours de collecte de ma rue</a><div class="small">Encombrants sur rendez-vous : <b>01 83 63 50 03</b> (lun.–ven., 10h–19h). Déchèteries de Saclay et Villejust avec badge QR code.</div></div>'+
+   '<div class="card stack-s"><h3>Marchés</h3>'+MARCHES.map(m=>'<div><b>'+m.n+'</b><div class="small muted">'+m.l+' · '+m.j+'</div></div>').join('')+'</div></div></div></div>';
+}
+
+/* ============ ESPACE PRO ============ */
+function pPro(){
+  const u=me(), r=u.role, t=UI.proTab;
+  const tabs=r==='commercant'?[['caisse','Caisse'],['publier','Publier'],['fidelite','Fidélité'],['fiche','Ma fiche']]:r==='atelier'?[['cours','Mes cours'],['publier','Publier'],['fidelite','Fidélité'],['fiche','Ma fiche']]:[['benevoles','Bénévoles'],['publier','Publier'],['fiche','Ma fiche']];
+  if(!tabs.some(x=>x[0]===t)) UI.proTab=tabs[0][0];
+  const cur=UI.proTab;
+  const color=r==='commercant'?'#C8D400':r==='atelier'?'#004A7C':'#B0410A';
+  let body='';
+  if(cur==='caisse') body=proCaisse(u);
+  if(cur==='publier') body=proPublier(u);
+  if(cur==='fidelite') body=proFidelite(u);
+  if(cur==='fiche') body=proFiche(u);
+  if(cur==='cours') body=proCours(u);
+  if(cur==='benevoles') body=proBenevoles(u);
+  return '<div class="stack"><div class="row"><button data-a="photo" aria-label="Changer le logo" style="border:0;background:none;padding:0">'+avatar(u,56,16,color,r==='commercant'?'#1C1F00':'#fff')+'</button><div style="flex:1;min-width:0"><div class="lbl">Espace '+(r==='asso'?'association':r==='atelier'?'atelier':'pro')+'</div><h1 style="font-size:28px">'+esc(u.nom)+'</h1></div>'+(u.verified&&u.verified.ok?'<span class="tag t-ok">'+(r==='asso'?'RNA':'SIRET')+' ✓</span>':'')+'</div>'+
+  '<div class="seg">'+tabs.map(x=>'<button class="'+(cur===x[0]?'on':'')+'" data-a="protab" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+body+'</div>';
+}
+function proCaisse(u){
+  const c=UI.caisse;
+  let inner='';
+  if(c.step==='idle') inner='<div style="color:#FFE0EC">Un client en caisse ?</div><label class="field" style="color:#FFE0EC">Code client (sous son QR code)<input id="ccode" placeholder="ORS000000" autocomplete="off" style="text-transform:uppercase"></label><button class="btn white full" data-a="cscan">'+ico('scan',22,'#C4105A',2.4)+'Valider le client</button><div class="small" style="color:#FFE0EC;text-align:center">Dans l’app finale : scan du QR code avec l’appareil photo.</div>';
+  if(c.step==='found'){const cl=c.client,card=c.card;const reward=card&&card.type==='tampons'&&card.count>=card.seuil;
+    inner='<div class="between"><div><div style="font-size:19px;font-weight:800">'+esc(cl.nom)+'</div><div class="small" style="color:#FFE0EC">'+(card?esc(card.type==='tampons'?'Carte '+card.count+'/'+card.seuil:'Carte '+card.count+' pts'):'Pas encore de carte chez vous : elle sera créée')+' · '+(cl.points||0)+' pts ville</div></div></div>'+
+    (reward?'<div style="background:#fff;color:var(--ink);border-radius:16px;padding:12px 14px" class="between"><div><div class="lbl" style="color:var(--ok)">Récompense disponible</div><div style="font-weight:700">'+esc(card.reco)+'</div></div><button class="btn sm'+(c.use?' lime':'')+'" data-a="cuse">'+(c.use?'Utilisée ✓':'Utiliser')+'</button></div>':'')+
+    ((cl.points||0)>=1000?'<div style="background:#fff;color:var(--ink);border-radius:16px;padding:12px 14px" class="between"><div><div class="lbl" style="color:var(--ok)">Chèque ville disponible</div><div style="font-weight:700">10 € à déduire</div></div><button class="btn sm'+(c.cheque?' lime':'')+'" data-a="ccheque">'+(c.cheque?'Déduit ✓':'Déduire')+'</button></div>':'')+
+    '<label class="field" style="color:#FFE0EC">Montant du ticket (€)<input id="camount" inputmode="decimal" placeholder="0,00" style="font-size:24px;font-weight:800"></label><button class="btn dark full" data-a="cvalid">Valider le passage</button><button class="small" style="border:0;background:none;color:#fff;text-decoration:underline" data-a="creset">Annuler</button>'}
+  if(c.step==='done') inner='<div class="stack-s" style="align-items:center;text-align:center;padding:8px 0"><div style="width:56px;height:56px;border-radius:99px;background:#fff;display:flex;align-items:center;justify-content:center">'+ico('check',28,'#2F7A1F',3)+'</div><div style="font-size:19px;font-weight:800">C’est enregistré</div><div class="small" style="color:#FFE0EC">'+esc(c.msg)+'</div><button class="btn white sm" data-a="creset">Client suivant</button></div>';
+  const visits=(DB.visits||[]).filter(v=>v.shop===u.id);
+  return '<div class="cols"><div class="card pink stack-s">'+inner+'</div><div class="stack-s"><div class="card grid2" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="kpi"><b>'+visits.length+'</b><span class="small muted">passages carte</span></div><div class="kpi"><b>'+DB.posts.filter(p=>p.owner===u.id).length+'</b><span class="small muted">publications</span></div></div><div class="card small muted">Astuce démo : crée un compte habitant dans un autre onglet privé, ou utilise le code <b>ORS482177</b> (habitant démo).</div></div></div>';
+}
+function proPublier(u){
+  const r=u.role;
+  const types=r==='asso'?[['event','Événement'],['benevolat','Besoin de bénévoles']]:r==='atelier'?[['bonplan','Bon plan'],['event','Événement']]:[['bonplan','Bon plan'],['panier','Panier anti-gaspi']];
+  const t=UI.pubType&&types.some(x=>x[0]===UI.pubType)?UI.pubType:types[0][0];
+  const mine=DB.posts.filter(p=>p.owner===u.id).slice().reverse();
+  return '<div class="cols"><form class="card stack-s" id="fpub"><div class="seg">'+types.map(x=>'<button type="button" class="'+(t===x[0]?'on':'')+'" data-a="pubtype" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+  '<label class="field">Titre<input name="t" required placeholder="'+(t==='panier'?'Panier surprise de fin de journée':t==='benevolat'?'Bénévoles pour la collecte alimentaire':t==='event'?'Portes ouvertes':'−10 % sur…')+'"></label><label class="field">Détails<input name="x" placeholder="Une ligne, simple"></label>'+
+  (t==='panier'?'<div class="grid2" style="grid-template-columns:repeat(3,minmax(0,1fr))"><label class="field">Quantité<input name="qte" inputmode="numeric" value="3"></label><label class="field">Prix<input name="prix" value="5 €"></label><label class="field">Valeur<input name="val" value="15 €"></label></div>':'')+
+  '<label class="field">'+(t==='panier'?'Retrait':t==='bonplan'?'Validité':'Quand')+'<input name="when" placeholder="'+(t==='panier'?'Aujourd’hui 18h30–19h':'Jusqu’à dimanche')+'"></label>'+
+  '<button class="btn full" type="submit">Publier'+(t==='panier'||t==='bonplan'?' et notifier les intéressés':'')+'</button></form>'+
+  '<div class="stack-s"><h3>En ligne</h3>'+(mine.length?mine.map(p=>'<div class="card between"><div><span class="tag t-pink">'+esc({panier:'Panier',bonplan:'Bon plan',event:'Événement',benevolat:'Bénévolat',cours:'Cours'}[p.type])+'</span><div style="font-weight:700;margin-top:4px">'+esc(p.t)+'</div><div class="small muted">'+esc(p.when||'')+'</div></div><button class="btn sec sm" data-a="unpub" data-v="'+p.id+'">Retirer</button></div>').join(''):'<div class="card empty">Rien de publié pour l’instant.</div>')+'</div></div>';
+}
+function proFidelite(u){
+  const f=u.fid||{type:'tampons',seuil:10,reco:'1 produit offert'};
+  return '<div class="cols"><div class="card stack-s"><h3>Ma carte de fidélité</h3><div class="small muted">Tu choisis la formule, modifiable à tout moment. Les clients gardent ce qu’ils ont déjà gagné.</div>'+
+  '<div class="seg">'+[['tampons','Tampons'],['points','Points'],['cagnotte','Cagnotte €']].map(x=>'<button class="'+(f.type===x[0]?'on':'')+'" data-a="fidtype" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+  '<label class="field">'+(f.type==='tampons'?'Nombre d’achats':f.type==='points'?'Points nécessaires (1 € = 1 pt)':'Montant de déclenchement (€)')+'<input id="fseuil" inputmode="numeric" value="'+esc(f.seuil)+'"></label><label class="field">Récompense<input id="freco" value="'+esc(f.reco)+'"></label>'+
+  '<div class="between"><span>Offre étudiants / lycéens</span><button class="toggle'+(f.etudiant?' on':'')+'" data-a="fidetu" aria-label="Offre étudiants"><span></span></button></div><button class="btn full" data-a="fidsave">Enregistrer</button></div>'+
+  '<div class="card lime stack-s"><div class="lbl" style="color:#3D4200">Aperçu côté client</div><h3>'+esc(u.nom)+'</h3>'+(f.type==='tampons'?'<div class="row wrap" style="gap:6px">'+Array.from({length:Math.min(+f.seuil||10,20)},(_,k)=>'<span style="width:22px;height:22px;border-radius:99px;'+(k<3?'background:#1C1F00':'border:2px dashed #1C1F00')+'"></span>').join('')+'</div>':'<div style="font-size:30px;font-weight:800">'+(f.type==='points'?'120 pts':'12,40 €')+'</div>')+'<div class="small">'+esc(f.type==='tampons'?f.seuil+' achats = '+f.reco:f.type==='points'?f.seuil+' pts = '+f.reco:'Cagnotte : '+f.reco)+'</div></div></div>';
+}
+function proFiche(u){
+  return '<div class="cols"><div class="card stack-s"><h3>Ma fiche publique</h3><div class="row">'+avatar(u,64,16)+'<button class="btn sec sm" data-a="photo">'+(u.photo?'Changer le logo':'Ajouter un logo')+'</button></div><label class="field">Nom<input id="pnom" value="'+esc(u.nom)+'"></label><label class="field">Adresse<input id="padr" value="'+esc(u.adr||'')+'"></label><label class="field">Description courte<input id="pdesc" value="'+esc(u.desc||'')+'" placeholder="Ce qui vous rend unique, en une phrase"></label>'+
+  (u.role==='atelier'?'<div class="field">Réservations<div class="seg"><button class="'+(u.booking!=='link'?'on':'')+'" data-a="booking" data-v="app">Tout dans l’app</button><button class="'+(u.booking==='link'?'on':'')+'" data-a="booking" data-v="link">Lien vers mon outil</button></div></div>'+(u.booking==='link'?'<label class="field">Ma page de réservation<input id="plink" value="'+esc(u.link||'')+'" placeholder="https://…"></label>':'<div class="small muted">Paiement en ligne, liste d’attente automatique, rappel la veille, annulation en 1 tap.</div>'):'')+
+  '<button class="btn full" data-a="ficheSave">Enregistrer</button></div><div class="card stack-s"><h3>Vérification</h3><div class="small">'+(u.verified&&u.verified.ok?(u.verified.live?'✓ Vérifié automatiquement dans les registres publics'+(u.verified.name?' ('+esc(u.verified.name)+')':''):'✓ '+esc(u.verified.msg||'Numéro valide')):'—')+'</div><div class="small muted">N° '+esc(u.sid||'')+'</div><div class="small muted">Votre fiche est visible dans Explorer et sur la carte.</div><a href="#explorer" class="btn sec sm">Voir ma fiche dans l’app</a></div></div>';
+}
+function proCours(u){
+  const mine=DB.courses.filter(c=>c.owner===u.id);
+  return '<div class="cols"><form class="card stack-s" id="fcours"><h3>Créer un cours ou un stage</h3><label class="field">Intitulé<input name="t" required placeholder="Initiation vitrail"></label><div class="grid2"><label class="field">Date et heure<input name="when" required placeholder="Sam. 28 nov · 14h"></label><label class="field">Prix<input name="prix" value="45 €"></label></div><label class="field">Places<input name="places" inputmode="numeric" value="8"></label><button class="btn full" type="submit">Publier le cours</button></form>'+
+  '<div class="stack-s"><h3>Mon planning</h3>'+(mine.length?mine.map(c=>'<div class="card stack-s"><div class="between"><b>'+esc(c.t)+'</b><span class="tag '+(c.inscrits>=c.places?'t-pink':'t-lime')+'">'+(c.inscrits>=c.places?'Complet':c.inscrits+'/'+c.places)+'</span></div><div class="small muted">'+esc(c.when+' · '+c.prix)+'</div><div style="height:6px;border-radius:99px;background:#F2F2F7;overflow:hidden"><div style="height:100%;width:'+Math.round(100*c.inscrits/c.places)+'%;background:var(--green)"></div></div></div>').join(''):'<div class="card empty">Aucun cours. Crée le premier : il apparaît dans l’Agenda des habitants.</div>')+'</div></div>';
+}
+function proBenevoles(u){
+  const mine=DB.assoNeeds.filter(n=>n.owner===u.id);
+  const vols=DB.users.filter(x=>x.benevole&&x.benevole.on&&x.benevole.share);
+  return '<div class="cols"><form class="card stack-s" id="fneed"><h3>Chercher des bénévoles</h3><label class="field">Mission<input name="t" required placeholder="Collecte alimentaire"></label><label class="field">Quand<input name="when" required placeholder="Sam. 5 déc · 9h–12h"></label><button class="btn full" type="submit">Publier la mission</button></form>'+
+  '<div class="stack-s"><h3>Mes missions</h3>'+(mine.length?mine.map(n=>'<div class="card between"><div><b>'+esc(n.t)+'</b><div class="small muted">'+esc(n.when)+'</div></div><span class="tag t-ok">'+((n.volunteers||[]).length)+' inscrit(s)</span></div>').join(''):'<div class="card empty">Aucune mission.</div>')+
+  '<h3>Bénévoles disponibles</h3><div class="list">'+(vols.length?vols.map(v=>'<div class="li"><div class="av" style="width:38px;height:38px;font-size:13px;border-radius:99px;background:#FCE3EE;color:#C4105A">'+esc(initials(v.nom))+'</div><div style="flex:1"><b>'+esc(v.nom)+'</b><div class="small muted">'+esc(v.benevole.dispo)+' · '+esc(v.email)+'</div></div></div>').join(''):'<div class="empty">Personne pour l’instant : les habitants activent le bénévolat dans leur profil.</div>')+'</div></div></div>';
+}
+
+/* ============ ESPACE MAIRIE ============ */
+function pMairie(){
+  const t=UI.mairieTab;
+  const pubs=DB.posts.filter(p=>['annonce','travaux','event'].includes(p.type)).slice().reverse();
+  const k=[[DB.users.filter(u=>u.role==='habitant').length,'Habitants inscrits'],[DB.users.filter(u=>u.role==='commercant').length+COMMERCES.length,'Commerces référencés'],[DB.reports.filter(r=>r.status!=='Réparé').length,'Signalements ouverts'],[DB.users.filter(u=>['commercant','atelier','asso'].includes(u.role)).length,'Pros vérifiés (auto)']];
+  return '<div class="stack"><div><div class="lbl">Espace mairie</div><h1>Tableau de bord</h1></div>'+
+  '<div class="grid2" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">'+k.map(x=>'<div class="card kpi"><b>'+x[0]+'</b><span class="small muted">'+x[1]+'</span></div>').join('')+'</div>'+
+  '<div class="cols"><form class="card stack-s" id="fmairie"><h3>Publier dans l’app</h3><div class="seg">'+[['annonce','Annonce'],['travaux','Travaux'],['event','Événement']].map(x=>'<button type="button" class="'+(t===x[0]?'on':'')+'" data-a="mtab" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+  '<label class="field">Titre<input name="t" required placeholder="'+(t==='travaux'?'Rue Guy Môquet : une voie neutralisée':t==='event'?'Marché de Noël':'Fermeture exceptionnelle de la mairie')+'"></label><label class="field">Texte court<input name="x" placeholder="2 lignes, sans jargon"></label><label class="field">'+(t==='travaux'?'Dates':'Quand')+'<input name="when" placeholder="Mer. 25 nov · 9h–16h"></label>'+
+  '<label class="field">Qui prévenir ?<select name="cible"><option>'+(t==='travaux'?'Habitants concernés (notif « Travaux »)':t==='event'?'Intéressés « Événements »':'Tout le monde')+'</option><option>Tout le monde</option><option>Ne pas notifier</option></select></label><button class="btn full" type="submit">Publier maintenant</button></form>'+
+  '<div class="stack-s"><div class="card dark stack-s"><div class="lbl" style="color:#B0B0B5">Ce que reçoivent les habitants</div><div style="background:rgba(255,255,255,.12);border-radius:16px;padding:12px" class="row"><div class="logo"><i></i></div><div><div class="small" style="font-weight:700">'+APP+' · '+({annonce:'Annonce',travaux:'Travaux',event:'Événement'}[t])+'</div><div class="small" style="color:#D0D0D4">Le titre de ta publication</div></div></div></div>'+
+  '<div class="card stack-s"><h3>Signalements</h3>'+(DB.reports.length?DB.reports.slice().reverse().map(r=>'<div class="between" style="padding:8px 0;border-top:1px solid #EDEDF0"><div style="min-width:0"><b>'+esc(r.t)+'</b><div class="small muted">'+esc(r.lieu||'')+'</div></div><button class="tag '+(r.status==='Réparé'?'t-ok':r.status==='Transmis'?'t-navy':'t-warn')+'" style="border:0" data-a="rstatus" data-v="'+r.id+'">'+esc(r.status)+'</button></div>').join(''):'<div class="small muted">Aucun signalement. Les habitants signalent depuis leur profil (photo + lieu).</div>')+'</div>'+
+  '<div class="card stack-s"><h3>Publié</h3>'+(pubs.length?pubs.map(p=>'<div class="between"><span>'+esc(p.t)+'</span><button class="btn sec sm" data-a="unpub" data-v="'+p.id+'">Retirer</button></div>').join(''):'<div class="small muted">Rien pour l’instant.</div>')+'</div>'+
+  '<div class="card stack-s"><h3>Synchronisations automatiques</h3><div class="small"><span class="live"></span> Actualités du site de la ville</div><div class="small"><span class="live"></span> Programme du cinéma Jacques Tati (chaque mercredi)</div><div class="small"><span class="live"></span> Vérification SIRET / RNA des pros (registres de l’État)</div><div class="small muted">Rien à valider à la main : la mairie n’intervient que sur signalement.</div></div></div></div></div>';
+}
+
+/* ---------- Feuilles (modales) ---------- */
+function openSheet(html){const ex=document.querySelector('#layer .sheet');if(ex){ex.innerHTML='<div class="grab"></div>'+html;return}$('#layer').innerHTML='<div class="sheet-bg" data-a="bg"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>'+html+'</div></div>'}
+function closeSheet(){$('#layer').innerHTML=''}
+
+/* ---------- Après rendu ---------- */
+function after(r){
+  if(r==='explorer'){initMap();const q=$('#xq');if(q){q.addEventListener('input',debounce(()=>{UI.explorerQ=q.value;rerenderKeepFocus('#xq')},250))}}
+  if(r==='assos'){const q=$('#aq');if(q)q.addEventListener('input',debounce(()=>{UI.assoQ=q.value;rerenderKeepFocus('#aq')},250))}
+  if(r==='cartes'){const el=$('#qr');if(el){try{new QRCode(el,{text:'MONORSAY:'+(me().code||''),width:168,height:168,colorDark:'#1C1C1E',colorLight:'#ffffff'})}catch(e){el.innerHTML='<div style="width:168px;height:168px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px">'+esc(me().code)+'</div>'}}}
+  const fp=$('#fpub');if(fp)fp.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fp));const u=me();const types=u.role==='asso'?['event','benevolat']:u.role==='atelier'?['bonplan','event']:['bonplan','panier'];const t=UI.pubType&&types.includes(UI.pubType)?UI.pubType:types[0];
+    if(t==='benevolat'){DB.assoNeeds.push({id:uid(),owner:u.id,by:u.nom,t:d.t,when:d.when||'',volunteers:[]})}
+    DB.posts.push({id:uid(),owner:u.id,type:t,by:u.nom,t:d.t,x:d.x||'',when:d.when||'',prix:t==='panier'?d.prix:'',val:t==='panier'?d.val:'',qte:+d.qte||0});save();render();
+    toast(t==='panier'?'Panier anti-gaspi':t==='bonplan'?'Bon plan':t==='benevolat'?'Bénévolat':'Événement',u.nom+' : '+d.t)});
+  const fc=$('#fcours');if(fc)fc.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fc));const u=me();DB.courses.push({id:uid(),owner:u.id,by:u.nom,t:d.t,when:d.when,prix:d.prix,places:+d.places||8,inscrits:0});save();render();toast('Nouvel atelier',u.nom+' : '+d.t)});
+  const fn=$('#fneed');if(fn)fn.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fn));const u=me();DB.assoNeeds.push({id:uid(),owner:u.id,by:u.nom,t:d.t,when:d.when,volunteers:[]});save();render();toast('Bénévolat',u.nom+' cherche de l’aide : '+d.t)});
+  const fm=$('#fmairie');if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fm));DB.posts.push({id:uid(),owner:me().id,type:UI.mairieTab,by:'Mairie d’Orsay',t:d.t,x:d.x||'',when:d.when||''});save();render();toast({annonce:'Annonce',travaux:'Travaux',event:'Événement'}[UI.mairieTab],d.t)});
+}
+function debounce(f,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>f(...a),ms)}}
+function rerenderKeepFocus(sel){const el=$(sel);const pos=el?el.selectionStart:0;render();const n=$(sel);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(e){}}}
+
+/* ---------- Actions ---------- */
+document.addEventListener('click',async e=>{
+  const el=e.target.closest('[data-a]'); if(!el) return;
+  const a=el.dataset.a, v=el.dataset.v, u=me();
+  if(a==='bg'&&e.target!==el) return;
+  if(el.tagName==='A'&&a==='commerce'){e.preventDefault()}
+  switch(a){
+    case 'onb': if(v==='welcome'){UI.form={};UI.formErr=''}UI.onbStep=v;UI.verify=null;render();break;
+    case 'pickrole': if(UI.onbRole!==v)UI.verify=null;UI.onbRole=v;UI.formErr='';render();break;
+    case 'verify': {const inp=document.querySelector('[name=sid]');el.textContent='Vérification…';el.disabled=true;UI.verify=await verifyId(inp&&inp.value,UI.onbRole==='asso'?'asso':'pro');const keep=inp?inp.value:'';render();const n=document.querySelector('[name=sid]');if(n)n.value=keep;break}
+    case 'demo': demoUser();break;
+    case 'goto': go(v);break;
+    case 'travaux': go('infos');setTimeout(()=>{const t=$('#travaux');if(t)t.scrollIntoView({behavior:'smooth'})},80);break;
+    case 'xcat': UI.explorerCat=v;render();break;
+    case 'acat': UI.assoCat=v;render();break;
+    case 'cineday': UI.cineDay=v;render();break;
+    case 'agtab': UI.agendaTab=v;render();break;
+    case 'commerce': commerceSheet(v);break;
+    case 'close': case 'bg': closeSheet();break;
+    case 'addcard': {const mine=DB.cards[u.id]=DB.cards[u.id]||{};if(mine[v]){delete mine[v]}else{const i=COMMERCES.find(x=>x.id===v);const owner=v.startsWith('u')?DB.users.find(x=>'u'+x.id===v):null;const f=owner&&owner.fid||{type:'tampons',seuil:10,reco:'Formule à définir par le commerçant'};mine[v]={n:i?i.n:owner?owner.nom:'Commerce',type:f.type,seuil:+f.seuil||10,reco:f.reco,count:0}}save();commerceSheet(v);break}
+    case 'reserve': {const p=DB.posts.find(x=>x.id===v);if(p){p.reserved=!p.reserved;save();render();if(p.reserved)toast('Réservé',p.t+' · '+(p.when||''))}else{toast('Exemple','Dans l’app, la réservation est envoyée au commerçant.')}break}
+    case 'bookcourse': {const c=DB.courses.find(x=>x.id===v);if(c){if(c.me){c.me=false;c.inscrits--}else if(c.inscrits<c.places){c.me=true;c.inscrits++;toast('Atelier réservé',c.t+' · '+c.when)}else toast('Complet','Tu es sur liste d’attente : on te prévient si une place se libère.');save();render()}break}
+    case 'notif': u.notif=u.notif||{};u.notif[v]=!u.notif[v];save();if(v==='collecte'){const a=$('#cadr')?$('#cadr').value:'';const y=document.querySelector('.sheet').scrollTop;collecteSheet();if($('#cadr'))$('#cadr').value=a;document.querySelector('.sheet').scrollTop=y}else render();break;
+    case 'interest': {u.interests=u.interests||[];const i=u.interests.indexOf(v);i>=0?u.interests.splice(i,1):u.interests.push(v);save();render();break}
+    case 'benevole': u.benevole=u.benevole||{};u.benevole.on=!u.benevole.on;save();render();break;
+    case 'share': u.benevole.share=!u.benevole.share;save();render();break;
+    case 'volunteer': {const n=DB.assoNeeds.find(x=>x.id===v);if(n){n.volunteers=n.volunteers||[];const i=n.volunteers.indexOf(u.id);i>=0?n.volunteers.splice(i,1):(n.volunteers.push(u.id),toast('Merci !',n.by+' a reçu ton contact.'));save();render()}break}
+    case 'pharma': openSheet('<div class="stack"><div class="between"><div><div class="lbl">Ouverte maintenant</div><h2>Pharmacie de garde</h2></div><button class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div>'+pharmaWidget()+'</div>');break;
+    case 'switch': loginAs(v);break;
+    case 'addaccount': {const em=u.email;DB.session=null;save();UI.form={email:em};UI.formErr='';UI.onbStep='role';location.hash='';render();break}
+    case 'asso': assoSheet(v);break;
+    case 'photo': pickPhoto();break;
+    case 'delask': openSheet('<div class="stack" style="text-align:center"><div style="width:56px;height:56px;border-radius:99px;background:#FFE5E7;display:flex;align-items:center;justify-content:center;margin:0 auto">'+ico('trash',26,'#D70015',2.2)+'</div><h2>Supprimer ce compte ?</h2><div class="muted">'+esc(u.nom)+' · '+roleLabel(u.role)+'<br>'+(['commercant','atelier','asso'].includes(u.role)?'Ta fiche, tes publications, tes cours et ta carte de fidélité seront supprimés.':'Tes cartes de fidélité, tes points et tes préférences seront supprimés.')+' Cette action est définitive.</div><button class="btn full" style="background:#D70015" data-a="deldo">Supprimer définitivement</button><button class="btn sec full" data-a="close">Annuler</button></div>');break;
+    case 'deldo': {const id=u.id,key='u'+id;DB.users=DB.users.filter(x=>x.id!==id);DB.posts=DB.posts.filter(p=>p.owner!==id);DB.courses=DB.courses.filter(c=>c.owner!==id);DB.assoNeeds=DB.assoNeeds.filter(n=>n.owner!==id);DB.reports=DB.reports.filter(r=>r.by!==id);DB.visits=(DB.visits||[]).filter(x=>x.shop!==id&&x.client!==id);delete DB.cards[id];Object.values(DB.cards).forEach(m=>{delete m[key]});
+      const other=DB.users.find(x=>x.email&&u.email&&x.email.toLowerCase()===u.email.toLowerCase());closeSheet();
+      if(other){loginAs(other.id);toast('Compte supprimé','Tu es maintenant sur ton compte '+roleLabel(other.role).toLowerCase()+'.')}else{DB.session=null;save();UI.onbStep='welcome';location.hash='';render();toast('Compte supprimé','Toutes tes données ont été effacées de cet appareil.')}break}
+
+    case 'collecte': collecteSheet();break;
+    case 'cday': {const [k,d]=v.split(':');const c=collecte(u);c[k]=c[k]||[];const i=c[k].indexOf(+d);i>=0?c[k].splice(i,1):c[k].push(+d);save();const y=document.querySelector('.sheet').scrollTop;const a=$('#cadr')?$('#cadr').value:'';collecteSheet();if($('#cadr'))$('#cadr').value=a;document.querySelector('.sheet').scrollTop=y;break}
+    case 'cadrpick': $('#cadr').value=v;$('#cadrsug').innerHTML='';$('#czone').innerHTML=zoneCard(v,{collecteManual:false});break;
+    case 'csave': u.adresse=($('#cadr')&&$('#cadr').value.trim())||u.adresse||'';u.collecteManual=false;u.collecte=null;save();closeSheet();render();toast('Collecte',collecteTxt(u));break;
+    case 'demotoggle': DB.demo=!DB.demo;save();render();break;
+    case 'report': openSheet('<form class="stack" id="freport"><div class="between"><h2>Signaler un problème</h2><button type="button" class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div><div class="card stack-s"><label class="field">Quoi ?<select name="t"><option>Lampadaire éteint</option><option>Dépôt sauvage</option><option>Nid-de-poule</option><option>Graffiti</option><option>Autre</option></select></label><label class="field" id="rautre" style="display:none">Précise le problème<input name="autre" placeholder="ex. banc cassé, arbre tombé…"></label><label class="field">Où ?<input name="lieu" required placeholder="ex. 12 rue de Paris"></label><label class="field">Photo<input type="file" accept="image/*" name="photo"></label></div><button class="btn full" type="submit">Envoyer à la mairie</button></form>');
+      const rs=document.querySelector('#freport select[name=t]');rs.addEventListener('change',()=>{const on=rs.value==='Autre';$('#rautre').style.display=on?'flex':'none';const ai=$('#rautre input');ai.required=on;if(on)ai.focus()});
+      $('#freport').addEventListener('submit',ev=>{ev.preventDefault();const d=Object.fromEntries(new FormData(ev.target));if(d.t==='Autre'&&d.autre)d.t=d.autre.trim();DB.reports.push({id:uid(),by:u.id,t:d.t,lieu:d.lieu,status:'Nouveau'});save();closeSheet();render();toast('Signalement envoyé','La mairie a reçu : '+d.t+' · '+d.lieu)});break;
+    case 'rstatus': {const r=DB.reports.find(x=>x.id===v);if(r){r.status=r.status==='Nouveau'?'Transmis':r.status==='Transmis'?'Réparé':'Nouveau';save();render()}break}
+    case 'logout': DB.session=null;save();UI.onbStep='welcome';location.hash='';render();break;
+    case 'protab': UI.proTab=v;render();break;
+    case 'pubtype': UI.pubType=v;render();break;
+    case 'unpub': DB.posts=DB.posts.filter(p=>p.id!==v);save();render();break;
+    case 'mtab': UI.mairieTab=v;render();break;
+    case 'fidtype': u.fid=u.fid||{};u.fid.type=v;save();render();break;
+    case 'fidetu': u.fid.etudiant=!u.fid.etudiant;save();render();break;
+    case 'fidsave': u.fid.seuil=+($('#fseuil').value)||10;u.fid.reco=$('#freco').value||'1 produit offert';save();render();toast('Carte de fidélité','Nouvelle formule enregistrée.');break;
+    case 'booking': u.booking=v;save();render();break;
+    case 'ficheSave': u.nom=$('#pnom').value||u.nom;u.adr=$('#padr').value;u.desc=$('#pdesc').value;if($('#plink'))u.link=$('#plink').value;save();render();toast('Fiche','Modifications en ligne.');break;
+    case 'cscan': {const code=($('#ccode').value||'').trim().toUpperCase();const cl=DB.users.find(x=>x.code===code&&x.role!=='mairie');if(!cl){toast('Client introuvable','Vérifie le code sous son QR code.');break}
+      const cards=DB.cards[cl.id]=DB.cards[cl.id]||{};const key='u'+u.id;UI.caisse={step:'found',client:cl,card:cards[key]||null};render();break}
+    case 'cuse': UI.caisse.use=!UI.caisse.use;render();break;
+    case 'ccheque': UI.caisse.cheque=!UI.caisse.cheque;render();break;
+    case 'cvalid': {const c=UI.caisse,cl=c.client;const amt=parseFloat(String($('#camount').value||'0').replace(',','.'))||0;const f=u.fid||{type:'tampons',seuil:10,reco:'1 produit offert'};
+      const cards=DB.cards[cl.id]=DB.cards[cl.id]||{};const key='u'+u.id;const card=cards[key]=cards[key]||{n:u.nom,type:f.type,seuil:+f.seuil||10,reco:f.reco,count:0};
+      let msg='';if(c.use){card.count=0;msg+='Récompense utilisée · carte remise à zéro. '}
+      if(card.type==='tampons')card.count=Math.min(card.seuil,card.count+(amt>0?1:0));else card.count=Math.round((card.count+amt)*100)/100;
+      const pts=Math.round(amt);cl.points=(cl.points||0)+pts;cl.history=cl.history||[];if(c.cheque){cl.points-=1000;cl.history.push({t:'Chèque ville utilisé chez '+u.nom,v:-1000});msg+='Chèque de 10 € déduit. '}
+      if(pts)cl.history.push({t:u.nom+' · ticket '+amt.toFixed(2).replace('.',',')+' €',v:pts});
+      DB.visits=DB.visits||[];DB.visits.push({shop:u.id,client:cl.id,amt,at:Date.now()});save();
+      UI.caisse={step:'done',msg:msg+'+'+pts+' pts ville · carte '+(card.type==='tampons'?card.count+'/'+card.seuil:card.count+(card.type==='points'?' pts':' €'))};render();break}
+    case 'creset': UI.caisse={step:'idle'};render();break;
+    case 'wallet': toast('Apple Wallet','Dans l’app finale, la carte s’ajoute à Cartes (Wallet) et se met à jour toute seule.');break;
+    case 'notifs': {const list=DB.posts.slice().reverse();openSheet('<div class="stack"><div class="between"><h2>Notifications</h2><button class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div>'+(list.length?'<div class="list">'+list.map(p=>'<div class="li"><div class="logo" style="width:32px;height:32px;border-radius:9px"><i style="width:12px;height:12px;border-width:3px"></i></div><div><div style="font-weight:600">'+esc(p.t)+'</div><div class="small muted">'+esc(p.by)+'</div></div></div>').join('')+'</div>':'<div class="card empty">Rien de neuf. Tu choisis tes notifications dans ton profil.</div>')+'</div>');break}
+  }
+});
+document.addEventListener('change',e=>{const el=e.target.closest('[data-a="dispo"]');if(el){me().benevole.dispo=el.value;save()}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.a==='globalsearch'){UI.explorerQ=e.target.value;UI.explorerCat='tout';go('explorer')}if(e.key==='Escape')closeSheet()});
+
+render();
+loadLiveActus();
+</script>
+</body>
+</html>
