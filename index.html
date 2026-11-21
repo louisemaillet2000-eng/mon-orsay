@@ -535,6 +535,7 @@ function seedDemo(){
   DB.courses.forEach(c=>{if(c.id==='dc1'&&!c.start){c.start='2026-11-28T14:00';c.end='2026-11-28T17:00';c.when=fmtRange(c.start,c.end)}if(c.id==='dc2'&&!c.start){c.start='2026-12-05T10:00';c.end='2026-12-05T12:00';c.when=fmtRange(c.start,c.end)}});
   const dn1=DB.assoNeeds.find(n=>n.id==='dn1');if(dn1&&!dn1.start){dn1.start='2026-12-05T09:00';dn1.end='2026-12-05T12:00';dn1.when=fmtRange(dn1.start,dn1.end)}
   DB.posts.forEach(p=>{if(p.id==='dp1'&&!p.end){p.end='2026-11-29T19:30';p.when=untilTxt(p.end)}if(p.id==='dp2'&&!p.start){const t=new Date();const z=n=>String(n).padStart(2,'0');const d=t.getFullYear()+'-'+z(t.getMonth()+1)+'-'+z(t.getDate());p.start=d+'T18:30';p.end=d+'T19:00';p.when=fmtRange(p.start,p.end)}if(p.id==='dj1'&&!p.horaires)p.horaires=p.when});
+  if(!DB.reports.some(r=>r.id==='dr2'))DB.reports.push({id:'dr2',by:'demo-v1',t:'Lampadaire éteint',lieu:'Avenue des Pinsons',status:'Nouveau'},{id:'dr3',by:'demo-v2',t:'Lampadaire éteint',lieu:'Rue de Chartres (n°20)',status:'Nouveau'},{id:'dr4',by:'demo-v1',t:'Dépôt sauvage',lieu:'Parking Kempen',status:'Nouveau'},{id:'dr5',by:'demo-v2',t:'Nid-de-poule',lieu:'Rue Guy Môquet',status:'Réparé'});
   if(!DB.demoSeeded){
     DB.cards['demo-hab']=Object.assign(DB.cards['demo-hab']||{},{'udemo-shop':{n:'La Fromagerie (démo)',type:'tampons',seuil:10,reco:'1 fromage offert (jusqu’à 8 €)',count:10},'udemo-atelier':{n:'Atelier Verre & Lumière (démo)',type:'tampons',seuil:5,reco:'1 cours offert',count:2}});
     DB.posts.push({id:'dp1',owner:'demo-shop',type:'bonplan',by:'La Fromagerie (démo)',t:'−15 % sur les plateaux raclette',x:'Sur présentation de la carte',when:'Jusqu’à dimanche'});
@@ -585,26 +586,37 @@ function pAccueil(){
   '<div class="grid2" style="grid-template-columns:repeat(5,minmax(0,1fr));gap:6px">'+
     [['cinema','film','Cinéma','#004A7C','#fff'],['assos','heart','Assos','#E2186A','#fff'],['agenda','cal','Agenda','#C8D400','#1C1F00'],['emplois','briefcase','Emplois','#1C1C1E','#fff'],['infos','hall','Pratique','#fff','#1C1C1E']].map(t=>'<a href="#'+t[0]+'" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:600;text-decoration:none"><span style="width:56px;height:56px;border-radius:18px;background:'+t[3]+';display:flex;align-items:center;justify-content:center">'+ico(t[1],25,t[4])+'</span>'+t[2]+'</a>').join('')+
   '</div>'+
+  '<div class="stack-s"><div class="between"><h2>Bons plans &amp; paniers</h2><a href="#explorer" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Explorer</a></div>'+
+   (posts.filter(p=>['panier','bonplan','cours','benevolat'].includes(p.type)).length?'<div class="hscroll">'+posts.filter(p=>['panier','bonplan','cours','benevolat'].includes(p.type)).map(postCard).join('')+'</div>':'<div class="card empty">Pas encore de bon plan. Les commerçants publient depuis leur espace pro.</div>')+'</div>'+
   '<div class="cols"><div class="stack">'+
-   '<div class="stack-s"><div class="between"><h2>Bons plans &amp; paniers</h2><span class="small muted">'+(DB.posts.filter(p=>['panier','bonplan','cours'].includes(p.type)).length?'':'')+'</span></div>'+
-   (posts.length?'<div class="hscroll">'+posts.filter(p=>['panier','bonplan','cours','benevolat'].includes(p.type)).map(postCard).join('')+'</div>':'<div class="card empty">Pas encore de bon plan. Les commerçants publient depuis leur espace pro.</div>')+'</div>'+
-   (jobs().length?'<div class="stack-s"><div class="between"><h2>Ils recrutent</h2><a href="#emplois" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Toutes les offres</a></div><div class="hscroll">'+jobs().slice(0,6).map(j=>jobCard(j,true)).join('')+'</div></div>':'')+
+   '<div class="card stack-s"><div class="between"><h3>'+ico('film',18,'#004A7C')+' Au cinéma aujourd’hui</h3><a href="#cinema" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Programme</a></div>'+
+    (cineToday.length?'<div class="hscroll" style="margin:0;padding:2px 0 4px;flex-wrap:nowrap">'+cineToday.map(f=>'<a href="#cinema" style="text-decoration:none;color:inherit;width:118px;flex-shrink:0" class="stack-s"><div style="width:118px;height:168px;border-radius:12px;background:'+f.c+';position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:8px;color:#fff;font-size:11px;font-weight:800">'+esc(f.g.toUpperCase())+(f.p?'<img src="'+f.p+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">':'')+'</div><div style="font-weight:700;font-size:14px;line-height:1.25" class="clip2">'+esc(f.t)+'</div><div class="small muted">'+f.s[ckey].join(' · ')+'</div></a>').join('')+'</div>':'<div class="small muted">Pas de séance relevée aujourd’hui. Voir le programme de la semaine.</div>')+'</div>'+
+  '</div><div class="stack">'+
+   '<div class="stack-s"><h2>Infos pratiques</h2><div class="grid2">'+
+    infoTile('trash','#FFF6D6','#8A6A00','Collecte',collecteTxt(u),'collecte')+
+    infoTile('cross','#E8F4E0','#2F7A1F','Pharmacie de garde','Voir la pharmacie ouverte','pharma')+
+    infoTile('hall','#E1ECF5','#004A7C','Mairie',mo.txt,'infos')+
+    infoTile('warn','#FFE6DA','#B0410A','Travaux',TRAVAUX.length+' chantiers suivis','travaux')+
+   '</div></div>'+
+   reportCard(u)+
+  '</div></div>'+
+  (jobs().length?'<div class="stack-s"><div class="between"><h2>Ils recrutent</h2><a href="#emplois" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Toutes les offres</a></div><div class="hscroll">'+jobs().slice(0,6).map(j=>jobCard(j,true)).join('')+'</div></div>':'')+
+  '<div class="cols"><div class="stack">'+
    (mairieLive().length?'<div class="stack-s"><h2>Publié par la mairie</h2>'+mairieLive().map(p=>'<div class="card stack-s"><div class="row" style="gap:8px"><span class="tag t-navy">'+({annonce:'Annonce',travaux:'Travaux',event:'Événement'}[p.type])+'</span></div><h3>'+esc(p.t)+'</h3>'+(p.x?'<div class="small">'+esc(p.x)+'</div>':'')+'<div class="small muted">'+esc([p.when,p.lieu].filter(Boolean).join(' · '))+'</div></div>').join('')+'</div>':'')+
    '<div class="stack-s"><div class="between"><h2>Actus de la ville</h2><a class="small ext" style="color:var(--pink-ink);text-decoration:none;font-weight:600" href="'+MAIRIE.site+'" target="_blank" rel="noopener">Site</a></div>'+srcBadge(LIVE.actusState,'mairie-orsay.fr')+
    actus().slice(0,4).map(a=>'<a class="card stack-s" style="text-decoration:none" href="'+esc(a.u)+'" target="_blank" rel="noopener"><div class="between"><span class="tag '+(a.cat==='Travaux'?'t-warn':'t-navy')+'">'+esc(a.cat)+'</span><span class="small muted">'+(a.d?fmtD(a.d):'')+'</span></div><h3>'+esc(a.t)+'</h3><div class="small muted clip2">'+esc(a.x)+'</div></a>').join('')+'</div>'+
   '</div><div class="stack">'+
-   '<div class="card stack-s"><div class="between"><h3>Au cinéma aujourd’hui</h3><a href="#cinema" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Programme</a></div>'+
-    (cineToday.length?cineToday.slice(0,4).map(f=>'<div class="row" style="padding:6px 0"><div style="width:34px;height:48px;border-radius:7px;background:'+f.c+';position:relative;overflow:hidden;flex-shrink:0">'+(f.p?'<img src="'+f.p+'" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">':'')+'</div><div style="flex:1;min-width:0"><div style="font-weight:600">'+esc(f.t)+'</div><div class="small muted">'+f.s[ckey].join(' · ')+'</div></div></div>').join(''):'<div class="small muted">Pas de séance relevée aujourd’hui. Voir le programme de la semaine.</div>')+'</div>'+
-   '<div class="grid2">'+
-    infoTile('hall','#E1ECF5','#004A7C','Mairie',mo.txt,'infos')+
-    infoTile('cross','#E8F4E0','#2F7A1F','Pharmacie de garde','Voir la pharmacie ouverte','pharma')+
-    infoTile('trash','#FFF6D6','#8A6A00','Collecte',collecteTxt(u),'collecte')+
-    infoTile('warn','#FFE6DA','#B0410A','Travaux',TRAVAUX.length+' chantiers suivis','travaux')+
-   '</div>'+
    '<div class="stack-s"><div class="between"><h2>À venir</h2><a href="#agenda" class="small" style="color:var(--pink-ink);font-weight:600;text-decoration:none">Agenda</a></div><div class="list">'+
     ag.map(a=>'<a class="li" href="'+esc(a.u)+'" target="_blank" rel="noopener"><div style="width:46px;text-align:center;flex-shrink:0"><div style="font-size:11px;font-weight:700;color:var(--pink-ink);text-transform:uppercase">'+fmtDay(a.d).split(' ')[0]+'</div><div style="font-size:21px;font-weight:800">'+new Date(a.d+'T12:00').getDate()+'</div></div><div style="min-width:0;flex:1"><div style="font-weight:600" class="clip2">'+esc(a.t)+'</div><div class="small muted">'+esc([a.h,a.l].filter(Boolean).join(' · '))+'</div></div></a>').join('')+'</div></div>'+
    '<div class="card stack-s"><h3>Les marchés</h3>'+MARCHES.map(m=>'<div><div style="font-weight:600">'+m.n+'</div><div class="small muted">'+m.l+' · '+m.j+'</div></div>').join('')+'</div>'+
-  '</div></div></div>';
+  '</div></div>'+
+  '</div>';
+}
+const RSTAT={Nouveau:'t-warn',Transmis:'t-navy','Réparé':'t-ok'};
+function reportCard(u){
+  const mine=DB.reports.filter(r=>r.by===u.id).slice().reverse();
+  return '<div class="card stack-s"><div class="between"><div class="row" style="gap:10px"><div class="ic" style="background:#FF9500">'+ico('warn',16,'#fff',2.4)+'</div><div><h3>Un souci dans ta rue ?</h3><div class="small muted">Lampadaire, dépôt sauvage, nid-de-poule…</div></div></div><button class="btn sm" data-a="report">Signaler</button></div>'+
+   (mine.length?'<div class="lbl" style="margin-top:4px">Mes signalements</div>'+mine.slice(0,3).map(r=>'<div class="between" style="padding:6px 0;border-top:1px solid #EDEDF0"><div style="min-width:0"><div style="font-weight:600">'+esc(r.t)+'</div><div class="small muted">'+esc(r.lieu||'')+'</div></div><span class="tag '+(RSTAT[r.status]||'t-grey')+'">'+esc(r.status)+'</span></div>').join(''):'')+'</div>';
 }
 function infoTile(icn,bg,fg,lab,val,link){
   const ext=link.startsWith('http');
@@ -1081,8 +1093,20 @@ function pMairie(){
   '<div class="card stack-s"><div class="between"><h3>Publications en cours</h3><span class="tag t-grey">'+live.length+'</span></div>'+(live.length?live.map(pubRow).join(''):'<div class="small muted">Rien en ligne pour l’instant.</div>')+
   (past.length?'<details><summary class="small muted" style="cursor:pointer;padding-top:8px">Terminées ('+past.length+')</summary>'+past.map(pubRow).join('')+'</details>':'')+'</div></div>'+
   '<div class="stack-s"><div class="card dark stack-s"><div class="lbl" style="color:#B0B0B5">Ce que reçoivent les habitants</div><div style="background:rgba(255,255,255,.12);border-radius:16px;padding:12px" class="row"><div class="logo"><i></i></div><div><div class="small" style="font-weight:700">'+APP+' · '+MTYPES[t]+'</div><div class="small" style="color:#D0D0D4">Le titre de ta publication</div></div></div></div>'+
-  '<div class="card stack-s"><h3>Signalements</h3>'+(DB.reports.length?DB.reports.slice().reverse().map(r=>'<div class="between" style="padding:8px 0;border-top:1px solid #EDEDF0"><div style="min-width:0"><b>'+esc(r.t)+'</b><div class="small muted">'+esc(r.lieu||'')+'</div></div><button class="tag '+(r.status==='Réparé'?'t-ok':r.status==='Transmis'?'t-navy':'t-warn')+'" style="border:0" data-a="rstatus" data-v="'+r.id+'">'+esc(r.status)+'</button></div>').join('')+'<div class="small muted">Touchez le statut pour le faire avancer.</div>':'<div class="small muted">Aucun signalement. Les habitants signalent depuis leur profil (photo + lieu).</div>')+'</div>'+
+  reportsGrouped()+
   '<div class="card stack-s"><h3>Synchronisations automatiques</h3><div class="small"><span class="live"></span> Actualités du site de la ville</div><div class="small"><span class="live"></span> Programme du cinéma Jacques Tati (chaque mercredi)</div><div class="small"><span class="live"></span> Vérification SIRET / RNA des pros (registres de l’État)</div><div class="small muted">Rien à valider à la main : la mairie n’intervient que sur signalement.</div></div></div></div></div>';
+}
+function reportsGrouped(){
+  if(!DB.reports.length)return '<div class="card stack-s"><h3>Signalements</h3><div class="small muted">Aucun signalement. Les habitants signalent depuis l’accueil ou leur profil (photo + lieu).</div></div>';
+  const groups={};DB.reports.forEach(r=>{(groups[r.t]=groups[r.t]||[]).push(r)});
+  const keys=Object.keys(groups).sort((a,b)=>groups[b].filter(r=>r.status!=='Réparé').length-groups[a].filter(r=>r.status!=='Réparé').length||groups[b].length-groups[a].length);
+  const item=r=>'<div class="between" style="padding:7px 0;border-top:1px solid #EDEDF0"><div style="min-width:0"><div style="font-weight:600">'+esc(r.lieu||'Lieu non précisé')+'</div></div><button class="tag '+(RSTAT[r.status]||'t-grey')+'" style="border:0;cursor:pointer" data-a="rstatus" data-v="'+r.id+'">'+esc(r.status)+'</button></div>';
+  const open=DB.reports.filter(r=>r.status!=='Réparé').length;
+  return '<div class="card stack-s"><div class="between"><h3>Signalements</h3><span class="tag t-warn">'+open+' ouvert(s)</span></div>'+
+   keys.map(k=>{const g=groups[k];const o=g.filter(r=>r.status!=='Réparé').length;
+     return g.length>1?'<details'+(o?' open':'')+' style="border-top:1px solid #EDEDF0;padding-top:6px"><summary style="cursor:pointer;list-style:none" class="between"><span style="font-weight:700">'+esc(k)+'</span><span class="row" style="gap:6px"><span class="tag t-grey">'+g.length+' signalements</span>'+(o?'<span class="tag t-warn">'+o+' ouvert(s)</span>':'<span class="tag t-ok">Tous réparés</span>')+'</span></summary>'+g.slice().reverse().map(item).join('')+'<button class="btn sec sm" style="margin-top:6px" data-a="rgroup" data-v="'+esc(k)+'">Tout passer à l’étape suivante</button></details>'
+       :'<div style="border-top:1px solid #EDEDF0;padding-top:6px"><div style="font-weight:700">'+esc(k)+'</div>'+item(g[0]).replace('border-top:1px solid #EDEDF0;','')+'</div>'}).join('')+
+   '<div class="small muted">Touche un statut pour le faire avancer : Nouveau → Transmis → Réparé.</div></div>';
 }
 function mairieEditSheet(id){
   const p=DB.posts.find(x=>x.id===id);if(!p)return;
@@ -1176,6 +1200,7 @@ document.addEventListener('click',async e=>{
     case 'report': openSheet('<form class="stack" id="freport"><div class="between"><h2>Signaler un problème</h2><button type="button" class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div><div class="card stack-s"><label class="field">Quoi ?<select name="t"><option>Lampadaire éteint</option><option>Dépôt sauvage</option><option>Nid-de-poule</option><option>Graffiti</option><option>Autre</option></select></label><label class="field" id="rautre" style="display:none">Précise le problème<input name="autre" placeholder="ex. banc cassé, arbre tombé…"></label><label class="field">Où ?<input name="lieu" required placeholder="ex. 12 rue de Paris"></label><label class="field">Photo<input type="file" accept="image/*" name="photo"></label></div><button class="btn full" type="submit">Envoyer à la mairie</button></form>');
       const rs=document.querySelector('#freport select[name=t]');rs.addEventListener('change',()=>{const on=rs.value==='Autre';$('#rautre').style.display=on?'flex':'none';const ai=$('#rautre input');ai.required=on;if(on)ai.focus()});
       $('#freport').addEventListener('submit',ev=>{ev.preventDefault();const d=Object.fromEntries(new FormData(ev.target));if(d.t==='Autre'&&d.autre)d.t=d.autre.trim();DB.reports.push({id:uid(),by:u.id,t:d.t,lieu:d.lieu,status:'Nouveau'});save();closeSheet();render();toast('Signalement envoyé','La mairie a reçu : '+d.t+' · '+d.lieu)});break;
+    case 'rgroup': {const next={Nouveau:'Transmis',Transmis:'Réparé'};DB.reports.filter(r=>r.t===v&&r.status!=='Réparé').forEach(r=>{r.status=next[r.status]||r.status});save();render();break}
     case 'rstatus': {const r=DB.reports.find(x=>x.id===v);if(r){r.status=r.status==='Nouveau'?'Transmis':r.status==='Transmis'?'Réparé':'Nouveau';save();render()}break}
     case 'logout': DB.session=null;save();UI.onbStep='welcome';location.hash='';render();break;
     case 'protab': UI.proTab=v;render();break;
