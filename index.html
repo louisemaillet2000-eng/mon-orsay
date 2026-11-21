@@ -511,6 +511,9 @@ function seedDemo(){
   const dn=DB.assoNeeds.find(n=>n.id==='dn1');if(dn&&!dn.nb){dn.nb=6;dn.x='Accueil des donateurs et tri';dn.volunteers=dn.volunteers&&dn.volunteers.length?dn.volunteers:['demo-v1']}
   if(!DB.posts.some(p=>p.id==='dj1'))DB.posts.push({id:'dj1',owner:'demo-shop',type:'emploi',by:'La Fromagerie (démo)',t:'Vendeur·se en crèmerie',contrat:'Job étudiant',salaire:'12,50 € / h',when:'Samedis 8h30–13h30',x:'Conseil et découpe au comptoir, mise en rayon. Débutant·e bienvenu·e, formation sur place.',apps:[{by:'demo-v2',nom:'Sophie (démo)',email:'sophie@demo',tel:'',msg:'Bonjour, je suis étudiante à Orsay et disponible tous les samedis.',cv:'CV_Sophie.pdf',at:Date.now()}]});
   if(!DB.posts.some(p=>p.id==='dj2'))DB.posts.push({id:'dj2',owner:'demo-asso',type:'emploi',by:'Les Amis du Quartier (démo)',t:'Service civique : animation de quartier',contrat:'Service civique',when:'24 h / semaine, 8 mois',x:'Organisation des fêtes de quartier et accueil des nouveaux habitants.',apps:[]});
+  DB.courses.forEach(c=>{if(c.id==='dc1'&&!c.start){c.start='2026-11-28T14:00';c.end='2026-11-28T17:00';c.when=fmtRange(c.start,c.end)}if(c.id==='dc2'&&!c.start){c.start='2026-12-05T10:00';c.end='2026-12-05T12:00';c.when=fmtRange(c.start,c.end)}});
+  const dn1=DB.assoNeeds.find(n=>n.id==='dn1');if(dn1&&!dn1.start){dn1.start='2026-12-05T09:00';dn1.end='2026-12-05T12:00';dn1.when=fmtRange(dn1.start,dn1.end)}
+  DB.posts.forEach(p=>{if(p.id==='dp1'&&!p.end){p.end='2026-11-29T19:30';p.when=untilTxt(p.end)}if(p.id==='dp2'&&!p.start){const t=new Date();const z=n=>String(n).padStart(2,'0');const d=t.getFullYear()+'-'+z(t.getMonth()+1)+'-'+z(t.getDate());p.start=d+'T18:30';p.end=d+'T19:00';p.when=fmtRange(p.start,p.end)}if(p.id==='dj1'&&!p.horaires)p.horaires=p.when});
   if(!DB.demoSeeded){
     DB.cards['demo-hab']=Object.assign(DB.cards['demo-hab']||{},{'udemo-shop':{n:'La Fromagerie (démo)',type:'tampons',seuil:10,reco:'1 fromage offert (jusqu’à 8 €)',count:10},'udemo-atelier':{n:'Atelier Verre & Lumière (démo)',type:'tampons',seuil:5,reco:'1 cours offert',count:2}});
     DB.posts.push({id:'dp1',owner:'demo-shop',type:'bonplan',by:'La Fromagerie (démo)',t:'−15 % sur les plateaux raclette',x:'Sur présentation de la carte',when:'Jusqu’à dimanche'});
@@ -660,27 +663,32 @@ function pExplorer(){
   (items.length?items.map(i=>{const c=CATS[i.cat]||CATS.services;return '<button class="li" data-a="commerce" data-v="'+i.id+'">'+(i.photo?'<img src="'+i.photo+'" alt="" style="width:46px;height:46px;border-radius:14px;object-fit:cover;flex-shrink:0">':'<div class="av" style="background:'+c.c+';color:#fff;width:46px;height:46px">'+c.i+'</div>')+'<div style="flex:1;min-width:0"><div style="font-weight:700">'+esc(i.n)+(i.mine?(i.verified?' <span class="tag t-ok">SIRET ✓</span>':' <span class="tag t-warn">Non vérifiée</span>'):'')+'</div><div class="small muted clip2">'+esc(i.x||c.l)+(i.a?' · '+esc(i.a.replace(', 91400 Orsay','')):'')+'</div></div>'+ico('chev',16,'#C7C7CC',2.4)+'</button>'}).join(''):'<div class="empty">Aucun résultat.</div>')+
   '</div>'+(UI.explorerCat==='atelier'?'<a class="small ext" href="'+ASSO_URL+'" target="_blank" rel="noopener" style="color:var(--pink-ink);font-weight:600">Coordonnées dans l’annuaire de la mairie</a>':'')+'</div></div></div>';
 }
-let MAP=null;
+let MAP=null,MAPDIAG=null;
 async function initMap(){
   const el=$('#map'); if(!el) return;
   const note=$('#mapnote');
   if(typeof L==='undefined'){el.innerHTML='<div class="empty" style="padding-top:150px">Carte indisponible ici.</div>';return}
   try{
     const map=L.map(el,{zoomControl:true,attributionControl:true}).setView([48.6985,2.1875],14);MAP=map;
-    let loaded=0,errs=0,switched=false;
-    const addTiles=(url,opt)=>{const tl=L.tileLayer(url,opt).addTo(map);tl.on('tileload',()=>{loaded++;const ov=el.querySelector('.mapov');if(ov)ov.remove()});tl.on('tileerror',()=>{errs++;if(errs===6&&!switched&&!loaded){switched=true;map.removeLayer(tl);addTiles('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'})}});return tl};
-    addTiles('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap · © CARTO'});
-    setTimeout(()=>{if(!loaded&&el.isConnected&&!el.querySelector('.mapov')){const ov=document.createElement('div');ov.className='mapov';ov.style.cssText='position:absolute;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;background:#EAF0E2;color:#3A3A3C;font-size:15px';ov.innerHTML='<div><div style="font-weight:700;margin-bottom:6px">Fond de carte indisponible ici</div><div>L’aperçu dans Claude bloque les cartes. Ouvre le lien GitHub Pages de l’app pour voir la carte et les commerces placés dessus.</div></div>';el.appendChild(ov)}},5000);
+    const PROV=[['CARTO','https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap · © CARTO'}],['OpenStreetMap','https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}],['Esri','https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri, OpenStreetMap'}]];
+    const diag={prov:[],loaded:0,errs:0,geoOk:0,geoKo:0};MAPDIAG=diag;
+    const showDiag=()=>{if(note)note.innerHTML='<span class="badge-src">'+(diag.loaded?'<span class="live"></span>Fond de carte : '+diag.prov[diag.prov.length-1]:'<span class="snap"></span>Fond de carte : aucun ne répond ('+diag.prov.join(', ')+')')+' · Adresses placées : '+diag.geoOk+'/'+(diag.geoOk+diag.geoKo)+'</span>'};
+    let idx=0,cur=null,errs=0;
+    const tryProv=()=>{if(idx>=PROV.length){showDiag();return}const p=PROV[idx];diag.prov.push(p[0]);errs=0;cur=L.tileLayer(p[1],p[2]).addTo(map);
+      cur.on('tileload',()=>{diag.loaded++;const ov=el.querySelector('.mapov');if(ov)ov.remove();if(diag.loaded===1)showDiag()});
+      const me_=cur;cur.on('tileerror',()=>{diag.errs++;errs++;if(errs===4&&!diag.loaded&&me_===cur){map.removeLayer(me_);idx++;tryProv()}})};
+    tryProv();
+    setTimeout(()=>{if(!diag.loaded&&el.isConnected&&!el.querySelector('.mapov')){const gh=!/claude|anthropic|usercontent/i.test(location.hostname)&&location.protocol.startsWith('http');const ov=document.createElement('div');ov.className='mapov';ov.style.cssText='position:absolute;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;background:#EAF0E2;color:#3A3A3C;font-size:15px';ov.innerHTML='<div><div style="font-weight:700;margin-bottom:6px">Fond de carte indisponible</div><div>'+(gh?'Aucun serveur de carte ne répond depuis ce navigateur ou ce réseau (bloqueur de pubs, réseau d’entreprise, mode Isolement…). Essaie en 4G ou sur un autre navigateur.':'L’aperçu dans Claude bloque les cartes. Ouvre le lien GitHub Pages de l’app pour voir la carte.')+'</div><div class="small" style="margin-top:8px;color:#6E6E73">Essayés : '+diag.prov.join(', ')+' · erreurs : '+diag.errs+'</div></div>';el.appendChild(ov);showDiag()}},7000);
     const items=explorerItems().filter(i=>i.a);
     let placed=0;
     for(const i of items){
-      const ll=await geocode(i.a); if(!el.isConnected) return; if(!ll) continue;
+      const ll=await geocode(i.a); if(!el.isConnected) return; if(!ll){diag.geoKo++;continue} diag.geoOk++;
       const c=CATS[i.cat]||CATS.services;
       const m=L.marker(ll,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:'+c.c+'"><b>'+c.i+'</b></div>',iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-28]})}).addTo(map);
       m.bindPopup('<b>'+esc(i.n)+'</b><br><span style="color:#6E6E73">'+esc(i.a)+'</span><br><a href="#" data-a="commerce" data-v="'+i.id+'" style="color:#C4105A;font-weight:700">Voir la fiche</a>');
       placed++;
     }
-    if(!placed&&note) note.innerHTML='Les adresses n’ont pas pu être placées ici (accès réseau bloqué dans l’aperçu). Sur la version en ligne, chaque commerce est placé automatiquement via la Base Adresse Nationale.';
+    showDiag();if(!placed&&note) note.innerHTML+='<br>'+'Les adresses n’ont pas pu être placées ici (accès réseau bloqué dans l’aperçu). Sur la version en ligne, chaque commerce est placé automatiquement via la Base Adresse Nationale.';
   }catch(e){el.innerHTML='<div class="empty" style="padding-top:150px">Carte indisponible ici.</div>'}
 }
 function commerceSheet(id){
@@ -755,7 +763,7 @@ function pAgenda(){
   return '<div class="stack"><a href="#accueil" class="small hide-desk" style="color:var(--pink-ink);text-decoration:none">‹ Aujourd’hui</a><h1>Agenda</h1>'+
   '<div class="seg"><button class="'+(t==='ville'?'on':'')+'" data-a="agtab" data-v="ville">Ville</button><button class="'+(t==='ateliers'?'on':'')+'" data-a="agtab" data-v="ateliers">Ateliers</button><button class="'+(t==='expos'?'on':'')+'" data-a="agtab" data-v="expos">Expositions</button></div>'+
   (t==='ville'?srcBadge('snap','agenda de mairie-orsay.fr')+'<div class="list">'+local.filter(p=>p.type==='event').map(p=>'<div class="li"><span class="tag t-pink">Nouveau</span><div style="flex:1"><div style="font-weight:600">'+esc(p.t)+'</div><div class="small muted">'+esc(p.when||'')+'</div></div></div>').join('')+AGENDA.filter(a=>a.d>=today).map(a=>'<a class="li" href="'+esc(a.u)+'" target="_blank" rel="noopener"><div style="width:50px;text-align:center;flex-shrink:0"><div style="font-size:11px;font-weight:700;color:var(--pink-ink);text-transform:uppercase">'+fmtDay(a.d).split(' ')[0]+'</div><div style="font-size:22px;font-weight:800">'+new Date(a.d+'T12:00').getDate()+'</div><div style="font-size:11px" class="muted">'+MOIS[new Date(a.d+'T12:00').getMonth()].slice(0,4)+'.</div></div><div style="flex:1;min-width:0"><span class="tag t-navy">'+esc(a.c)+'</span><div style="font-weight:600;margin-top:4px">'+esc(a.t)+'</div><div class="small muted">'+esc([a.h,a.l].filter(Boolean).join(' · '))+'</div></div></a>').join('')+'</div>':'')+
-  (t==='ateliers'?'<div class="stack-s">'+(courses.length?courses.map(c=>'<div class="card between"><div><div style="font-weight:700">'+esc(c.t)+'</div><div class="small muted">'+esc(c.by+' · '+c.when+' · '+c.prix)+'</div><div class="small muted">'+(c.places-c.inscrits)+' place(s) restante(s)</div></div><button class="btn sm'+(c.me?' lime':'')+'" data-a="bookcourse" data-v="'+c.id+'">'+(c.me?'Inscrit ✓':'Réserver')+'</button></div>').join(''):'<div class="card empty">Aucun cours publié pour l’instant. Les ateliers créent leurs cours depuis leur espace (tout se gère dans l’app : réservation, liste d’attente, rappel).</div>')+
+  (t==='ateliers'?'<div class="stack-s">'+(courses.length?courses.map(c=>'<div class="card between"><div><div style="font-weight:700">'+esc(c.t)+'</div><div class="small muted">'+esc(c.by+' · '+c.when+' · '+c.prix)+'</div><div class="small muted">'+(c.places-c.inscrits)+' place(s) restante(s)</div></div><button class="btn sm'+((c.attendees||[]).includes(me().id)?' lime':'')+'" data-a="bookcourse" data-v="'+c.id+'">'+((c.attendees||[]).includes(me().id)?'Inscrit ✓':'Réserver')+'</button></div>').join(''):'<div class="card empty">Aucun cours publié pour l’instant. Les ateliers créent leurs cours depuis leur espace (tout se gère dans l’app : réservation, liste d’attente, rappel).</div>')+
     '<h3 style="margin-top:6px">Ateliers et activités à Orsay</h3><div class="list">'+ATELIERS.map(a=>'<div class="li"><div class="ic" style="background:#2F7A1F">✦</div><div><div style="font-weight:600">'+esc(a.n)+'</div><div class="small muted">'+esc(a.x)+'</div></div></div>').join('')+'</div></div>':'')+
   (t==='expos'?'<div class="list">'+EXPOS.map(e=>'<div class="li"><div class="ic" style="background:var(--navy)">'+ico('hall',16,'#fff')+'</div><div><div style="font-weight:600">'+esc(e.t)+'</div><div class="small muted">'+esc(e.p)+'</div></div></div>').join('')+'</div>':'')+
   '</div>';
@@ -869,19 +877,6 @@ function proCaisse(u){
   const visits=(DB.visits||[]).filter(v=>v.shop===u.id);
   return '<div class="cols"><div class="card pink stack-s">'+inner+'</div><div class="stack-s"><div class="card grid2" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="kpi"><b>'+visits.length+'</b><span class="small muted">passages carte</span></div><div class="kpi"><b>'+DB.posts.filter(p=>p.owner===u.id).length+'</b><span class="small muted">publications</span></div></div><div class="card small muted">Astuce démo : tape le code <b>ORS482177</b>, celui de Camille, l’habitante démo. Chaque habitant trouve son code sous son QR code, dans Mes cartes.</div></div></div>';
 }
-function proPublier(u){
-  const r=u.role;
-  const types=r==='asso'?[['event','Événement'],['emploi','Offre d’emploi']]:r==='atelier'?[['bonplan','Bon plan'],['event','Événement'],['emploi','Offre d’emploi']]:[['bonplan','Bon plan'],['panier','Anti-gaspi'],['emploi','Recrutement']];
-  const t=UI.pubType&&types.some(x=>x[0]===UI.pubType)?UI.pubType:types[0][0];
-  const mine=DB.posts.filter(p=>p.owner===u.id).slice().reverse();
-  return '<div class="cols"><form class="card stack-s" id="fpub">'+(types.length>1?'<div class="seg">'+types.map(x=>'<button type="button" class="'+(t===x[0]?'on':'')+'" data-a="pubtype" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>':'')+
-  '<label class="field">'+(t==='emploi'?'Poste':'Titre')+'<input name="t" required placeholder="'+(t==='panier'?'Panier surprise de fin de journée':t==='emploi'?'Serveur·se en salle, vendeur·se…':t==='event'?'Portes ouvertes':'−10 % sur…')+'"></label>'+
-  (t==='emploi'?'<div class="grid2"><label class="field">Contrat<select name="contrat">'+CONTRATS.map(c=>'<option>'+c+'</option>').join('')+'</select></label><label class="field">Rémunération <span class="muted" style="font-weight:400">(facultatif)</span><input name="salaire" placeholder="12 € / h, SMIC…"></label></div><label class="field">Missions et profil<textarea name="x" rows="3" placeholder="Service en salle le midi, débutant accepté…"></textarea></label>':'<label class="field">Détails<input name="x" placeholder="Une ligne, simple"></label>')+
-  (t==='panier'?'<div class="grid2" style="grid-template-columns:repeat(3,minmax(0,1fr))"><label class="field">Quantité<input name="qte" inputmode="numeric" value="3"></label><label class="field">Prix<input name="prix" value="5 €"></label><label class="field">Valeur<input name="val" value="15 €"></label></div>':'')+
-  '<label class="field">'+(t==='panier'?'Retrait':t==='bonplan'?'Validité':t==='emploi'?'Horaires / disponibilité':'Quand')+'<input name="when" placeholder="'+(t==='panier'?'Aujourd’hui 18h30–19h':t==='emploi'?'Week-ends, 20 h / semaine…':'Jusqu’à dimanche')+'"></label>'+
-  '<button class="btn full" type="submit">Publier'+(t==='panier'||t==='bonplan'||t==='emploi'?' et notifier les intéressés':'')+'</button></form>'+
-  '<div class="stack-s"><h3>En ligne</h3>'+(mine.length?mine.map(p=>'<div class="card stack-s"><div class="between" style="align-items:flex-start"><div style="min-width:0"><span class="tag '+(p.type==='emploi'?'t-navy':'t-pink')+'">'+esc({panier:'Anti-gaspi',bonplan:'Bon plan',event:'Événement',benevolat:'Bénévolat',cours:'Cours',emploi:'Recrutement · '+(p.contrat||'')}[p.type])+'</span>'+(p.closed?' <span class="tag t-grey">Pourvu</span>':'')+'<div style="font-weight:700;margin-top:4px">'+esc(p.t)+'</div><div class="small muted">'+esc(p.when||'')+'</div></div></div><div class="row wrap" style="gap:8px">'+(p.type==='emploi'?'<button class="btn sm" data-a="apps" data-v="'+p.id+'">'+((p.apps||[]).length)+' candidature(s)</button>':'')+'<button class="btn sec sm" data-a="unpub" data-v="'+p.id+'">Retirer</button></div></div>').join(''):'<div class="card empty">Rien de publié pour l’instant.</div>')+'</div></div>';
-}
 function proFidelite(u){
   const f=u.fid||{type:'tampons',seuil:10,reco:'1 produit offert'};
   return '<div class="cols"><div class="card stack-s"><h3>Ma carte de fidélité</h3><div class="small muted">Tu choisis la formule, modifiable à tout moment. Les clients gardent ce qu’ils ont déjà gagné.</div>'+
@@ -895,11 +890,6 @@ function proFiche(u){
   '<div class="lbl" style="margin-top:6px">Contact affiché sur ta fiche</div><div class="grid2"><label class="field">Téléphone<input id="ptel" inputmode="tel" value="'+esc(u.tel||'')+'" placeholder="01 …"></label><label class="field">E-mail public<input id="pmail" type="email" value="'+esc(u.mailPublic||'')+'" placeholder="contact@…"></label></div><label class="field">Site internet<input id="pweb" value="'+esc(u.web||'')+'" placeholder="www.…"></label><label class="field">Horaires<input id="phor" value="'+esc(u.horaires||'')+'" placeholder="Mar.–sam. 9h–19h30"></label>'+
   (u.role==='atelier'?'<div class="field">Réservations<div class="seg"><button class="'+(u.booking!=='link'?'on':'')+'" data-a="booking" data-v="app">Tout dans l’app</button><button class="'+(u.booking==='link'?'on':'')+'" data-a="booking" data-v="link">Lien vers mon outil</button></div></div>'+(u.booking==='link'?'<label class="field">Ma page de réservation<input id="plink" value="'+esc(u.link||'')+'" placeholder="https://…"></label>':'<div class="small muted">Paiement en ligne, liste d’attente automatique, rappel la veille, annulation en 1 tap.</div>'):'')+
   '<button class="btn full" data-a="ficheSave">Enregistrer</button></div><div class="card stack-s"><h3>Vérification</h3>'+(!(u.verified&&u.verified.ok)?'<label class="field">'+(u.role==='asso'?'Numéro RNA ou SIRET':'Numéro SIRET')+'<input id="psid" placeholder="'+(u.role==='asso'?'W913000000':'14 chiffres')+'"></label><button class="btn sec sm" data-a="pverify">Vérifier et ajouter le badge</button>':'')+'<div class="small">'+(u.verified&&u.verified.ok?(u.verified.live?'✓ Vérifié automatiquement dans les registres publics'+(u.verified.name?' ('+esc(u.verified.name)+')':''):'✓ '+esc(u.verified.msg||'Numéro valide')):'Fiche non vérifiée : visible, avec cette mention.')+'</div><div class="small muted">N° '+esc(u.sid||'')+'</div><div class="small muted">Votre fiche est visible dans Explorer et sur la carte.</div><a href="#explorer" class="btn sec sm">Voir ma fiche dans l’app</a></div></div>';
-}
-function proCours(u){
-  const mine=DB.courses.filter(c=>c.owner===u.id);
-  return '<div class="cols"><form class="card stack-s" id="fcours"><h3>Créer un cours ou un stage</h3><label class="field">Intitulé<input name="t" required placeholder="Initiation vitrail"></label><div class="grid2"><label class="field">Date et heure<input name="when" required placeholder="Sam. 28 nov · 14h"></label><label class="field">Prix<input name="prix" value="45 €"></label></div><label class="field">Places<input name="places" inputmode="numeric" value="8"></label><button class="btn full" type="submit">Publier le cours</button></form>'+
-  '<div class="stack-s"><h3>Mon planning</h3>'+(mine.length?mine.map(c=>'<div class="card stack-s"><div class="between"><b>'+esc(c.t)+'</b><span class="tag '+(c.inscrits>=c.places?'t-pink':'t-lime')+'">'+(c.inscrits>=c.places?'Complet':c.inscrits+'/'+c.places)+'</span></div><div class="small muted">'+esc(c.when+' · '+c.prix)+'</div><div style="height:6px;border-radius:99px;background:#F2F2F7;overflow:hidden"><div style="height:100%;width:'+Math.round(100*c.inscrits/c.places)+'%;background:var(--green)"></div></div></div>').join(''):'<div class="card empty">Aucun cours. Crée le premier : il apparaît dans l’Agenda des habitants.</div>')+'</div></div>';
 }
 const DOMAINES=['Événements','Collectes','Soutien scolaire','Numérique','Bricolage','Accompagnement','Sport','Cuisine'];
 function contactRows(ct){
@@ -919,19 +909,105 @@ function volCard(v,extra){
    ((b.domaines||[]).length?'<div class="row wrap" style="gap:6px">'+b.domaines.map(d=>'<span class="tag t-pink">'+esc(d)+'</span>').join('')+'</div>':'')+
    '<div class="row wrap" style="gap:8px">'+(v.email?'<a class="btn sec sm" href="mailto:'+esc(v.email)+'">'+ico('mail',16)+esc(v.email)+'</a>':'')+(b.tel?'<a class="btn sec sm" href="tel:'+esc(b.tel.replace(/\s/g,''))+'">'+ico('phone',16)+esc(b.tel)+'</a>':'')+'</div></div>';
 }
-function proMissions(u){
-  const mine=DB.assoNeeds.filter(n=>n.owner===u.id).slice().reverse();
-  return '<div class="cols"><form class="card stack-s" id="fneed"><h3>Nouvelle mission</h3><label class="field">Mission<input name="t" required placeholder="Collecte alimentaire"></label><label class="field">Détails<input name="x" placeholder="Accueil, tri des dons…"></label><div class="grid2"><label class="field">Début<input type="datetime-local" name="start" required></label><label class="field">Fin<input type="datetime-local" name="end"></label></div><label class="field">Nombre de bénévoles<input name="nb" inputmode="numeric" value="4"></label><button class="btn full" type="submit">Publier la mission</button><div class="small muted">Elle apparaît dans « Les assos d’Orsay » et sur ta fiche. Les habitants bénévoles s’y inscrivent en 1 tap.</div></form>'+
-  '<div class="stack-s"><h3>Mes missions</h3>'+(mine.length?mine.map(n=>{const ins=(n.volunteers||[]).map(id=>DB.users.find(x=>x.id===id)).filter(Boolean);return '<div class="card stack-s"><div class="between" style="align-items:flex-start"><div><b>'+esc(n.t)+'</b><div class="small muted">'+esc(n.when||'')+'</div></div><span class="tag '+(ins.length>=(n.nb||99)?'t-ok':'t-lime')+'">'+ins.length+(n.nb?'/'+n.nb:'')+' inscrit(s)</span></div>'+
-    (ins.length?ins.map(v=>'<div class="row" style="padding:6px 0;border-top:1px solid #EDEDF0">'+avatar(v,32,99,'#FCE3EE','#C4105A')+'<div style="flex:1;min-width:0"><div style="font-weight:600">'+esc(v.nom)+'</div><div class="small muted">'+esc([v.email,v.benevole&&v.benevole.tel].filter(Boolean).join(' · '))+'</div></div></div>').join(''):'<div class="small muted">Personne pour l’instant.</div>')+
-    '<button class="btn sec sm" style="align-self:flex-start;color:#D70015" data-a="needdel" data-v="'+n.id+'">Supprimer</button></div>'}).join(''):'<div class="card empty">Aucune mission.</div>')+'</div></div>';
-}
 function proBenevoles(u){
   const vols=volunteers(), f=UI.volFilter||'Tous';
   const list=f==='Tous'?vols:vols.filter(v=>((v.benevole||{}).domaines||[]).includes(f));
   return '<div class="stack-s"><div class="between wrap"><div><h3>Habitants prêts à aider</h3><div class="small muted">Seuls ceux qui ont accepté de partager leur contact apparaissent ici.</div></div><span class="tag t-grey">'+vols.length+' bénévole(s)</span></div>'+
   '<div class="hscroll">'+['Tous'].concat(DOMAINES).map(d=>'<button class="chip'+(f===d?' on':'')+'" data-a="volf" data-v="'+d+'">'+d+'</button>').join('')+'</div>'+
   (list.length?'<div class="grid3">'+list.map(v=>volCard(v)).join('')+'</div>':'<div class="card empty">Personne pour l’instant'+(f!=='Tous'?' dans ce domaine':'')+'. Les habitants activent le bénévolat dans leur profil.</div>')+'</div>';
+}
+
+/* ---------- Champs date/heure partagés ---------- */
+function dtField(name,label,val,req,type){return '<label class="field">'+label+'<input type="'+(type||'datetime-local')+'" name="'+name+'" '+(req?'required ':'')+'value="'+(type==='date'?String(val||'').slice(0,10):localInput(val))+'"></label>'}
+function untilTxt(end){if(!end)return '';try{return 'Jusqu’au '+new Intl.DateTimeFormat('fr-FR',{weekday:'short',day:'numeric',month:'short'}).format(new Date(end))+' '+new Date(end).getHours()+'h'+(new Date(end).getMinutes()?String(new Date(end).getMinutes()).padStart(2,'0'):'')}catch(e){return ''}}
+const PUBLABEL={bonplan:'Bon plan',panier:'Anti-gaspi',event:'Événement',emploi:'Recrutement',cours:'Cours',benevolat:'Bénévolat'};
+function pubFields(t,p){
+  p=p||{};
+  let h='<label class="field">'+(t==='emploi'?'Poste':'Titre')+'<input name="t" required value="'+esc(p.t||'')+'" placeholder="'+(t==='panier'?'Panier surprise de fin de journée':t==='emploi'?'Serveur·se en salle, vendeur·se…':t==='event'?'Portes ouvertes':'−10 % sur…')+'"></label>';
+  if(t==='emploi'){
+    h+='<div class="grid2"><label class="field">Contrat<select name="contrat">'+CONTRATS.map(c=>'<option'+(p.contrat===c?' selected':'')+'>'+c+'</option>').join('')+'</select></label><label class="field">Rémunération <span class="muted" style="font-weight:400">(facultatif)</span><input name="salaire" value="'+esc(p.salaire||'')+'" placeholder="12 € / h, SMIC…"></label></div>'+
+       '<label class="field">Missions et profil<textarea name="x" rows="3" placeholder="Service en salle le midi, débutant accepté…">'+esc(p.x||'')+'</textarea></label>'+
+       '<div class="grid2"><label class="field">Horaires<input name="horaires" value="'+esc(p.horaires||p.when||'')+'" placeholder="Week-ends, 20 h / sem…"></label>'+dtField('start','Début du poste',p.start,false,'date')+'</div>';
+  } else {
+    h+='<label class="field">Détails<input name="x" value="'+esc(p.x||'')+'" placeholder="Une ligne, simple"></label>';
+    if(t==='panier')h+='<div class="grid2" style="grid-template-columns:repeat(3,minmax(0,1fr))"><label class="field">Quantité<input name="qte" inputmode="numeric" value="'+esc(p.qte||3)+'"></label><label class="field">Prix<input name="prix" value="'+esc(p.prix||'5 €')+'"></label><label class="field">Valeur<input name="val" value="'+esc(p.val||'15 €')+'"></label></div>'+
+       '<div class="grid2">'+dtField('start','Retrait à partir de',p.start,true)+dtField('end','Jusqu’à',p.end,true)+'</div>';
+    if(t==='bonplan')h+='<div class="grid2">'+dtField('start','À partir du',p.start,false)+dtField('end','Valable jusqu’au',p.end,true)+'</div>';
+    if(t==='event')h+='<div class="grid2">'+dtField('start','Début',p.start,true)+dtField('end','Fin',p.end,false)+'</div><label class="field">Lieu<input name="lieu" value="'+esc(p.lieu||'')+'" placeholder="Adresse ou salle"></label>';
+  }
+  return h;
+}
+function pubParse(t,d){
+  const o={t:d.t,x:d.x||'',start:d.start||'',end:d.end||'',lieu:d.lieu||''};
+  if(t==='emploi'){o.contrat=d.contrat;o.salaire=d.salaire||'';o.horaires=d.horaires||'';o.when=[d.horaires,d.start?'dès le '+new Date(d.start).toLocaleDateString('fr-FR'):''].filter(Boolean).join(' · ')}
+  else if(t==='bonplan')o.when=untilTxt(d.end);
+  else o.when=fmtRange(d.start,d.end);
+  if(t==='panier'){o.prix=d.prix;o.val=d.val;o.qte=+d.qte||0}
+  return o;
+}
+function proPublier(u){
+  const r=u.role;
+  const types=r==='asso'?[['event','Événement'],['emploi','Offre d’emploi']]:r==='atelier'?[['bonplan','Bon plan'],['event','Événement'],['emploi','Offre d’emploi']]:[['bonplan','Bon plan'],['panier','Anti-gaspi'],['emploi','Recrutement']];
+  const t=UI.pubType&&types.some(x=>x[0]===UI.pubType)?UI.pubType:types[0][0];
+  const mine=DB.posts.filter(p=>p.owner===u.id).slice().reverse();
+  return '<div class="cols"><form class="card stack-s" id="fpub">'+(types.length>1?'<div class="seg">'+types.map(x=>'<button type="button" class="'+(t===x[0]?'on':'')+'" data-a="pubtype" data-v="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>':'')+
+  pubFields(t)+'<button class="btn full" type="submit">Publier'+(t!=='event'?' et notifier les intéressés':'')+'</button></form>'+
+  '<div class="stack-s"><h3>En ligne</h3>'+(mine.length?mine.map(p=>'<div class="card stack-s"><div style="min-width:0"><span class="tag '+(p.type==='emploi'?'t-navy':'t-pink')+'">'+esc((PUBLABEL[p.type]||'')+(p.type==='emploi'&&p.contrat?' · '+p.contrat:''))+'</span>'+(p.closed?' <span class="tag t-grey">Pourvu</span>':'')+'<div style="font-weight:700;margin-top:4px">'+esc(p.t)+'</div><div class="small muted">'+esc([p.when,p.lieu].filter(Boolean).join(' · '))+'</div></div><div class="row wrap" style="gap:8px">'+(p.type==='emploi'?'<button class="btn sm" data-a="apps" data-v="'+p.id+'">'+((p.apps||[]).length)+' candidature(s)</button>':'')+'<button class="btn sec sm" data-a="pedit" data-v="'+p.id+'">Modifier</button><button class="btn sec sm" style="color:#D70015" data-a="unpub" data-v="'+p.id+'">Retirer</button></div></div>').join(''):'<div class="card empty">Rien de publié pour l’instant.</div>')+'</div></div>';
+}
+function pubEditSheet(id){
+  const p=DB.posts.find(x=>x.id===id);if(!p)return;
+  openSheet('<form class="stack" id="fpedit"><div class="between"><div><span class="tag t-pink">'+esc(PUBLABEL[p.type]||'')+'</span><h2 style="margin-top:4px">Modifier</h2></div><button type="button" class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div><div class="card stack-s">'+pubFields(p.type,p)+'</div><button class="btn full" type="submit">Enregistrer</button></form>');
+  $('#fpedit').addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(d.end&&d.start&&d.end<d.start){toast('Dates','La fin doit être après le début.');return}Object.assign(p,pubParse(p.type,d));save();closeSheet();render();toast('Publication modifiée',p.t)});
+}
+/* ---------- Missions (asso) ---------- */
+function missionFields(n){n=n||{};return '<label class="field">Mission<input name="t" required value="'+esc(n.t||'')+'" placeholder="Collecte alimentaire"></label><label class="field">Détails<input name="x" value="'+esc(n.x||'')+'" placeholder="Accueil, tri des dons…"></label><div class="grid2">'+dtField('start','Début',n.start,true)+dtField('end','Fin',n.end,false)+'</div><label class="field">Nombre de bénévoles<input name="nb" inputmode="numeric" value="'+esc(n.nb||4)+'"></label>'}
+function missionVols(n){const ins=(n.volunteers||[]).map(id=>DB.users.find(x=>x.id===id)).filter(Boolean);return ins.length?ins.map(v=>'<div class="row" style="padding:6px 0;border-top:1px solid #EDEDF0">'+avatar(v,32,99,'#FCE3EE','#C4105A')+'<div style="flex:1;min-width:0"><div style="font-weight:600">'+esc(v.nom)+'</div><div class="small muted">'+esc([v.email,v.benevole&&v.benevole.tel].filter(Boolean).join(' · '))+'</div></div>'+(v.email?'<a class="iconbtn" style="width:34px;height:34px;background:#F2F2F7" href="mailto:'+esc(v.email)+'" aria-label="Écrire">'+ico('mail',16)+'</a>':'')+'</div>').join(''):'<div class="small muted">Personne pour l’instant.</div>'}
+function proMissions(u){
+  const mine=DB.assoNeeds.filter(n=>n.owner===u.id).slice().reverse();
+  return '<div class="cols"><form class="card stack-s" id="fneed"><h3>Nouvelle mission</h3>'+missionFields()+'<button class="btn full" type="submit">Publier la mission</button><div class="small muted">Elle apparaît dans « Les assos d’Orsay » et sur ta fiche. Les habitants bénévoles s’y inscrivent en 1 tap.</div></form>'+
+  '<div class="stack-s"><h3>Mes missions</h3>'+(mine.length?mine.map(n=>{const c=(n.volunteers||[]).length;return '<div class="card stack-s"><div class="between" style="align-items:flex-start"><div><b>'+esc(n.t)+'</b><div class="small muted">'+esc(n.when||'')+'</div>'+(n.x?'<div class="small">'+esc(n.x)+'</div>':'')+'</div><span class="tag '+(n.nb&&c>=n.nb?'t-ok':'t-lime')+'">'+c+(n.nb?'/'+n.nb:'')+' inscrit(s)</span></div><div class="lbl" style="margin-top:4px">Inscrits</div>'+missionVols(n)+
+    '<div class="row" style="gap:8px"><button class="btn sec sm" data-a="nedit" data-v="'+n.id+'">Modifier</button><button class="btn sec sm" style="color:#D70015" data-a="needdel" data-v="'+n.id+'">Supprimer</button></div></div>'}).join(''):'<div class="card empty">Aucune mission.</div>')+'</div></div>';
+}
+function missionEditSheet(id){
+  const n=DB.assoNeeds.find(x=>x.id===id);if(!n)return;
+  openSheet('<form class="stack" id="fnedit"><div class="between"><h2>Modifier la mission</h2><button type="button" class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div><div class="card stack-s">'+missionFields(n)+'</div><div class="card stack-s"><div class="lbl">Inscrits ('+((n.volunteers||[]).length)+')</div>'+missionVols(n)+'</div><button class="btn full" type="submit">Enregistrer</button></form>');
+  $('#fnedit').addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));Object.assign(n,{t:d.t,x:d.x||'',start:d.start,end:d.end||'',when:fmtRange(d.start,d.end),nb:+d.nb||0});save();closeSheet();render();toast('Mission modifiée',n.t)});
+}
+/* ---------- Planning atelier (calendrier) ---------- */
+function proCours(u){
+  const mine=DB.courses.filter(c=>c.owner===u.id);
+  const now=new Date();const off=UI.calOff||0;const m=new Date(now.getFullYear(),now.getMonth()+off,1);
+  const first=(m.getDay()+6)%7, days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
+  const key=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  const byDay={};mine.filter(c=>c.start).forEach(c=>{const k=key(new Date(c.start));(byDay[k]=byDay[k]||[]).push(c)});
+  const sel=UI.calSel||key(now);
+  const month=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(m);
+  let cells='';for(let i=0;i<first;i++)cells+='<div></div>';
+  for(let d=1;d<=days;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d),k=key(dt),list=byDay[k]||[],isT=k===key(now),isS=k===sel;
+    cells+='<button data-a="calday" data-v="'+k+'" style="border:0;border-radius:12px;min-height:58px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;background:'+(isS?'#FCE3EE':'transparent')+';font-family:inherit"><span style="width:28px;height:28px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-weight:'+(isT?'800':'500')+';background:'+(isT?'var(--pink)':'transparent')+';color:'+(isT?'#fff':'var(--ink)')+'">'+d+'</span>'+(list.length?'<span style="display:flex;gap:2px">'+list.slice(0,3).map(c=>'<i style="width:6px;height:6px;border-radius:99px;background:'+(c.inscrits>=c.places?'#C4105A':'#7A8200')+'"></i>').join('')+'</span>':'')+'</button>'}
+  const dayList=byDay[sel]||[];const selDate=(()=>{const [y,mo,da]=sel.split('-').map(Number);return new Date(y,mo-1,da)})();
+  const undated=mine.filter(c=>!c.start);
+  const courseRow=c=>'<button class="card stack-s" style="border:0;text-align:left;width:100%" data-a="cedit" data-v="'+c.id+'"><div class="between"><b>'+esc(c.t)+'</b><span class="tag '+(c.inscrits>=c.places?'t-pink':'t-lime')+'">'+(c.inscrits>=c.places?'Complet':c.inscrits+'/'+c.places)+'</span></div><div class="small muted">'+esc([c.when,c.prix].filter(Boolean).join(' · '))+'</div><div style="height:6px;border-radius:99px;background:#F2F2F7;overflow:hidden"><div style="height:100%;width:'+Math.round(100*c.inscrits/Math.max(1,c.places))+'%;background:var(--green)"></div></div></button>';
+  return '<div class="cols"><div class="card stack-s"><div class="between"><button class="iconbtn" style="background:#F2F2F7" data-a="calnav" data-v="-1" aria-label="Mois précédent"><span style="transform:rotate(180deg);display:flex">'+ico('chev',18)+'</span></button><h3 style="text-transform:capitalize">'+month+'</h3><button class="iconbtn" style="background:#F2F2F7" data-a="calnav" data-v="1" aria-label="Mois suivant">'+ico('chev',18)+'</button></div>'+
+   '<div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center" class="small muted">'+['L','M','M','J','V','S','D'].map(x=>'<div style="font-weight:700;padding:4px 0">'+x+'</div>').join('')+cells+'</div>'+
+   '<button class="btn full" data-a="cadd">'+ico('plus',18,'#fff',2.6)+'Ajouter un cours ou un stage</button></div>'+
+  '<div class="stack-s"><div class="between"><h3 style="text-transform:capitalize">'+new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'}).format(selDate)+'</h3><button class="iconbtn" style="background:var(--pink)" data-a="cadd" data-v="'+sel+'" aria-label="Ajouter ce jour-là">'+ico('plus',18,'#fff',2.6)+'</button></div>'+
+   (dayList.length?dayList.map(courseRow).join(''):'<div class="card empty">Aucun cours ce jour-là.</div>')+
+   (undated.length?'<h3 style="margin-top:8px">Sans date</h3>'+undated.map(courseRow).join(''):'')+'</div></div>';
+}
+function courseSheet(id,day){
+  const c=id?DB.courses.find(x=>x.id===id):null;const u=me();
+  let start=c?c.start:'';if(!c&&day){const [y,mo,da]=day.split('-').map(Number);start=new Date(y,mo-1,da,14,0).toISOString()}
+  const att=c?(c.attendees||[]).map(i=>DB.users.find(x=>x.id===i)).filter(Boolean):[];
+  openSheet('<form class="stack" id="fcsheet"><div class="between"><h2>'+(c?'Modifier le cours':'Nouveau cours')+'</h2><button type="button" class="iconbtn" data-a="close" aria-label="Fermer">'+ico('x',18)+'</button></div><div class="card stack-s">'+
+   '<label class="field">Intitulé<input name="t" required value="'+esc(c?c.t:'')+'" placeholder="Initiation vitrail"></label><label class="field">Description<input name="x" value="'+esc(c&&c.x||'')+'" placeholder="Matériel fourni, dès 12 ans…"></label>'+
+   '<div class="grid2">'+dtField('start','Début',start,true)+dtField('end','Fin',c?c.end:'',false)+'</div><div class="grid2"><label class="field">Prix<input name="prix" value="'+esc(c?c.prix:'45 €')+'"></label><label class="field">Places<input name="places" inputmode="numeric" value="'+esc(c?c.places:8)+'"></label></div></div>'+
+   (c?'<div class="card stack-s"><div class="lbl">Inscrits ('+c.inscrits+'/'+c.places+')</div>'+(att.length?att.map(v=>'<div class="row" style="padding:6px 0;border-top:1px solid #EDEDF0">'+avatar(v,32,99,'#E1ECF5','#004A7C')+'<div style="flex:1"><b>'+esc(v.nom)+'</b><div class="small muted">'+esc(v.email||'')+'</div></div></div>').join(''):'')+(c.inscrits>att.length?'<div class="small muted">'+(c.inscrits-att.length)+' inscription(s) hors app (démo)</div>':'')+(!c.inscrits?'<div class="small muted">Personne pour l’instant.</div>':'')+'</div>':'')+
+   '<button class="btn full" type="submit">'+(c?'Enregistrer':'Publier le cours')+'</button>'+(c?'<button type="button" class="btn sec full" style="color:#D70015" data-a="cdel" data-v="'+c.id+'">Supprimer le cours</button>':'')+'</form>');
+  $('#fcsheet').addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));if(d.end&&d.end<d.start){toast('Dates','La fin doit être après le début.');return}
+    const o={t:d.t,x:d.x||'',start:d.start,end:d.end||'',when:fmtRange(d.start,d.end),prix:d.prix,places:+d.places||8};
+    if(c)Object.assign(c,o);else DB.courses.push(Object.assign({id:uid(),owner:u.id,by:u.nom,inscrits:0,attendees:[]},o));
+    const dt=new Date(d.start);UI.calSel=dt.getFullYear()+'-'+(dt.getMonth()+1)+'-'+dt.getDate();save();closeSheet();render();toast(c?'Cours modifié':'Nouveau cours',d.t)});
 }
 
 /* ============ ESPACE MAIRIE ============ */
@@ -987,10 +1063,9 @@ function after(r){
   if(r==='assos'){const q=$('#aq');if(q)q.addEventListener('input',debounce(()=>{UI.assoQ=q.value;rerenderKeepFocus('#aq')},250))}
   if(r==='cartes'){const el=$('#qr');if(el){try{new QRCode(el,{text:'MONORSAY:'+(me().code||''),width:168,height:168,colorDark:'#1C1C1E',colorLight:'#ffffff'})}catch(e){el.innerHTML='<div style="width:168px;height:168px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px">'+esc(me().code)+'</div>'}}}
   const fp=$('#fpub');if(fp)fp.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fp));const u=me();const types=u.role==='asso'?['event','emploi']:u.role==='atelier'?['bonplan','event','emploi']:['bonplan','panier','emploi'];const t=UI.pubType&&types.includes(UI.pubType)?UI.pubType:types[0];
-    if(t==='benevolat'){DB.assoNeeds.push({id:uid(),owner:u.id,by:u.nom,t:d.t,when:d.when||'',volunteers:[]})}
-    DB.posts.push({id:uid(),owner:u.id,type:t,by:u.nom,t:d.t,x:d.x||'',when:d.when||'',prix:t==='panier'?d.prix:'',val:t==='panier'?d.val:'',qte:+d.qte||0,contrat:t==='emploi'?d.contrat:'',salaire:t==='emploi'?(d.salaire||''):'',apps:[]});save();render();
+    if(d.end&&d.start&&d.end<d.start){toast('Dates','La fin doit être après le début.');return}
+    DB.posts.push(Object.assign({id:uid(),owner:u.id,type:t,by:u.nom,apps:[]},pubParse(t,d)));save();render();
     toast(t==='panier'?'Panier anti-gaspi':t==='bonplan'?'Bon plan':t==='emploi'?'Offre d’emploi':'Événement',u.nom+' : '+d.t)});
-  const fc=$('#fcours');if(fc)fc.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fc));const u=me();DB.courses.push({id:uid(),owner:u.id,by:u.nom,t:d.t,when:d.when,prix:d.prix,places:+d.places||8,inscrits:0});save();render();toast('Nouvel atelier',u.nom+' : '+d.t)});
   const fn=$('#fneed');if(fn)fn.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fn));const u=me();DB.assoNeeds.push({id:uid(),owner:u.id,by:u.nom,t:d.t,x:d.x||'',start:d.start,end:d.end||'',when:fmtRange(d.start,d.end),nb:+d.nb||0,volunteers:[]});save();render();toast('Bénévolat',u.nom+' cherche de l’aide : '+d.t)});
   const fm=$('#fmairie');if(fm)fm.addEventListener('submit',e=>{e.preventDefault();const d=Object.fromEntries(new FormData(fm));if(d.end&&d.start&&d.end<d.start){toast('Dates','La fin doit être après le début.');return}DB.posts.push({id:uid(),owner:me().id,type:UI.mairieTab,by:'Mairie d’Orsay',t:d.t,x:d.x||'',start:d.start||'',end:d.end||'',lieu:d.lieu||'',when:fmtRange(d.start,d.end)});save();render();toast(MTYPES[UI.mairieTab],d.t)});
 }
@@ -1014,6 +1089,13 @@ document.addEventListener('click',async e=>{
     case 'jobf': UI.jobFilter=v;render();break;
     case 'apps': appsSheet(v);break;
     case 'jobclose': {const p=DB.posts.find(x=>x.id===v);if(p){p.closed=!p.closed;save();appsSheet(v);render()}break}
+    case 'pedit': pubEditSheet(v);break;
+    case 'nedit': missionEditSheet(v);break;
+    case 'calnav': UI.calOff=(UI.calOff||0)+(+v);render();break;
+    case 'calday': UI.calSel=v;render();break;
+    case 'cadd': courseSheet(null,v||UI.calSel);break;
+    case 'cedit': courseSheet(v);break;
+    case 'cdel': DB.courses=DB.courses.filter(c=>c.id!==v);save();closeSheet();render();toast('Cours supprimé','Il n’apparaît plus dans l’agenda.');break;
     case 'volf': UI.volFilter=v;render();break;
     case 'needdel': DB.assoNeeds=DB.assoNeeds.filter(n=>n.id!==v);save();render();break;
     case 'vdom': {u.benevole.domaines=u.benevole.domaines||[];const i=u.benevole.domaines.indexOf(v);i>=0?u.benevole.domaines.splice(i,1):u.benevole.domaines.push(v);save();render();break}
@@ -1033,7 +1115,7 @@ document.addEventListener('click',async e=>{
     case 'close': case 'bg': closeSheet();break;
     case 'addcard': {const mine=DB.cards[u.id]=DB.cards[u.id]||{};if(mine[v]){delete mine[v]}else{const i=COMMERCES.find(x=>x.id===v);const owner=v.startsWith('u')?DB.users.find(x=>'u'+x.id===v):null;const f=owner&&owner.fid||{type:'tampons',seuil:10,reco:'Formule à définir par le commerçant'};mine[v]={n:i?i.n:owner?owner.nom:'Commerce',type:f.type,seuil:+f.seuil||10,reco:f.reco,count:0}}save();commerceSheet(v);break}
     case 'reserve': {const p=DB.posts.find(x=>x.id===v);if(p){p.reserved=!p.reserved;save();render();if(p.reserved)toast('Réservé',p.t+' · '+(p.when||''))}else{toast('Exemple','Dans l’app, la réservation est envoyée au commerçant.')}break}
-    case 'bookcourse': {const c=DB.courses.find(x=>x.id===v);if(c){if(c.me){c.me=false;c.inscrits--}else if(c.inscrits<c.places){c.me=true;c.inscrits++;toast('Atelier réservé',c.t+' · '+c.when)}else toast('Complet','Tu es sur liste d’attente : on te prévient si une place se libère.');save();render()}break}
+    case 'bookcourse': {const c=DB.courses.find(x=>x.id===v);if(c){c.attendees=c.attendees||[];const mine=c.attendees.includes(u.id);if(mine){c.attendees=c.attendees.filter(x=>x!==u.id);c.inscrits--}else if(c.inscrits<c.places){c.attendees.push(u.id);c.inscrits++;toast('Atelier réservé',c.t+' · '+c.when)}else toast('Complet','Tu es sur liste d’attente : on te prévient si une place se libère.');save();render()}break}
     case 'notif': u.notif=u.notif||{};u.notif[v]=!u.notif[v];save();if(v==='collecte'){const a=$('#cadr')?$('#cadr').value:'';const y=document.querySelector('.sheet').scrollTop;collecteSheet();if($('#cadr'))$('#cadr').value=a;document.querySelector('.sheet').scrollTop=y}else render();break;
     case 'interest': {u.interests=u.interests||[];const i=u.interests.indexOf(v);i>=0?u.interests.splice(i,1):u.interests.push(v);save();render();break}
     case 'benevole': u.benevole=u.benevole||{};u.benevole.on=!u.benevole.on;save();render();break;
