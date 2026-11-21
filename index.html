@@ -31,6 +31,26 @@ a{color:inherit}
 button,input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
 button{cursor:pointer}
 .app{min-height:100vh;display:flex}
+/* Calendrier atelier */
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.calhead{font-size:12px;font-weight:700;color:var(--muted);text-align:center;padding:4px 0;text-transform:uppercase}
+.calcell{position:relative;min-height:56px;border-radius:12px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:#FAFAFC}
+.calcell.calempty{background:transparent;cursor:default}
+.calcell.sel{background:#FCE3EE}.calcell.past .calnum{color:#AEAEB2}
+.calnum{width:28px;height:28px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px}
+.calnum.today{background:var(--pink);color:#fff;font-weight:800}
+.caldots{display:flex;gap:2px}.caldots i{width:6px;height:6px;border-radius:99px;display:block}
+.calchip{display:none;border:0;text-align:left;width:100%;font-family:inherit;font-size:12.5px;line-height:1.3;padding:6px 8px;border-radius:9px;background:#F1F5C2;color:#2E3200;cursor:pointer}
+.calchip span{display:block;font-size:11.5px;color:#4A4F00;font-weight:600}
+.calchip.full{background:#FCE3EE;color:#8E0B45}.calchip.full span{color:#C4105A}
+.caladd{display:none;position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:99px;border:0;background:#fff;color:var(--pink-ink);font-weight:800;font-size:16px;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.12);cursor:pointer}
+@media (min-width:900px){
+ .calcell{min-height:118px;align-items:stretch;padding:8px}
+ .calnum{align-self:flex-start;width:30px;height:30px}
+ .caldots{display:none}.calchip{display:block}
+ .calcell:hover .caladd{display:block}
+ .calday-list{display:none!important}
+}
 /* Sidebar (ordinateur) */
 .side{display:none}
 .main{flex:1;min-width:0;padding:calc(18px + var(--safe-t)) 18px calc(110px + var(--safe-b));max-width:1180px;margin:0 auto;width:100%}
@@ -43,6 +63,7 @@ button{cursor:pointer}
  .tabbar{display:none}
  .main{padding:34px 40px 60px}
  .cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
+ .cols>*{min-width:0}
  .grid3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
  .hide-desk{display:none!important}
 }
@@ -72,7 +93,7 @@ h3{font-size:17px;font-weight:700;margin:0}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .grid3{display:grid;grid-template-columns:repeat(1,minmax(0,1fr));gap:12px}
 @media (min-width:600px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.cols{display:flex;flex-direction:column;gap:22px}
+@media (max-width:899px){.cols{display:flex;flex-direction:column;gap:22px}.cols>*{min-width:0}}
 .hscroll{display:flex;gap:12px;overflow-x:auto;margin:0 -18px;padding:2px 18px 6px;scrollbar-width:none}
 .hscroll::-webkit-scrollbar{display:none}
 @media (min-width:900px){.hscroll{margin:0;padding:2px 0 6px;flex-wrap:wrap}}
@@ -670,7 +691,10 @@ async function initMap(){
   if(typeof L==='undefined'){el.innerHTML='<div class="empty" style="padding-top:150px">Carte indisponible ici.</div>';return}
   try{
     const map=L.map(el,{zoomControl:true,attributionControl:true}).setView([48.6985,2.1875],14);MAP=map;
-    const PROV=[['CARTO','https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'© OpenStreetMap · © CARTO'}],['OpenStreetMap','https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}],['Esri','https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri, OpenStreetMap'}]];
+    const fix=()=>{if(el.isConnected)map.invalidateSize()};[50,300,1000].forEach(t=>setTimeout(fix,t));
+    try{const ro=new ResizeObserver(fix);ro.observe(el)}catch(e){window.addEventListener('resize',fix)}
+    const pts=[];
+    const PROV=[['OpenStreetMap','https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}],['Esri','https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri, OpenStreetMap'}]];
     const diag={prov:[],loaded:0,errs:0,geoOk:0,geoKo:0};MAPDIAG=diag;
     const showDiag=()=>{if(note)note.innerHTML='<span class="badge-src">'+(diag.loaded?'<span class="live"></span>Fond de carte : '+diag.prov[diag.prov.length-1]:'<span class="snap"></span>Fond de carte : aucun ne répond ('+diag.prov.join(', ')+')')+' · Adresses placées : '+diag.geoOk+'/'+(diag.geoOk+diag.geoKo)+'</span>'};
     let idx=0,cur=null,errs=0;
@@ -684,10 +708,12 @@ async function initMap(){
     for(const i of items){
       const ll=await geocode(i.a); if(!el.isConnected) return; if(!ll){diag.geoKo++;continue} diag.geoOk++;
       const c=CATS[i.cat]||CATS.services;
+      pts.push(ll);
       const m=L.marker(ll,{icon:L.divIcon({className:'',html:'<div class="pin" style="background:'+c.c+'"><b>'+c.i+'</b></div>',iconSize:[30,30],iconAnchor:[15,30],popupAnchor:[0,-28]})}).addTo(map);
       m.bindPopup('<b>'+esc(i.n)+'</b><br><span style="color:#6E6E73">'+esc(i.a)+'</span><br><a href="#" data-a="commerce" data-v="'+i.id+'" style="color:#C4105A;font-weight:700">Voir la fiche</a>');
       placed++;
     }
+    if(pts.length>1){map.invalidateSize();map.fitBounds(pts,{padding:[36,36],maxZoom:16})}
     showDiag();if(!placed&&note) note.innerHTML+='<br>'+'Les adresses n’ont pas pu être placées ici (accès réseau bloqué dans l’aperçu). Sur la version en ligne, chaque commerce est placé automatiquement via la Base Adresse Nationale.';
   }catch(e){el.innerHTML='<div class="empty" style="padding-top:150px">Carte indisponible ici.</div>'}
 }
@@ -979,21 +1005,32 @@ function proCours(u){
   const now=new Date();const off=UI.calOff||0;const m=new Date(now.getFullYear(),now.getMonth()+off,1);
   const first=(m.getDay()+6)%7, days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();
   const key=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-  const byDay={};mine.filter(c=>c.start).forEach(c=>{const k=key(new Date(c.start));(byDay[k]=byDay[k]||[]).push(c)});
+  const hr=x=>{const d=new Date(x);return d.getHours()+'h'+(d.getMinutes()?String(d.getMinutes()).padStart(2,'0'):'')};
+  const byDay={};mine.filter(c=>c.start).sort((a,b)=>a.start<b.start?-1:1).forEach(c=>{const k=key(new Date(c.start));(byDay[k]=byDay[k]||[]).push(c)});
   const sel=UI.calSel||key(now);
   const month=new Intl.DateTimeFormat('fr-FR',{month:'long',year:'numeric'}).format(m);
-  let cells='';for(let i=0;i<first;i++)cells+='<div></div>';
-  for(let d=1;d<=days;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d),k=key(dt),list=byDay[k]||[],isT=k===key(now),isS=k===sel;
-    cells+='<button data-a="calday" data-v="'+k+'" style="border:0;border-radius:12px;min-height:58px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;background:'+(isS?'#FCE3EE':'transparent')+';font-family:inherit"><span style="width:28px;height:28px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-weight:'+(isT?'800':'500')+';background:'+(isT?'var(--pink)':'transparent')+';color:'+(isT?'#fff':'var(--ink)')+'">'+d+'</span>'+(list.length?'<span style="display:flex;gap:2px">'+list.slice(0,3).map(c=>'<i style="width:6px;height:6px;border-radius:99px;background:'+(c.inscrits>=c.places?'#C4105A':'#7A8200')+'"></i>').join('')+'</span>':'')+'</button>'}
+  const full=c=>c.inscrits>=c.places;
+  let cells='';for(let i=0;i<first;i++)cells+='<div class="calcell calempty"></div>';
+  for(let d=1;d<=days;d++){const dt=new Date(m.getFullYear(),m.getMonth(),d),k=key(dt),list=byDay[k]||[],isT=k===key(now),isS=k===sel,past=dt<new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    cells+='<div class="calcell'+(isS?' sel':'')+(past?' past':'')+'" data-a="calday" data-v="'+k+'"><div class="calnum'+(isT?' today':'')+'">'+d+'</div>'+
+      (list.length?'<div class="caldots">'+list.slice(0,3).map(c=>'<i style="background:'+(full(c)?'#C4105A':'#7A8200')+'"></i>').join('')+'</div>':'')+
+      list.map(c=>'<button class="calchip'+(full(c)?' full':'')+'" data-a="cedit" data-v="'+c.id+'"><b>'+hr(c.start)+'</b> '+esc(c.t)+'<span>'+(full(c)?'Complet':c.inscrits+'/'+c.places+' inscrits')+'</span></button>').join('')+
+      '<button class="caladd" data-a="cadd" data-v="'+k+'" aria-label="Ajouter un cours le '+d+'">+</button></div>'}
   const dayList=byDay[sel]||[];const selDate=(()=>{const [y,mo,da]=sel.split('-').map(Number);return new Date(y,mo-1,da)})();
+  const nowISO=localInput(now);
+  const upcoming=mine.filter(c=>c.start&&(c.end||c.start)>=nowISO).sort((a,b)=>a.start<b.start?-1:1);
+  const pastL=mine.filter(c=>c.start&&(c.end||c.start)<nowISO).sort((a,b)=>a.start>b.start?-1:1);
   const undated=mine.filter(c=>!c.start);
-  const courseRow=c=>'<button class="card stack-s" style="border:0;text-align:left;width:100%" data-a="cedit" data-v="'+c.id+'"><div class="between"><b>'+esc(c.t)+'</b><span class="tag '+(c.inscrits>=c.places?'t-pink':'t-lime')+'">'+(c.inscrits>=c.places?'Complet':c.inscrits+'/'+c.places)+'</span></div><div class="small muted">'+esc([c.when,c.prix].filter(Boolean).join(' · '))+'</div><div style="height:6px;border-radius:99px;background:#F2F2F7;overflow:hidden"><div style="height:100%;width:'+Math.round(100*c.inscrits/Math.max(1,c.places))+'%;background:var(--green)"></div></div></button>';
-  return '<div class="cols"><div class="card stack-s"><div class="between"><button class="iconbtn" style="background:#F2F2F7" data-a="calnav" data-v="-1" aria-label="Mois précédent"><span style="transform:rotate(180deg);display:flex">'+ico('chev',18)+'</span></button><h3 style="text-transform:capitalize">'+month+'</h3><button class="iconbtn" style="background:#F2F2F7" data-a="calnav" data-v="1" aria-label="Mois suivant">'+ico('chev',18)+'</button></div>'+
-   '<div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center" class="small muted">'+['L','M','M','J','V','S','D'].map(x=>'<div style="font-weight:700;padding:4px 0">'+x+'</div>').join('')+cells+'</div>'+
-   '<button class="btn full" data-a="cadd">'+ico('plus',18,'#fff',2.6)+'Ajouter un cours ou un stage</button></div>'+
-  '<div class="stack-s"><div class="between"><h3 style="text-transform:capitalize">'+new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'}).format(selDate)+'</h3><button class="iconbtn" style="background:var(--pink)" data-a="cadd" data-v="'+sel+'" aria-label="Ajouter ce jour-là">'+ico('plus',18,'#fff',2.6)+'</button></div>'+
-   (dayList.length?dayList.map(courseRow).join(''):'<div class="card empty">Aucun cours ce jour-là.</div>')+
-   (undated.length?'<h3 style="margin-top:8px">Sans date</h3>'+undated.map(courseRow).join(''):'')+'</div></div>';
+  const row=c=>'<button class="li" data-a="cedit" data-v="'+c.id+'"><div style="width:52px;text-align:center;flex-shrink:0">'+(c.start?'<div style="font-size:11px;font-weight:700;color:var(--pink-ink);text-transform:uppercase">'+new Intl.DateTimeFormat('fr-FR',{weekday:'short'}).format(new Date(c.start))+'</div><div style="font-size:22px;font-weight:800">'+new Date(c.start).getDate()+'</div><div class="small muted">'+new Intl.DateTimeFormat('fr-FR',{month:'short'}).format(new Date(c.start))+'</div>':'—')+'</div><div style="flex:1;min-width:0"><div style="font-weight:700">'+esc(c.t)+'</div><div class="small muted">'+esc([c.when,c.prix].filter(Boolean).join(' · '))+'</div><div style="height:6px;border-radius:99px;background:#F2F2F7;overflow:hidden;margin-top:6px;max-width:260px"><div style="height:100%;width:'+Math.round(100*c.inscrits/Math.max(1,c.places))+'%;background:'+(full(c)?'var(--pink)':'var(--green)')+'"></div></div></div><span class="tag '+(full(c)?'t-pink':'t-lime')+'">'+(full(c)?'Complet':c.inscrits+'/'+c.places)+'</span></button>';
+  return '<div class="stack">'+
+   '<div class="card stack-s"><div class="between wrap"><div class="row" style="gap:8px"><button class="iconbtn" style="background:#F2F2F7" data-a="calnav" data-v="-1" aria-label="Mois précédent"><span style="transform:rotate(180deg);display:flex">'+ico('chev',18)+'</span></button><h2 style="text-transform:capitalize;min-width:190px;text-align:center">'+month+'</h2><button class="iconbtn" style="background:#F2F2F7" data-a="calnav" data-v="1" aria-label="Mois suivant">'+ico('chev',18)+'</button>'+(off?'<button class="btn sec sm" data-a="calnav" data-v="'+(-off)+'">Aujourd’hui</button>':'')+'</div><button class="btn sm" data-a="cadd">'+ico('plus',16,'#fff',2.6)+'Ajouter un cours</button></div>'+
+   '<div class="calgrid">'+['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].map(x=>'<div class="calhead">'+x+'</div>').join('')+cells+'</div>'+
+   '<div class="small muted">Touche un jour pour voir ses cours, ou le + d’une case pour en ajouter un ce jour-là. Vert : places dispo · rose : complet.</div></div>'+
+   '<div class="calday-list stack-s"><div class="between"><h3 style="text-transform:capitalize">'+new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'}).format(selDate)+'</h3><button class="iconbtn" style="background:var(--pink)" data-a="cadd" data-v="'+sel+'" aria-label="Ajouter ce jour-là">'+ico('plus',18,'#fff',2.6)+'</button></div>'+(dayList.length?'<div class="list">'+dayList.map(row).join('')+'</div>':'<div class="card empty">Aucun cours ce jour-là.</div>')+'</div>'+
+   '<div class="stack-s"><div class="between"><h2>Toutes mes activités</h2><span class="tag t-grey">'+upcoming.length+' à venir</span></div>'+
+   (upcoming.length?'<div class="list">'+upcoming.map(row).join('')+'</div>':'<div class="card empty">Aucune activité à venir.</div>')+
+   (undated.length?'<h3>Sans date</h3><div class="list">'+undated.map(row).join('')+'</div>':'')+
+   (pastL.length?'<details><summary class="small muted" style="cursor:pointer;padding:6px">Activités passées ('+pastL.length+')</summary><div class="list">'+pastL.map(row).join('')+'</div></details>':'')+'</div></div>';
 }
 function courseSheet(id,day){
   const c=id?DB.courses.find(x=>x.id===id):null;const u=me();
